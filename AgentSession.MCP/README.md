@@ -34,7 +34,7 @@ This supports SOLID principles, testability, and future migration to alternate s
 
 Default root path:
 
-- `%USERPROFILE%/.moltiAgent/sessions`
+- `%USERPROFILE%/AgentMemory/sessions`
 
 Per-session structure:
 

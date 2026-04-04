@@ -58,7 +58,7 @@ Technical requirements:
 
 2. Local storage structure:
    Use a root path like:
-   %USERPROFILE%/.moltiAgent/sessions
+   %USERPROFILE%/AgentMemory/sessions
 
    Each session folder should contain at minimum:
    - agent_session_state.yaml

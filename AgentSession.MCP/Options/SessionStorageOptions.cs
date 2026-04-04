@@ -7,6 +7,6 @@ public sealed class SessionStorageOptions
 {
     public string RootPath { get; set; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-        ".moltiAgent",
+        "AgentMemory",
         "sessions");
 }
