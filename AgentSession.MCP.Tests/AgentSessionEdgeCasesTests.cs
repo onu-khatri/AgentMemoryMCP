@@ -188,6 +188,33 @@ public sealed class AgentSessionEdgeCasesTests : IDisposable
         Assert.Equal("Info", logs.Single().Level);
     }
 
+    [Fact]
+    public async Task StoreGetLatestFinalPlan_WhenNone_ReturnsNull()
+    {
+        await _store.CreateOrActivateSessionAsync("store-no-plan", null, null, CancellationToken.None);
+
+        var latest = await _store.GetLatestFinalPlanAsync("store-no-plan", CancellationToken.None);
+        Assert.Null(latest);
+    }
+
+    [Fact]
+    public async Task StoreSaveFinalPlan_UsesUtcTimestampedFilenamePattern()
+    {
+        await _store.CreateOrActivateSessionAsync("store-plan-pattern", null, null, CancellationToken.None);
+
+        var saved = await _store.SaveFinalPlanAsync(
+            "store-plan-pattern",
+            "# Stored Plan",
+            "Stored",
+            "copilot",
+            null,
+            CancellationToken.None);
+
+        Assert.Matches("^final-plan-\\d{8}-\\d{6}-\\d{3}(?:-[a-z0-9]{6})?\\.md$", saved.Metadata.FileName);
+        Assert.Equal(saved.Metadata.CreatedAt, saved.Metadata.UpdatedAt);
+        Assert.Equal(TimeSpan.Zero, saved.Metadata.CreatedAt.Offset);
+    }
+
     public void Dispose()
     {
         _loggerFactory.Dispose();

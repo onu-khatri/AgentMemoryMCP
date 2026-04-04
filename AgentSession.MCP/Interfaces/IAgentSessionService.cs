@@ -19,4 +19,8 @@ public interface IAgentSessionService
     Task<ReadAgentArtifactResponse> ReadAgentArtifactAsync(ReadAgentArtifactRequest request, CancellationToken cancellationToken);
 
     Task<ListAgentArtifactsResponse> ListAgentArtifactsAsync(ListAgentArtifactsRequest request, CancellationToken cancellationToken);
+
+    Task<SaveFinalPlanResponse> SaveFinalPlanAsync(SaveFinalPlanRequest request, CancellationToken cancellationToken);
+
+    Task<GetLatestFinalPlanResponse> GetLatestFinalPlanAsync(GetLatestFinalPlanRequest request, CancellationToken cancellationToken);
 }

@@ -14,6 +14,8 @@ This server implements the following MCP tools:
 - `create_agent_artifact`
 - `read_agent_artifact`
 - `list_agent_artifacts`
+- `save_final_plan`
+- `get_latest_final_plan`
 
 ## Architecture
 
@@ -171,6 +173,66 @@ Returns artifact metadata:
 - `tags`
 - `file_name`
 
+### save_final_plan
+Input:
+
+```json
+{
+  "sessionId": "weekly-planning",
+  "planContent": "# Final Plan\n- implement feature\n- add tests",
+  "planTitle": "Sprint Final Plan",
+  "agentName": "copilot",
+  "constraints": {
+    "project_knowledge": ["existing artifact storage patterns"],
+    "architectural_constraints": ["preserve backward compatibility"]
+  },
+  "assumptions": ["no data migration required"],
+  "impactAnalysis": {
+    "affected_module_components": ["Tools", "Services", "Store"],
+    "cross_cutting_concerns": ["validation", "serialization", "logging"],
+    "potential_side_effects": ["larger front matter payload"]
+  },
+  "implementationStrategy": {
+    "summary": "Additive extension using existing artifact flow",
+    "approach": ["extend contracts", "map in service", "persist in metadata"]
+  },
+  "stepByStepPlan": {
+    "notes": ["keep existing APIs stable"],
+    "steps": [
+      { "title": "Extend request model", "note": "add optional sections" },
+      { "title": "Persist details", "note": "store in final_plan_details metadata" }
+    ]
+  },
+  "technicalRisks": [
+    { "risk": "metadata growth", "mitigation": "optional fields and concise entries" }
+  ],
+  "openQuestions": ["Should approval be mandatory for persistence?"],
+  "requiredButSkippedDecisions": ["Plan retention policy"],
+  "approval": {
+    "is_approved": true,
+    "approval_timestamp": "2026-04-04T12:00:00Z"
+  }
+}
+```
+
+Behavior:
+
+- Creates a new timestamped artifact file for every save.
+- Uses UTC timestamp naming with collision-safe suffix when needed.
+
+### get_latest_final_plan
+Input:
+
+```json
+{
+  "sessionId": "weekly-planning"
+}
+```
+
+Returns the most recently saved final plan by save timestamp metadata.
+If no final plan exists, returns an explicit not-found response.
+When available, response includes `plan_details` with constraints, assumptions, impact analysis, strategy, step-by-step notes/steps, risks, open questions, skipped decisions, and approval details.
+
 ## Run Locally
 
 From repository root:
@@ -182,7 +244,7 @@ dotnet run --project AgentSession.MCP/AgentSession.MCP.csproj
 ## Build, Test, Pack
 
 ```powershell
-dotnet build McpServerLearning.slnx
+dotnet build AgentMemoryMCP.slnx
 dotnet test AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj
 dotnet pack AgentSession.MCP/AgentSession.MCP.csproj -c Release
 ```

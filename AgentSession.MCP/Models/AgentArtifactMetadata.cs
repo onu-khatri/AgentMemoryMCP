@@ -36,4 +36,8 @@ public sealed class AgentArtifactMetadata
     [YamlMember(Alias = "file_name")]
     [JsonPropertyName("file_name")]
     public string FileName { get; set; } = string.Empty;
+
+    [YamlMember(Alias = "final_plan_details")]
+    [JsonPropertyName("final_plan_details")]
+    public FinalPlanDetails? FinalPlanDetails { get; set; }
 }

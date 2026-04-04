@@ -36,4 +36,14 @@ public interface IAgentSessionStore
     Task<IReadOnlyCollection<AgentSessionLogEntry>> ReadLogsAsync(string sessionId, int takeLast, CancellationToken cancellationToken);
 
     Task<AgentSessionState> GetSessionStateAsync(string sessionId, CancellationToken cancellationToken);
+
+    Task<AgentArtifactDocument> SaveFinalPlanAsync(
+        string sessionId,
+        string planContent,
+        string? planTitle,
+        string? agentName,
+        FinalPlanDetails? finalPlanDetails,
+        CancellationToken cancellationToken);
+
+    Task<AgentArtifactDocument?> GetLatestFinalPlanAsync(string sessionId, CancellationToken cancellationToken);
 }

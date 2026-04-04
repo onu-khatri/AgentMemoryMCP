@@ -8,6 +8,8 @@ namespace AgentSession.MCP.Services;
 
 public sealed class FileAgentSessionStore : IAgentSessionStore
 {
+    private const string FinalPlanFilePrefix = "final-plan-";
+    private const string FinalPlanTag = "final-plan";
     private readonly IFileSystem _fileSystem;
     private readonly IYamlSerializer _yamlSerializer;
     private readonly SessionStoragePathBuilder _pathBuilder;
@@ -341,8 +343,128 @@ public sealed class FileAgentSessionStore : IAgentSessionStore
         return state;
     }
 
+    public async Task<AgentArtifactDocument> SaveFinalPlanAsync(
+        string sessionId,
+        string planContent,
+        string? planTitle,
+        string? agentName,
+        FinalPlanDetails? finalPlanDetails,
+        CancellationToken cancellationToken)
+    {
+        var sanitizedSession = ValidateExistingSession(sessionId);
+        var paths = _pathBuilder.Build(sanitizedSession);
+        var gate = GetLock(sanitizedSession);
+
+        await gate.WaitAsync(cancellationToken);
+        try
+        {
+            _fileSystem.CreateDirectory(paths.ArtifactDirectoryPath);
+
+            var savedAt = DateTimeOffset.UtcNow;
+            var fileName = BuildUniqueFinalPlanFileName(paths.ArtifactDirectoryPath, savedAt);
+            var artifactPath = Path.Combine(paths.ArtifactDirectoryPath, fileName);
+            var artifactName = NameSanitizer.SanitizeIdentifier(Path.GetFileNameWithoutExtension(fileName));
+
+            var title = string.IsNullOrWhiteSpace(planTitle) ? "Final implementation plan" : planTitle.Trim();
+            var normalizedAgent = string.IsNullOrWhiteSpace(agentName) ? null : agentName.Trim();
+            var tags = new List<string> { FinalPlanTag };
+            if (!string.IsNullOrWhiteSpace(normalizedAgent))
+            {
+                tags.Add(NameSanitizer.SanitizeIdentifier(normalizedAgent));
+            }
+
+            var metadata = new AgentArtifactMetadata
+            {
+                Name = artifactName,
+                Description = title,
+                IntendedUse = "Final implementation plan for session continuity.",
+                ContentType = "text/markdown",
+                CreatedAt = savedAt,
+                UpdatedAt = savedAt,
+                Tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).Distinct(StringComparer.OrdinalIgnoreCase).ToList(),
+                FileName = fileName,
+                FinalPlanDetails = finalPlanDetails
+            };
+
+            var markdown = FrontMatterHelper.ToMarkdown(metadata, planContent, _yamlSerializer);
+            await _fileSystem.WriteAllTextAtomicAsync(artifactPath, markdown, cancellationToken);
+            await TouchSessionUpdatedAsync(paths, cancellationToken);
+
+            return new AgentArtifactDocument
+            {
+                Metadata = metadata,
+                Content = planContent
+            };
+        }
+        finally
+        {
+            gate.Release();
+        }
+    }
+
+    public async Task<AgentArtifactDocument?> GetLatestFinalPlanAsync(string sessionId, CancellationToken cancellationToken)
+    {
+        var sanitizedSession = ValidateExistingSession(sessionId);
+        var paths = _pathBuilder.Build(sanitizedSession);
+
+        var candidates = new List<(AgentArtifactDocument Document, DateTimeOffset FileWriteUtc)>();
+        foreach (var filePath in _fileSystem.EnumerateFiles(paths.ArtifactDirectoryPath, $"{FinalPlanFilePrefix}*.md"))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                var raw = await _fileSystem.ReadAllTextAsync(filePath, cancellationToken);
+                var doc = FrontMatterHelper.ParseArtifactDocument(raw, _yamlSerializer);
+                candidates.Add((doc, _fileSystem.GetLastWriteTimeUtc(filePath)));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Skipping malformed final plan artifact {ArtifactPath}", filePath);
+            }
+        }
+
+        var latest = candidates
+            .OrderByDescending(item => item.Document.Metadata.UpdatedAt)
+            .ThenByDescending(item => item.Document.Metadata.CreatedAt)
+            .ThenByDescending(item => item.FileWriteUtc)
+            .Select(item => item.Document)
+            .FirstOrDefault();
+
+        return latest;
+    }
+
     private SemaphoreSlim GetLock(string sessionId)
         => _sessionLocks.GetOrAdd(sessionId, static _ => new SemaphoreSlim(1, 1));
+
+    private string BuildUniqueFinalPlanFileName(string artifactDirectoryPath, DateTimeOffset savedAt)
+    {
+        var timestamp = savedAt.ToUniversalTime().ToString("yyyyMMdd-HHmmss-fff");
+        var baseName = NameSanitizer.SanitizeIdentifier($"{FinalPlanFilePrefix}{timestamp}");
+        if (string.IsNullOrWhiteSpace(baseName))
+        {
+            throw new InvalidOperationException("Unable to build final plan artifact name.");
+        }
+
+        var fileName = $"{baseName}.md";
+        var fullPath = Path.Combine(artifactDirectoryPath, fileName);
+        if (!_fileSystem.FileExists(fullPath))
+        {
+            return fileName;
+        }
+
+        for (var i = 0; i < 10; i++)
+        {
+            var suffix = Guid.NewGuid().ToString("N")[..6];
+            fileName = $"{baseName}-{suffix}.md";
+            fullPath = Path.Combine(artifactDirectoryPath, fileName);
+            if (!_fileSystem.FileExists(fullPath))
+            {
+                return fileName;
+            }
+        }
+
+        throw new IOException("Unable to allocate a unique final plan artifact filename.");
+    }
 
     private string ValidateExistingSession(string sessionId)
     {

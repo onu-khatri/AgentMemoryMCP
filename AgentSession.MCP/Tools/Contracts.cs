@@ -126,6 +126,54 @@ public sealed class ListAgentArtifactsRequest
     public string SessionId { get; set; } = string.Empty;
 }
 
+public sealed class SaveFinalPlanRequest
+{
+    [Description("Session id containing the final plan.")]
+    public string SessionId { get; set; } = string.Empty;
+
+    [Description("Final implementation plan markdown content.")]
+    public string PlanContent { get; set; } = string.Empty;
+
+    [Description("Optional human-readable final plan title.")]
+    public string? PlanTitle { get; set; }
+
+    [Description("Optional agent name authoring the final plan.")]
+    public string? AgentName { get; set; }
+
+    [Description("Optional project knowledge and architectural constraints used in planning.")]
+    public PlanConstraintsItem? Constraints { get; set; }
+
+    [Description("Optional assumptions used in planning.")]
+    public IReadOnlyCollection<string>? Assumptions { get; set; }
+
+    [Description("Optional impact analysis for this plan.")]
+    public PlanImpactAnalysisItem? ImpactAnalysis { get; set; }
+
+    [Description("Optional implementation strategy details.")]
+    public PlanImplementationStrategyItem? ImplementationStrategy { get; set; }
+
+    [Description("Optional step-by-step execution notes and steps.")]
+    public PlanStepByStepItem? StepByStepPlan { get; set; }
+
+    [Description("Optional technical risks and mitigations.")]
+    public IReadOnlyCollection<PlanRiskItem>? TechnicalRisks { get; set; }
+
+    [Description("Optional open technical or business questions.")]
+    public IReadOnlyCollection<string>? OpenQuestions { get; set; }
+
+    [Description("Optional decisions that are required but intentionally skipped for now.")]
+    public IReadOnlyCollection<string>? RequiredButSkippedDecisions { get; set; }
+
+    [Description("Optional approval status and approval timestamp for this plan.")]
+    public PlanApprovalItem? Approval { get; set; }
+}
+
+public sealed class GetLatestFinalPlanRequest
+{
+    [Description("Session id to fetch the latest saved final plan from.")]
+    public string SessionId { get; set; } = string.Empty;
+}
+
 public sealed class ReadAgentMemoryResponse
 {
     [JsonPropertyName("session_id")]
@@ -199,6 +247,144 @@ public sealed class ListAgentArtifactsResponse
 
     [JsonPropertyName("artifacts")]
     public IReadOnlyCollection<ArtifactItem> Artifacts { get; set; } = [];
+}
+
+public sealed class SaveFinalPlanResponse
+{
+    [JsonPropertyName("success")]
+    public bool Success { get; set; }
+
+    [JsonPropertyName("session_id")]
+    public string SessionId { get; set; } = string.Empty;
+
+    [JsonPropertyName("artifact_name")]
+    public string ArtifactName { get; set; } = string.Empty;
+
+    [JsonPropertyName("file_name")]
+    public string FileName { get; set; } = string.Empty;
+
+    [JsonPropertyName("saved_at")]
+    public DateTimeOffset SavedAt { get; set; }
+}
+
+public sealed class GetLatestFinalPlanResponse
+{
+    [JsonPropertyName("success")]
+    public bool Success { get; set; }
+
+    [JsonPropertyName("not_found")]
+    public bool NotFound { get; set; }
+
+    [JsonPropertyName("message")]
+    public string Message { get; set; } = string.Empty;
+
+    [JsonPropertyName("session_id")]
+    public string SessionId { get; set; } = string.Empty;
+
+    [JsonPropertyName("metadata")]
+    public ArtifactItem? Metadata { get; set; }
+
+    [JsonPropertyName("plan_content")]
+    public string? PlanContent { get; set; }
+
+    [JsonPropertyName("plan_details")]
+    public FinalPlanDetailsItem? PlanDetails { get; set; }
+}
+
+public sealed class PlanConstraintsItem
+{
+    [JsonPropertyName("project_knowledge")]
+    public IReadOnlyCollection<string> ProjectKnowledge { get; set; } = [];
+
+    [JsonPropertyName("architectural_constraints")]
+    public IReadOnlyCollection<string> ArchitecturalConstraints { get; set; } = [];
+}
+
+public sealed class PlanImpactAnalysisItem
+{
+    [JsonPropertyName("affected_module_components")]
+    public IReadOnlyCollection<string> AffectedModuleComponents { get; set; } = [];
+
+    [JsonPropertyName("cross_cutting_concerns")]
+    public IReadOnlyCollection<string> CrossCuttingConcerns { get; set; } = [];
+
+    [JsonPropertyName("potential_side_effects")]
+    public IReadOnlyCollection<string> PotentialSideEffects { get; set; } = [];
+}
+
+public sealed class PlanImplementationStrategyItem
+{
+    [JsonPropertyName("summary")]
+    public string? Summary { get; set; }
+
+    [JsonPropertyName("approach")]
+    public IReadOnlyCollection<string> Approach { get; set; } = [];
+}
+
+public sealed class PlanStepItem
+{
+    [JsonPropertyName("title")]
+    public string Title { get; set; } = string.Empty;
+
+    [JsonPropertyName("note")]
+    public string? Note { get; set; }
+}
+
+public sealed class PlanStepByStepItem
+{
+    [JsonPropertyName("notes")]
+    public IReadOnlyCollection<string> Notes { get; set; } = [];
+
+    [JsonPropertyName("steps")]
+    public IReadOnlyCollection<PlanStepItem> Steps { get; set; } = [];
+}
+
+public sealed class PlanRiskItem
+{
+    [JsonPropertyName("risk")]
+    public string Risk { get; set; } = string.Empty;
+
+    [JsonPropertyName("mitigation")]
+    public string? Mitigation { get; set; }
+}
+
+public sealed class PlanApprovalItem
+{
+    [JsonPropertyName("is_approved")]
+    public bool IsApproved { get; set; }
+
+    [JsonPropertyName("approval_timestamp")]
+    public DateTimeOffset? ApprovalTimestamp { get; set; }
+}
+
+public sealed class FinalPlanDetailsItem
+{
+    [JsonPropertyName("constraints")]
+    public PlanConstraintsItem? Constraints { get; set; }
+
+    [JsonPropertyName("assumptions")]
+    public IReadOnlyCollection<string> Assumptions { get; set; } = [];
+
+    [JsonPropertyName("impact_analysis")]
+    public PlanImpactAnalysisItem? ImpactAnalysis { get; set; }
+
+    [JsonPropertyName("implementation_strategy")]
+    public PlanImplementationStrategyItem? ImplementationStrategy { get; set; }
+
+    [JsonPropertyName("step_by_step_plan")]
+    public PlanStepByStepItem? StepByStepPlan { get; set; }
+
+    [JsonPropertyName("technical_risks")]
+    public IReadOnlyCollection<PlanRiskItem> TechnicalRisks { get; set; } = [];
+
+    [JsonPropertyName("open_questions")]
+    public IReadOnlyCollection<string> OpenQuestions { get; set; } = [];
+
+    [JsonPropertyName("required_but_skipped_decisions")]
+    public IReadOnlyCollection<string> RequiredButSkippedDecisions { get; set; } = [];
+
+    [JsonPropertyName("approval")]
+    public PlanApprovalItem? Approval { get; set; }
 }
 
 public sealed class ArtifactItem

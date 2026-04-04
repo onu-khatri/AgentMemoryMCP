@@ -107,6 +107,30 @@ public sealed class AgentSessionToolsTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => tools.list_agent_artifacts(new ListAgentArtifactsRequest()));
     }
 
+    [Fact]
+    public async Task SaveFinalPlan_ValidationException_IsWrapped()
+    {
+        var service = new StubAgentSessionService
+        {
+            SaveFinalPlan = (_, _) => throw new ValidationException("bad")
+        };
+
+        var tools = new AgentSessionTools(service);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => tools.save_final_plan(new SaveFinalPlanRequest()));
+    }
+
+    [Fact]
+    public async Task GetLatestFinalPlan_ValidationException_IsWrapped()
+    {
+        var service = new StubAgentSessionService
+        {
+            GetLatestFinalPlan = (_, _) => throw new ValidationException("bad")
+        };
+
+        var tools = new AgentSessionTools(service);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => tools.get_latest_final_plan(new GetLatestFinalPlanRequest()));
+    }
+
     private sealed class StubAgentSessionService : IAgentSessionService
     {
         public Func<CancellationToken, Task<IReadOnlyCollection<ListAgentSessionsItem>>>? ListSessions { get; set; }
@@ -117,6 +141,8 @@ public sealed class AgentSessionToolsTests
         public Func<CreateAgentArtifactRequest, CancellationToken, Task<CreateAgentArtifactResponse>>? CreateArtifact { get; set; }
         public Func<ReadAgentArtifactRequest, CancellationToken, Task<ReadAgentArtifactResponse>>? ReadArtifact { get; set; }
         public Func<ListAgentArtifactsRequest, CancellationToken, Task<ListAgentArtifactsResponse>>? ListArtifacts { get; set; }
+        public Func<SaveFinalPlanRequest, CancellationToken, Task<SaveFinalPlanResponse>>? SaveFinalPlan { get; set; }
+        public Func<GetLatestFinalPlanRequest, CancellationToken, Task<GetLatestFinalPlanResponse>>? GetLatestFinalPlan { get; set; }
 
         public Task<IReadOnlyCollection<ListAgentSessionsItem>> ListAgentSessionsAsync(CancellationToken cancellationToken)
             => ListSessions?.Invoke(cancellationToken) ?? Task.FromResult<IReadOnlyCollection<ListAgentSessionsItem>>([]);
@@ -141,5 +167,11 @@ public sealed class AgentSessionToolsTests
 
         public Task<ListAgentArtifactsResponse> ListAgentArtifactsAsync(ListAgentArtifactsRequest request, CancellationToken cancellationToken)
             => ListArtifacts?.Invoke(request, cancellationToken) ?? Task.FromResult(new ListAgentArtifactsResponse());
+
+        public Task<SaveFinalPlanResponse> SaveFinalPlanAsync(SaveFinalPlanRequest request, CancellationToken cancellationToken)
+            => SaveFinalPlan?.Invoke(request, cancellationToken) ?? Task.FromResult(new SaveFinalPlanResponse { Success = true });
+
+        public Task<GetLatestFinalPlanResponse> GetLatestFinalPlanAsync(GetLatestFinalPlanRequest request, CancellationToken cancellationToken)
+            => GetLatestFinalPlan?.Invoke(request, cancellationToken) ?? Task.FromResult(new GetLatestFinalPlanResponse { Success = true, SessionId = request.SessionId });
     }
 }
