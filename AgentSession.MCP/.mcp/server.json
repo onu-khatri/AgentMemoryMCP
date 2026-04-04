@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1",
+  "name": "AgentSession.MCP",
+  "description": "Local agent session management server with durable memory, logs, and artifacts.",
+  "transport": {
+    "type": "stdio"
+  },
+  "entry": {
+    "command": "dotnet",
+    "args": [
+      "run",
+      "--project",
+      "AgentSession.MCP/AgentSession.MCP.csproj"
+    ]
+  }
+}
