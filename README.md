@@ -72,6 +72,11 @@ Pack the MCP server:
 dotnet pack AgentSession.MCP/AgentSession.MCP.csproj -c Release
 ```
 
+Publish the MCP server to a local folder:
+
+```powershell
+dotnet publish AgentSession.MCP/AgentSession.MCP.csproj -c Release -o ./publish
+```
 ## Storage Layout
 
 Default local storage root:

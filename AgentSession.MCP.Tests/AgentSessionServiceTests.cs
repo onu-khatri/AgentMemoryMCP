@@ -247,6 +247,12 @@ public sealed class AgentSessionServiceTests : IDisposable
         {
             SessionId = "detailed-plan-session",
             PlanContent = "# Detailed Plan",
+            PlanVersion = "v1.2.0",
+            ApprovedDecisions = ["Use artifact-based handoff", "No breaking API changes"],
+            AcceptanceCriteria = ["All tests pass", "No regression in artifact tools"],
+            OutOfScope = ["Data migration", "Auth redesign"],
+            ValidationRequirements = ["dotnet build", "dotnet test"],
+            RollbackOrFallbackExpectations = ["Revert to previous artifact revision"],
             Constraints = new PlanConstraintsItem
             {
                 ProjectKnowledge = ["existing artifact pipeline"],
@@ -293,6 +299,12 @@ public sealed class AgentSessionServiceTests : IDisposable
 
         Assert.True(latest.Success);
         Assert.NotNull(latest.PlanDetails);
+        Assert.Equal("v1.2.0", latest.PlanDetails!.PlanVersion);
+        Assert.Contains("Use artifact-based handoff", latest.PlanDetails.ApprovedDecisions);
+        Assert.Contains("All tests pass", latest.PlanDetails.AcceptanceCriteria);
+        Assert.Contains("Data migration", latest.PlanDetails.OutOfScope);
+        Assert.Contains("dotnet build", latest.PlanDetails.ValidationRequirements);
+        Assert.Contains("Revert to previous artifact revision", latest.PlanDetails.RollbackOrFallbackExpectations);
         Assert.Equal("existing artifact pipeline", latest.PlanDetails!.Constraints!.ProjectKnowledge.Single());
         Assert.Equal("reuse store abstraction", latest.PlanDetails.Constraints.ArchitecturalConstraints.Single());
         Assert.Equal("Tools", latest.PlanDetails.ImpactAnalysis!.AffectedModuleComponents.First());

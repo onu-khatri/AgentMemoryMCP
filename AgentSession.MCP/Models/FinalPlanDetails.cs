@@ -5,6 +5,30 @@ namespace AgentSession.MCP.Models;
 
 public sealed class FinalPlanDetails
 {
+    [YamlMember(Alias = "plan_version")]
+    [JsonPropertyName("plan_version")]
+    public string? PlanVersion { get; set; }
+
+    [YamlMember(Alias = "approved_decisions")]
+    [JsonPropertyName("approved_decisions")]
+    public List<string> ApprovedDecisions { get; set; } = [];
+
+    [YamlMember(Alias = "acceptance_criteria")]
+    [JsonPropertyName("acceptance_criteria")]
+    public List<string> AcceptanceCriteria { get; set; } = [];
+
+    [YamlMember(Alias = "out_of_scope")]
+    [JsonPropertyName("out_of_scope")]
+    public List<string> OutOfScope { get; set; } = [];
+
+    [YamlMember(Alias = "validation_requirements")]
+    [JsonPropertyName("validation_requirements")]
+    public List<string> ValidationRequirements { get; set; } = [];
+
+    [YamlMember(Alias = "rollback_or_fallback_expectations")]
+    [JsonPropertyName("rollback_or_fallback_expectations")]
+    public List<string> RollbackOrFallbackExpectations { get; set; } = [];
+
     [YamlMember(Alias = "constraints")]
     [JsonPropertyName("constraints")]
     public FinalPlanConstraints? Constraints { get; set; }

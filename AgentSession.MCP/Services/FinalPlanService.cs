@@ -31,6 +31,7 @@ public sealed class FinalPlanService
             SessionId = sessionId,
             ArtifactName = plan.Metadata.Name,
             FileName = plan.Metadata.FileName,
+            PlanVersion = request.PlanVersion?.Trim(),
             SavedAt = plan.Metadata.UpdatedAt
         };
     }

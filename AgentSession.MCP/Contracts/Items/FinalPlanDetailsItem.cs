@@ -4,6 +4,24 @@ namespace AgentSession.MCP.Tools;
 
 public sealed class FinalPlanDetailsItem
 {
+    [JsonPropertyName("plan_version")]
+    public string? PlanVersion { get; set; }
+
+    [JsonPropertyName("approved_decisions")]
+    public IReadOnlyCollection<string> ApprovedDecisions { get; set; } = [];
+
+    [JsonPropertyName("acceptance_criteria")]
+    public IReadOnlyCollection<string> AcceptanceCriteria { get; set; } = [];
+
+    [JsonPropertyName("out_of_scope")]
+    public IReadOnlyCollection<string> OutOfScope { get; set; } = [];
+
+    [JsonPropertyName("validation_requirements")]
+    public IReadOnlyCollection<string> ValidationRequirements { get; set; } = [];
+
+    [JsonPropertyName("rollback_or_fallback_expectations")]
+    public IReadOnlyCollection<string> RollbackOrFallbackExpectations { get; set; } = [];
+
     [JsonPropertyName("constraints")]
     public PlanConstraintsItem? Constraints { get; set; }
 

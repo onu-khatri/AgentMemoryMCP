@@ -16,6 +16,24 @@ public sealed class SaveFinalPlanRequest
     [Description("Optional agent name authoring the final plan.")]
     public string? AgentName { get; set; }
 
+    [Description("Optional approved plan version/id used by implementation executor handoff.")]
+    public string? PlanVersion { get; set; }
+
+    [Description("Optional approved decisions from planning that implementation must follow.")]
+    public IReadOnlyCollection<string>? ApprovedDecisions { get; set; }
+
+    [Description("Optional acceptance criteria that define done for implementation.")]
+    public IReadOnlyCollection<string>? AcceptanceCriteria { get; set; }
+
+    [Description("Optional explicit out-of-scope boundaries for implementation.")]
+    public IReadOnlyCollection<string>? OutOfScope { get; set; }
+
+    [Description("Optional required validation checks (build/test/lint/quality gates).")]
+    public IReadOnlyCollection<string>? ValidationRequirements { get; set; }
+
+    [Description("Optional rollback or fallback expectations if implementation risk materializes.")]
+    public IReadOnlyCollection<string>? RollbackOrFallbackExpectations { get; set; }
+
     [Description("Optional project knowledge and architectural constraints used in planning.")]
     public PlanConstraintsItem? Constraints { get; set; }
 

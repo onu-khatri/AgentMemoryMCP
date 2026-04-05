@@ -22,6 +22,12 @@ internal static class AgentSessionContractMapper
     {
         var details = new FinalPlanDetails
         {
+            PlanVersion = request.PlanVersion?.Trim(),
+            ApprovedDecisions = CleanList(request.ApprovedDecisions),
+            AcceptanceCriteria = CleanList(request.AcceptanceCriteria),
+            OutOfScope = CleanList(request.OutOfScope),
+            ValidationRequirements = CleanList(request.ValidationRequirements),
+            RollbackOrFallbackExpectations = CleanList(request.RollbackOrFallbackExpectations),
             Constraints = request.Constraints is null ? null : new FinalPlanConstraints
             {
                 ProjectKnowledge = CleanList(request.Constraints.ProjectKnowledge),
@@ -70,7 +76,13 @@ internal static class AgentSessionContractMapper
                 }
         };
 
-        var hasData = details.Constraints is not null
+        var hasData = !string.IsNullOrWhiteSpace(details.PlanVersion)
+            || details.ApprovedDecisions.Count > 0
+            || details.AcceptanceCriteria.Count > 0
+            || details.OutOfScope.Count > 0
+            || details.ValidationRequirements.Count > 0
+            || details.RollbackOrFallbackExpectations.Count > 0
+            || details.Constraints is not null
             || details.Assumptions.Count > 0
             || details.ImpactAnalysis is not null
             || details.ImplementationStrategy is not null
@@ -92,6 +104,12 @@ internal static class AgentSessionContractMapper
 
         return new FinalPlanDetailsItem
         {
+            PlanVersion = details.PlanVersion,
+            ApprovedDecisions = details.ApprovedDecisions,
+            AcceptanceCriteria = details.AcceptanceCriteria,
+            OutOfScope = details.OutOfScope,
+            ValidationRequirements = details.ValidationRequirements,
+            RollbackOrFallbackExpectations = details.RollbackOrFallbackExpectations,
             Constraints = details.Constraints is null ? null : new PlanConstraintsItem
             {
                 ProjectKnowledge = details.Constraints.ProjectKnowledge,

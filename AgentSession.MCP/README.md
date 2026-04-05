@@ -214,6 +214,18 @@ Input:
   "planContent": "# Final Plan\n- implement feature\n- add tests",
   "planTitle": "Sprint Final Plan",
   "agentName": "copilot",
+  "planVersion": "v1.2.0",
+  "approvedDecisions": [
+    "Use artifact-based handoff",
+    "No breaking API changes"
+  ],
+  "acceptanceCriteria": [
+    "All tests pass",
+    "No regression in artifact tools"
+  ],
+  "outOfScope": ["Data migration", "Auth redesign"],
+  "validationRequirements": ["dotnet build", "dotnet test"],
+  "rollbackOrFallbackExpectations": ["Revert to previous artifact revision"],
   "constraints": {
     "project_knowledge": ["existing artifact storage patterns"],
     "architectural_constraints": ["preserve backward compatibility"]
@@ -251,6 +263,7 @@ Behavior:
 
 - Creates a new timestamped artifact file for every save.
 - Uses UTC timestamp naming with collision-safe suffix when needed.
+- Returns `plan_version` when provided in request, enabling planner/executor handoff correlation.
 
 ### get_latest_final_plan
 Input:
@@ -263,7 +276,7 @@ Input:
 
 Returns the most recently saved final plan by save timestamp metadata.
 If no final plan exists, returns an explicit not-found response.
-When available, response includes `plan_details` with constraints, assumptions, impact analysis, strategy, step-by-step notes/steps, risks, open questions, skipped decisions, and approval details.
+When available, response includes `plan_details` with plan version, approved decisions, acceptance criteria, out-of-scope boundaries, validation requirements, rollback/fallback expectations, constraints, assumptions, impact analysis, strategy, step-by-step notes/steps, risks, open questions, skipped decisions, and approval details.
 
 ## Run Locally
 
