@@ -17,11 +17,27 @@ This server implements the following MCP tools:
 - `save_final_plan`
 - `get_latest_final_plan`
 
+## Tool Usage (Recommended Order)
+
+Typical usage across all tools:
+
+1. `list_agent_sessions`: optional discovery of existing sessions.
+2. `create_or_activate_session`: required first step to establish session context.
+3. `read_agent_memory`: load persisted memory, recent logs, and artifact inventory.
+4. `append_agent_memory`: persist durable facts, constraints, and decisions.
+5. `log_agent_event`: record meaningful actions, transitions, and external interactions.
+6. `create_agent_artifact`: persist reusable outputs (plans, analyses, summaries, extracted data).
+7. `read_agent_artifact`: retrieve a specific saved artifact by name.
+8. `list_agent_artifacts`: inspect available artifacts and metadata.
+9. `save_final_plan`: persist a timestamped final implementation plan artifact.
+10. `get_latest_final_plan`: fetch the most recently saved final plan for continuation.
+
 ## Architecture
 
 The project is intentionally split into layers:
 
-- `Tools/`: MCP transport-facing handlers and contracts.
+- `Tools/`: MCP transport-facing handlers.
+- `Contracts/`: request/response/item DTOs used by MCP tools.
 - `Services/`: application service and filesystem-backed storage implementation.
 - `Interfaces/`: abstractions for service, store, YAML serializer, and file system.
 - `Models/`: domain entities for session state, logs, and artifact metadata.
@@ -29,6 +45,16 @@ The project is intentionally split into layers:
 - `Options/`: storage root configuration.
 
 This supports SOLID principles, testability, and future migration to alternate storage backends.
+
+## Contracts (Short)
+
+MCP-facing DTOs are split by role under `Contracts/`:
+
+- `Contracts/Requests/`: tool input payloads.
+- `Contracts/Responses/`: tool output payloads.
+- `Contracts/Items/`: shared nested/metadata payloads reused by requests and responses.
+
+Contracts remain in the `AgentSession.MCP.Tools` namespace to keep tool signatures stable while allowing physical file/folder reorganization.
 
 ## Local Storage Layout
 
@@ -56,6 +82,12 @@ Artifacts are stored as markdown files with YAML front matter.
 ## Tool Contracts
 
 ### list_agent_sessions
+Input:
+
+```json
+{}
+```
+
 Returns metadata list:
 
 - `session_id`
@@ -274,3 +306,8 @@ dotnet pack AgentSession.MCP/AgentSession.MCP.csproj -c Release
 - Log state-changing actions, external interactions, and errors.
 - Save reusable outputs as artifacts.
 - Do not persist transient chain-of-thought.
+
+## Related Documentation
+
+- Workspace overview: `../README.md`
+- Prompt references: `../Prompts/MCP_For_Agent_Session.md`, `../Prompts/PlanSavingTools.md`
