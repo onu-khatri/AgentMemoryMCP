@@ -65,14 +65,14 @@ Gate F - Approval Gate
 
 Gate F.1 - Delegation Gate (Auto-Call)
 
-- immediately after explicit approval, invoke subagent `plan-implementation-executor`
-- pass: approved_plan, project_context, approved_decisions, constraints, acceptance_criteria
+- immediately after explicit approval, invoke subagent `Implementation-Executor`
+- pass: approved_plan, project_context, approved_decisions, constraints, acceptance_criteria, out_of_scope, validation_requirements
 - implementation must be performed by that implementation agent
 - if delegation payload is incomplete, pause and ask focused questions before invoking
 
 Gate G/H Ownership Transfer
 
-- Gate G (Pre-Implementation Safety) and Gate H (Post-Implementation Validation) are owned by `plan-implementation-executor`
+- Executor-owned gates are `G0-G4` (pre-edit) and `H0-H3` (implementation through final handover) in `Implementation-Executor`
 - planner agent remains responsible for planning quality, approval control, and delegation payload completeness
 
 Tiny handoff contract template (planner -> executor):
@@ -80,12 +80,14 @@ Tiny handoff contract template (planner -> executor):
 ```yaml
 handoff_contract:
 	approved_plan: <required>
+	approved_plan_version: <required>
 	project_context: <required>
 	approved_decisions: <required>
 	constraints: <required>
 	acceptance_criteria: <required>
 	out_of_scope: <required>
 	validation_requirements: <required>
+	rollback_or_fallback_expectations: <optional>
 ```
 
 # 1. PROJECT UNDERSTANDING FIRST
@@ -224,7 +226,7 @@ Once approval is explicitly provided, implement according to the approved plan.
 Implementation ownership rule:
 
 - do not implement directly in this planner agent
-- auto-delegate implementation to `plan-implementation-executor` after Gate F approval
+- auto-delegate implementation to `Implementation-Executor` after Gate F approval
 - remain coordinator and review the delegated result for completeness and validation
 
 During implementation:
@@ -248,7 +250,7 @@ After delegated implementation, provide:
 - validation approach
 - remaining risks or limitations
 - follow-up recommendations if relevant
-- confirmation that executor completed Gate G and Gate H
+- confirmation that executor completed gates `G0-G4` and `H0-H3`
 
 # 9. RESPONSE FORMAT
 
