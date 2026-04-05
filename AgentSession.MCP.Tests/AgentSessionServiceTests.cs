@@ -3,8 +3,9 @@ using AgentSession.MCP.Options;
 using AgentSession.MCP.Services;
 using AgentSession.MCP.Tools;
 using AgentSession.MCP.Helpers;
+using AgentSession.MCP.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AgentSession.MCP.Tests;
 
@@ -12,6 +13,7 @@ public sealed class AgentSessionServiceTests : IDisposable
 {
     private readonly string _tempRoot;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly ServiceProvider _serviceProvider;
     private readonly IAgentSessionService _service;
 
     public AgentSessionServiceTests()
@@ -19,12 +21,13 @@ public sealed class AgentSessionServiceTests : IDisposable
         _tempRoot = Path.Combine(Path.GetTempPath(), "agentsession-mcp-tests", Guid.NewGuid().ToString("N"));
         _loggerFactory = LoggerFactory.Create(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Debug));
 
-        var fileSystem = new SystemFileSystem();
-        var serializer = new YamlDotNetSerializer();
-        var pathBuilder = new SessionStoragePathBuilder(Microsoft.Extensions.Options.Options.Create(new SessionStorageOptions { RootPath = _tempRoot }));
+        var services = new ServiceCollection();
+        services.AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Debug));
+        services.AddAgentSessionServer();
+        services.Configure<SessionStorageOptions>(options => options.RootPath = _tempRoot);
 
-        IAgentSessionStore store = new FileAgentSessionStore(fileSystem, serializer, pathBuilder, _loggerFactory.CreateLogger<FileAgentSessionStore>());
-        _service = new AgentSessionService(store, serializer, pathBuilder, _loggerFactory.CreateLogger<AgentSessionService>());
+        _serviceProvider = services.BuildServiceProvider();
+        _service = _serviceProvider.GetRequiredService<IAgentSessionService>();
     }
 
     [Fact]
@@ -304,6 +307,7 @@ public sealed class AgentSessionServiceTests : IDisposable
 
     public void Dispose()
     {
+        _serviceProvider.Dispose();
         _loggerFactory.Dispose();
 
         if (Directory.Exists(_tempRoot))

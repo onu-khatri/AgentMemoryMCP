@@ -16,6 +16,10 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IYamlSerializer, YamlDotNetSerializer>();
         services.TryAddSingleton<SessionStoragePathBuilder>();
         services.TryAddSingleton<IAgentSessionStore, FileAgentSessionStore>();
+        services.TryAddSingleton<SessionLifecycleService>();
+        services.TryAddSingleton<SessionMemoryService>();
+        services.TryAddSingleton<SessionArtifactService>();
+        services.TryAddSingleton<FinalPlanService>();
         services.TryAddSingleton<IAgentSessionService, AgentSessionService>();
 
         return services;
