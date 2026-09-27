@@ -22,4 +22,13 @@
     <ProjectReference Include="..\AgentSession.MCP\AgentSession.MCP.csproj" />
   </ItemGroup>
 
+  <Target Name="CopyTestWorker" AfterTargets="Build">
+    <MSBuild Projects="..\AgentSession.MCP.TestWorker\AgentSession.MCP.TestWorker.csproj"
+             Targets="Build"
+             Properties="Configuration=$(Configuration)" />
+    <ItemGroup>
+      <WorkerFiles Include="..\AgentSession.MCP.TestWorker\bin\$(Configuration)\net10.0\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(WorkerFiles)" DestinationFiles="@(WorkerFiles->'$(OutDir)worker\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

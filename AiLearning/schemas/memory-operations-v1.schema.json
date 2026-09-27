@@ -1,0 +1,1586 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": 1,
+  "contracts": {
+    "rememberRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string"
+        },
+        "tier": {
+          "enum": [
+            "temp",
+            "short",
+            "long_candidate"
+          ]
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "repositoryId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sessionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parentStepId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "agentId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "category": {
+          "type": "string"
+        },
+        "decisionArea": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "sourceType": {
+          "type": "string"
+        },
+        "sourceReference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "structuredData": true,
+        "expiresAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "reviewAfterUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "protected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "operationId",
+        "tier",
+        "content"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "getRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "includeArchived": {
+          "type": "boolean",
+          "default": false
+        },
+        "includeHistory": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "memoryId"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "updateRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "expectedRevision": {
+          "type": "integer"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "structuredData": {
+          "default": null
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "default": null
+        },
+        "expiresAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "default": null
+        }
+      },
+      "required": [
+        "memoryId",
+        "operationId",
+        "expectedRevision",
+        "agentId",
+        "content"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "recallRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "tiers": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "temp",
+              "short",
+              "long"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "sessionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parentStepId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "agentId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "category": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "decisionArea": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decisionAreas": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "statuses": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "active",
+              "compacted",
+              "archived",
+              "deleted",
+              "promoted",
+              "candidate",
+              "validated",
+              "superseded",
+              "retired",
+              "rejected"
+            ]
+          },
+          "maxItems": 10
+        },
+        "memoryIds": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "maxResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "minimumSimilarity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -1,
+          "maximum": 1
+        },
+        "includeCandidates": {
+          "type": "boolean"
+        },
+        "includeHistory": {
+          "type": "boolean"
+        },
+        "includeArchived": {
+          "type": "boolean"
+        },
+        "includeRetired": {
+          "type": "boolean"
+        },
+        "sinceUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "beforeUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "reviewListRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "maxResults": {
+          "type": "integer",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "olderThanUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "default": null
+        },
+        "reviewState": {
+          "enum": [
+            "unreviewed",
+            "keep",
+            "compact_candidate",
+            "promotion_candidate",
+            "archive_candidate",
+            "delete_candidate",
+            "reviewed",
+            null
+          ],
+          "default": null
+        },
+        "category": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "decisionArea": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "agentId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "reviewRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "expectedRevision": {
+          "type": "integer"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "action": {
+          "enum": [
+            "unreviewed",
+            "keep",
+            "compact_candidate",
+            "promotion_candidate",
+            "archive_candidate",
+            "delete_candidate",
+            "reviewed"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "memoryId",
+        "operationId",
+        "expectedRevision",
+        "agentId",
+        "action",
+        "reason",
+        "evidence"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "prepareCompactionRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "expectedRevision": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "memoryId",
+              "expectedRevision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "operationId",
+        "agentId",
+        "sources"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "commitCompactionRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string"
+        },
+        "preparationToken": {
+          "type": "string"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "contradictions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "successfulPatterns": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "failedPatterns": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "expectedRevision": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "memoryId",
+              "expectedRevision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 100
+        },
+        "sourceCoverage": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "contradictions": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "memoryId",
+              "evidence",
+              "contradictions"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 100
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "decisionArea": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "sessionId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "archiveOriginals": {
+          "type": "boolean",
+          "default": true
+        },
+        "kind": {
+          "enum": [
+            "semantic",
+            "reviewed_duplicate_merge"
+          ],
+          "default": "semantic"
+        }
+      },
+      "required": [
+        "operationId",
+        "preparationToken",
+        "agentId",
+        "reason",
+        "title",
+        "summary",
+        "facts",
+        "openQuestions",
+        "contradictions",
+        "successfulPatterns",
+        "failedPatterns",
+        "evidence",
+        "sources",
+        "sourceCoverage",
+        "tags"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "compactRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "contradictions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "successfulPatterns": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "failedPatterns": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "expectedRevision": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "memoryId",
+              "expectedRevision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 100
+        },
+        "sourceCoverage": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "contradictions": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "memoryId",
+              "evidence",
+              "contradictions"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 100
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "maxItems": 100
+        },
+        "decisionArea": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "sessionId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "archiveOriginals": {
+          "type": "boolean",
+          "default": true
+        },
+        "kind": {
+          "enum": [
+            "semantic",
+            "reviewed_duplicate_merge"
+          ],
+          "default": "semantic"
+        }
+      },
+      "required": [
+        "operationId",
+        "agentId",
+        "reason",
+        "title",
+        "summary",
+        "facts",
+        "openQuestions",
+        "contradictions",
+        "successfulPatterns",
+        "failedPatterns",
+        "evidence",
+        "sources",
+        "sourceCoverage",
+        "tags"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "deleteRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "expectedRevision": {
+          "type": "integer"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "memoryId",
+        "operationId",
+        "expectedRevision",
+        "agentId",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "archiveRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "expectedRevision": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "memoryId",
+              "expectedRevision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "operationId",
+        "agentId",
+        "reason",
+        "records"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "recordEventRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "string"
+        },
+        "eventType": {
+          "type": "string"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "memoryId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "sessionId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "metadata": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "default": null
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "agentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "recordOutcomeRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "outcomeId": {
+          "type": "string"
+        },
+        "expectedRevision": {
+          "type": "integer"
+        },
+        "sessionId": {
+          "type": "string"
+        },
+        "taskId": {
+          "type": "string"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "success",
+            "partial_success",
+            "failure",
+            "contradicted",
+            "not_applicable",
+            "stale"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "memoryId",
+        "outcomeId",
+        "expectedRevision",
+        "sessionId",
+        "taskId",
+        "agentId",
+        "result",
+        "evidence"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "promoteRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "expectedRevision": {
+          "type": "integer"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "authoritativeVerification": {
+          "type": "boolean",
+          "default": false
+        },
+        "verificationEvidence": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "default": null
+        }
+      },
+      "required": [
+        "memoryId",
+        "operationId",
+        "expectedRevision",
+        "agentId",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "lifecycleRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "expectedRevision": {
+          "type": "integer"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "replacementMemoryId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "memoryId",
+        "operationId",
+        "expectedRevision",
+        "agentId",
+        "reason",
+        "evidence"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "reindexRequest": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "operationId": {
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "file_system",
+            "qdrant",
+            "pending_embeddings",
+            "specific_memory_ids",
+            "model_migration",
+            "all"
+          ]
+        },
+        "memoryIds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "default": null,
+          "maxItems": 100
+        },
+        "maxItems": {
+          "type": "integer",
+          "default": 100,
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "operationId",
+        "scope"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "statusResult": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "serverVersion": {
+          "type": "string"
+        },
+        "repositoryId": {
+          "type": "string"
+        },
+        "systemRoot": {
+          "type": "string"
+        },
+        "learningRoot": {
+          "type": "string"
+        },
+        "tempRecords": {
+          "type": "integer"
+        },
+        "expiredTempRecords": {
+          "type": "integer"
+        },
+        "shortActiveRecords": {
+          "type": "integer"
+        },
+        "shortReviewDueRecords": {
+          "type": "integer"
+        },
+        "shortCompactedRecords": {
+          "type": "integer"
+        },
+        "shortArchivedRecords": {
+          "type": "integer"
+        },
+        "longCandidateRecords": {
+          "type": "integer"
+        },
+        "longValidatedRecords": {
+          "type": "integer"
+        },
+        "pendingEmbeddingRecords": {
+          "type": "integer"
+        },
+        "recoveryBacklog": {
+          "type": "integer"
+        },
+        "ollama": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string"
+            },
+            "errorCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "identity": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "state"
+          ],
+          "additionalProperties": false
+        },
+        "qdrant": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string"
+            },
+            "errorCode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            },
+            "identity": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "state"
+          ],
+          "additionalProperties": false
+        },
+        "activeEmbeddingModel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "activeVectorCollection": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "indexHealth": {
+          "type": "string"
+        },
+        "lastCleanupAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastIndexRepairAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastEmbeddingRunAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastReconciliationAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastCompactionAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastArchiveAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastCleanupDeleted": {
+          "type": "integer"
+        },
+        "lastCleanupArchived": {
+          "type": "integer"
+        },
+        "lastMaintenanceErrors": {
+          "type": "integer"
+        },
+        "lastVectorsProcessed": {
+          "type": "integer"
+        },
+        "lastVectorsIndexed": {
+          "type": "integer"
+        },
+        "lastVectorsQueued": {
+          "type": "integer"
+        },
+        "lastOrphanVectorsRemoved": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "serverVersion",
+        "repositoryId",
+        "systemRoot",
+        "learningRoot",
+        "tempRecords",
+        "expiredTempRecords",
+        "shortActiveRecords",
+        "shortReviewDueRecords",
+        "shortCompactedRecords",
+        "shortArchivedRecords",
+        "longCandidateRecords",
+        "longValidatedRecords",
+        "pendingEmbeddingRecords",
+        "recoveryBacklog",
+        "ollama",
+        "qdrant",
+        "activeEmbeddingModel",
+        "activeVectorCollection",
+        "indexHealth",
+        "lastCleanupAtUtc",
+        "lastIndexRepairAtUtc",
+        "lastEmbeddingRunAtUtc",
+        "lastReconciliationAtUtc",
+        "lastCompactionAtUtc",
+        "lastArchiveAtUtc",
+        "lastCleanupDeleted",
+        "lastCleanupArchived",
+        "lastMaintenanceErrors",
+        "lastVectorsProcessed",
+        "lastVectorsIndexed",
+        "lastVectorsQueued",
+        "lastOrphanVectorsRemoved"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "cleanupResult": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "deleted": {
+          "type": "integer"
+        },
+        "errors": {
+          "type": "integer"
+        },
+        "archived": {
+          "type": "integer",
+          "default": 0
+        }
+      },
+      "required": [
+        "deleted",
+        "errors"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "compactionResult": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "memoryId": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer"
+        },
+        "sourceMemoryIds": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "archiveId": {
+          "type": "string"
+        },
+        "archivedMemoryIds": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "contradictions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "kind": {
+          "enum": [
+            "semantic",
+            "reviewed_duplicate_merge"
+          ]
+        }
+      },
+      "required": [
+        "memoryId",
+        "revision",
+        "sourceMemoryIds",
+        "archiveId",
+        "archivedMemoryIds",
+        "contradictions",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    }
+  }
+}

@@ -1,57 +1,77 @@
-using AgentSession.MCP.Interfaces;
+using System.Text;
 
 namespace AgentSession.MCP.Services;
 
-public sealed class SystemFileSystem : IFileSystem
+public sealed class SystemFileSystem
 {
-    public bool DirectoryExists(string path) => Directory.Exists(path);
-
-    public void CreateDirectory(string path) => Directory.CreateDirectory(path);
-
-    public bool FileExists(string path) => File.Exists(path);
-
-    public Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken)
-        => File.ReadAllTextAsync(path, cancellationToken);
-
-    public async Task WriteAllTextAtomicAsync(string path, string content, CancellationToken cancellationToken)
+    public Task WriteAllTextAtomicAsync(
+        string path,
+        string content,
+        CancellationToken cancellationToken
+    )
     {
-        var directory = Path.GetDirectoryName(path)
+        // Throw on malformed UTF-16 input instead of silently persisting replacement characters.
+        var bytes = new UTF8Encoding(false, true).GetBytes(content);
+        return WriteAtomicAsync(
+            path,
+            (stream, token) => stream.WriteAsync(bytes, token).AsTask(),
+            cancellationToken
+        );
+    }
+
+    public Task WriteAllBytesAtomicAsync(
+        string path,
+        byte[] content,
+        CancellationToken cancellationToken
+    ) =>
+        WriteAtomicAsync(
+            path,
+            (stream, token) => stream.WriteAsync(content, token).AsTask(),
+            cancellationToken
+        );
+
+    public async Task WriteAtomicAsync(
+        string path,
+        Func<Stream, CancellationToken, Task> write,
+        CancellationToken cancellationToken
+    )
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var directory =
+            Path.GetDirectoryName(path)
             ?? throw new InvalidOperationException("Target path has no directory.");
 
         Directory.CreateDirectory(directory);
 
         var tempPath = Path.Combine(directory, $".{Path.GetFileName(path)}.{Guid.NewGuid():N}.tmp");
-        await File.WriteAllTextAsync(tempPath, content, cancellationToken);
-
-        if (File.Exists(path))
+        try
         {
-            File.Replace(tempPath, path, null, ignoreMetadataErrors: true);
-            return;
+            await using (
+                var stream = new FileStream(
+                    tempPath,
+                    FileMode.CreateNew,
+                    FileAccess.Write,
+                    FileShare.None,
+                    4096,
+                    FileOptions.Asynchronous | FileOptions.WriteThrough
+                )
+            )
+            {
+                await write(stream, cancellationToken);
+                await stream.FlushAsync(cancellationToken);
+                stream.Flush(flushToDisk: true);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            if (File.Exists(path))
+                File.Replace(tempPath, path, null, ignoreMetadataErrors: false);
+            else
+                File.Move(tempPath, path);
         }
-
-        File.Move(tempPath, path);
+        finally
+        {
+            // After commit the staging name no longer exists. Failed staging must not accumulate.
+            if (File.Exists(tempPath))
+                File.Delete(tempPath);
+        }
     }
-
-    public IEnumerable<string> EnumerateDirectories(string path)
-        => !Directory.Exists(path) ? [] : Directory.EnumerateDirectories(path);
-
-    public IEnumerable<string> EnumerateFiles(string path, string searchPattern)
-        => !Directory.Exists(path) ? [] : Directory.EnumerateFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
-
-    public DateTimeOffset GetLastWriteTimeUtc(string path)
-    {
-        if (Directory.Exists(path))
-        {
-            return Directory.GetLastWriteTimeUtc(path);
-        }
-
-        if (File.Exists(path))
-        {
-            return File.GetLastWriteTimeUtc(path);
-        }
-
-        return DateTimeOffset.MinValue;
-    }
-
-    public string GetFileName(string path) => Path.GetFileName(path);
 }

@@ -1,0 +1,575 @@
+{
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "string"
+    },
+    "repositoryId": {
+      "type": "string"
+    },
+    "tier": {
+      "enum": [
+        "temp",
+        "short",
+        "long"
+      ]
+    },
+    "sessionId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "taskId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parentStepId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "agentId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "category": {
+      "type": "string"
+    },
+    "decisionArea": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "structuredData": true,
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "sourceType": {
+      "type": "string"
+    },
+    "sourceReference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceReferences": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "createdAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastAccessedAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "expiresAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "reviewAfterUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "lastReviewedAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "reviewState": {
+      "enum": [
+        "unreviewed",
+        "keep",
+        "compact_candidate",
+        "promotion_candidate",
+        "archive_candidate",
+        "delete_candidate",
+        "reviewed"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "compacted",
+        "archived",
+        "deleted",
+        "promoted",
+        "candidate",
+        "validated",
+        "superseded",
+        "retired",
+        "rejected"
+      ]
+    },
+    "reviewReason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reviewEvidence": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "contentHash": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer"
+    },
+    "operationId": {
+      "type": "string"
+    },
+    "protected": {
+      "type": "boolean"
+    },
+    "successCount": {
+      "type": "integer"
+    },
+    "partialSuccessCount": {
+      "type": "integer"
+    },
+    "failureCount": {
+      "type": "integer"
+    },
+    "contradictionCount": {
+      "type": "integer"
+    },
+    "useCount": {
+      "type": "integer"
+    },
+    "lastUsedAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "lastSuccessfulAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "lastFailedAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "independentConfirmations": {
+      "type": "integer"
+    },
+    "successfulConfirmations": {
+      "type": "array",
+      "items": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "outcomeId": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "agentId": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "required": [
+          "outcomeId",
+          "sessionId",
+          "agentId",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "confidence": {
+      "type": "number"
+    },
+    "promotionState": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "relatedMemoryIds": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "duplicate_of",
+              "related_to",
+              "derived_from",
+              "supersedes",
+              "superseded_by",
+              "compacted_from",
+              "promoted_from"
+            ]
+          },
+          "memoryId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "memoryId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "memoryId": {
+            "type": "string"
+          },
+          "repositoryId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          },
+          "contentHash": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "taskId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "agentId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAtUtc": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "memoryId",
+          "repositoryId",
+          "revision",
+          "contentHash",
+          "sessionId",
+          "taskId",
+          "agentId",
+          "createdAtUtc"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "validatedAtUtc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "stale": {
+      "type": "boolean"
+    },
+    "contradicted": {
+      "type": "boolean"
+    },
+    "embeddingState": {
+      "enum": [
+        "not_required",
+        "pending_embedding",
+        "ready",
+        "failed"
+      ]
+    },
+    "indexState": {
+      "enum": [
+        "not_required",
+        "pending",
+        "indexed",
+        "failed"
+      ]
+    },
+    "embedding": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "embeddingVersion": {
+          "type": "string"
+        },
+        "indexedAtUtc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "modelDigest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "dimension",
+        "embeddingVersion",
+        "indexedAtUtc"
+      ],
+      "additionalProperties": false
+    },
+    "compaction": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "semantic",
+            "reviewed_duplicate_merge"
+          ]
+        },
+        "sourceMemoryIds": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "summary": {
+          "type": "string"
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "contradictions": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "successfulPatterns": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "failedPatterns": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "compactedAtUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "agentId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "sourceCoverage": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "memoryId": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "contradictions": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "memoryId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "sourceMemoryIds",
+        "summary",
+        "compactedAtUtc",
+        "agentId",
+        "reason"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "repositoryId",
+    "tier",
+    "content",
+    "createdAtUtc",
+    "updatedAtUtc",
+    "contentHash",
+    "operationId"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

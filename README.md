@@ -1,101 +1,49 @@
 # AgentMemoryMCP
 
-AgentMemoryMCP is a .NET 10 workspace for MCP servers that provide durable local memory and session continuity for AI agents.
+A .NET 10 stdio MCP server for restart-safe agent sessions, multi-agent coordination, tiered filesystem memory, local Ollama embeddings and repository-isolated Qdrant recall.
 
-## Included MCP Tools
-
-The `AgentSession.MCP` server currently provides these tools:
-
-- `list_agent_sessions`
-- `create_or_activate_session`
-- `read_agent_memory`
-- `append_agent_memory`
-- `log_agent_event`
-- `create_agent_artifact`
-- `read_agent_artifact`
-- `list_agent_artifacts`
-- `save_final_plan`
-- `get_latest_final_plan`
-
-## Tool Usage Quick Flow
-
-Use the tools in this order for most agent workflows:
-
-1. Optional discovery: call `list_agent_sessions` to inspect existing sessions.
-2. Start or resume: call `create_or_activate_session` before any multi-step work.
-3. Rehydrate context: call `read_agent_memory` when resuming prior work.
-4. Persist evolving context: call `append_agent_memory` for durable facts and `log_agent_event` for traceable actions.
-5. Work with reusable outputs: call `create_agent_artifact`, `read_agent_artifact`, and `list_agent_artifacts`.
-6. Finalize plans: call `save_final_plan` to persist the latest final plan version.
-7. Resume planning context later: call `get_latest_final_plan` to fetch the newest saved plan.
-
-## Repository Structure
-
-- `AgentSession.MCP/`: main MCP server project with tools, services, models, and storage logic.
-- `AgentSession.MCP.Tests/`: test project for service, store, and tool behavior.
-- `Prompts/`: prompt and workflow notes used during development.
-- `AgentMemoryMCP.slnx`: solution entry point.
-
-## Contracts (Short)
-
-Tool request/response contracts are grouped under:
-
-- `AgentSession.MCP/Contracts/Requests/`
-- `AgentSession.MCP/Contracts/Responses/`
-- `AgentSession.MCP/Contracts/Items/`
-
-These DTOs define MCP-facing payloads used by the tool handlers.
-
-## Quick Start
-
-Run the MCP server:
+## Build and run
 
 ```powershell
-dotnet run --project AgentSession.MCP/AgentSession.MCP.csproj
+dotnet restore AgentMemoryMCP.slnx
+dotnet build AgentMemoryMCP.slnx -c Release --no-restore
+$env:Repository__Id = 'agent-memory-mcp'
+dotnet run --project AgentSession.MCP/AgentSession.MCP.csproj -c Release --no-build
 ```
 
-Build the solution:
+`Repository__Id` is required and must be a stable lowercase ID containing letters, digits and single hyphens. Moving a checkout should preserve its ID. Different repositories need different IDs; worktrees share sessions and learning only when they intentionally share an ID.
+
+Runtime storage defaults to `%USERPROFILE%/.codex/AgentMemory` and can be changed with the absolute local `SystemStorage__Root` setting. Sessions use `sessions/<repository-id>/<session-id>/coordination`; canonical learning uses `repositories/<repository-id>/AiLearning`; Qdrant data uses `.vector/qdrant`. The checkout's [AiLearning](AiLearning/README.md) directory contains documentation and schemas only.
+
+## Tools
+
+Shared-session tools let agents discover or activate sessions, append revision-controlled structured artifacts, coordinate leased/fenced tasks, resume consistent paginated snapshots, and explicitly checkpoint consumed work. They operate without Ollama or Qdrant.
+
+The 20 `memory_*` tools provide status, temp/short/long-candidate creation, get/update/recall, review, prepare/commit compaction, verified archives, explicit deletion, observation events, outcomes, promotion, supersession, retirement, cleanup and repository-scoped reindexing. Files remain canonical; vectors and filesystem indexes are derived. Semantic recall uses local `embeddinggemma` through Ollama and an isolated Qdrant collection, with lexical degraded behavior during dependency outages.
+
+Agents should treat the server as their primary persisted memory source: activate and fully resume the shared session before repeating work, use focused `memory_recall` queries for reusable learning, write session progress with `append_agent_memory`, and write cross-session learning with `memory_remember`. `coordinate_agent_task` alone changes task ownership/state, and `checkpoint_agent_session` only acknowledges a fully consumed snapshot. This keeps prompt context bounded while preserving restart and multi-agent continuity. Current code, tests, repository instructions and explicit user decisions remain authoritative over recalled advice.
+
+See the [developer onboarding wiki](wiki/Dev/README.md), [agent and skill wiki](wiki/agent-ai-guidence/README.md), [MCP contract](AiLearning/MCP-CONTRACT.md), [parent/sub-agent example](AiLearning/PARENT-SUBAGENT-EXAMPLE.md), and [operations guide](AiLearning/OPERATIONS.md).
+
+## Local semantic services
+
+The provided scripts do not install dependencies:
 
 ```powershell
-dotnet build AgentMemoryMCP.slnx
+$root = Join-Path ([Environment]::GetFolderPath('UserProfile')) '.codex/AgentMemory'
+ollama pull embeddinggemma
+./scripts/Start-AgentMemoryQdrant.ps1 -SystemRoot $root
+./scripts/Test-AgentMemoryDependencies.ps1 -SystemRoot $root
 ```
 
-Run tests:
+Qdrant binds to loopback and persists in the central root. Configuration, backup/restore, model migration/rollback, archive recovery and repository-scoped reset procedures are in the operations guide.
 
-```powershell
-dotnet test AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj
-```
+## Contract and trust boundaries
 
-Pack the MCP server:
+Each MCP tool uses typed camelCase JSON and snake_case enum values. Mutation operation IDs are replay-safe; revision conflicts require reread and explicit reconciliation. Protected removal and high-risk validation require external operator-managed grants scoped to repository, record revision and action. MCP tools cannot create those grants.
 
-```powershell
-dotnet pack AgentSession.MCP/AgentSession.MCP.csproj -c Release
-```
+Memory is advisory. Current code, tests, repository instructions, approved plans and explicit user decisions remain authoritative. Store concise facts, evidence and rationale, never credentials or private chain-of-thought. Actor IDs are local provenance rather than authentication, and task claims cannot control side effects performed outside this server.
 
-Publish the MCP server to a local folder:
+Legacy freeform append and generic artifact/final-plan tools were removed because they could not express the required structured coordination rules. Startup does not copy, rewrite or delete historical data. See [legacy reuse and rollback](AiLearning/LEGACY-REUSE.md).
 
-```powershell
-dotnet publish AgentSession.MCP/AgentSession.MCP.csproj -c Release -o ./publish
-```
-## Storage Layout
-
-Default local storage root:
-
-- `%USERPROFILE%/AgentMemory/sessions`
-
-Per-session files:
-
-- `<root>/<session-id>/agent_session_state.yaml`
-- `<root>/<session-id>/agent_memory.md`
-- `<root>/<session-id>/agent_session_log.yaml`
-- `<root>/<session-id>/artifacts/*.md`
-
-Artifacts are markdown files with YAML front matter metadata.
-
-## Documentation
-
-For tool contracts, storage layout, and usage examples, see:
-
-- `AgentSession.MCP/README.md`
-- `Prompts/MCP_For_Agent_Session.md`
-- `Prompts/PlanSavingTools.md`
+The OpenSpec task list and acceptance report distinguish implemented, automated, live-integration and cross-platform evidence. Passing only unit tests does not establish production readiness.

@@ -1,4 +1,5 @@
 ﻿using AgentSession.MCP.Extensions;
+using AgentSession.MCP.Services;
 using AgentSession.MCP.Tools;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,11 +11,12 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole(options => options.LogToStandardErrorThreshold = LogLevel.Trace);
 builder.Logging.SetMinimumLevel(LogLevel.Information);
 
-builder.Services
-	.AddAgentSessionServer()
-	.AddMcpServer()
-	.WithStdioServerTransport()
-	.WithToolsFromAssembly()
-	.WithTools<AgentSessionTools>();
+builder
+    .Services.AddMemoryStorageConfiguration(builder.Configuration)
+    .AddHostedService<MemoryMaintenanceService>()
+    .AddMcpServer()
+    .WithStdioServerTransport()
+    .WithTools<SharedSessionTools>(MemoryJson.Options)
+    .WithTools<MemoryTools>(MemoryJson.Options);
 
 await builder.Build().RunAsync();

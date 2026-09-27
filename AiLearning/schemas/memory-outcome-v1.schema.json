@@ -1,0 +1,71 @@
+{
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer"
+    },
+    "outcomeId": {
+      "type": "string"
+    },
+    "memoryId": {
+      "type": "string"
+    },
+    "repositoryId": {
+      "type": "string"
+    },
+    "sessionId": {
+      "type": "string"
+    },
+    "taskId": {
+      "type": "string"
+    },
+    "agentId": {
+      "type": "string"
+    },
+    "result": {
+      "enum": [
+        "success",
+        "partial_success",
+        "failure",
+        "contradicted",
+        "not_applicable",
+        "stale"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "outcomeId",
+    "memoryId",
+    "repositoryId",
+    "sessionId",
+    "taskId",
+    "agentId",
+    "result",
+    "evidence",
+    "createdAtUtc"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

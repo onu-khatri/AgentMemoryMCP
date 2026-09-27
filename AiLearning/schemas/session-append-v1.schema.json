@@ -1,0 +1,159 @@
+{
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "operationId": {
+      "type": "string"
+    },
+    "updates": {
+      "type": "array",
+      "items": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "artifact": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "context",
+                  "decision",
+                  "finding",
+                  "handoff",
+                  "plan",
+                  "output"
+                ]
+              },
+              "actorId": {
+                "type": "string"
+              },
+              "taskId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": true,
+              "context": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "objective": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "planReferences": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "constraints": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "nextActions": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "additionalProperties": false
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "revision": {
+                "type": "integer"
+              },
+              "updatedAtUtc": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "actorId",
+              "title"
+            ],
+            "additionalProperties": false
+          },
+          "expectedRevision": {
+            "type": "integer"
+          },
+          "claimToken": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "artifact",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "sessionId",
+    "actorId",
+    "operationId",
+    "updates"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

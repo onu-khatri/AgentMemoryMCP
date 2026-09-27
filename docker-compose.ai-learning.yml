@@ -1,0 +1,28 @@
+name: agent-memory-qdrant
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.19.1
+    restart: unless-stopped
+    ports:
+      - target: 6333
+        published: "${QDRANT_REST_PORT:-6333}"
+        host_ip: 127.0.0.1
+        protocol: tcp
+      - target: 6334
+        published: "${QDRANT_GRPC_PORT:-6334}"
+        host_ip: 127.0.0.1
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: "${AGENT_MEMORY_ROOT}/.vector/qdrant"
+        target: /qdrant/storage
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/6333"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    security_opt:
+      - no-new-privileges:true
+

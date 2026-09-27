@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      run-semantic-integration:
+        description: Run real Ollama and Qdrant semantic integration tests
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: true
+
+jobs:
+  verify:
+    name: Verify and smoke (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            executable: AgentSession.MCP.exe
+          - os: ubuntu-latest
+            rid: linux-x64
+            executable: AgentSession.MCP
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Fresh restore
+        run: dotnet restore AgentMemoryMCP.slnx --force-evaluate
+      - name: Release build
+        run: dotnet build AgentMemoryMCP.slnx -c Release --no-restore
+      - name: Unit, filesystem, recovery and protocol tests
+        run: dotnet test AgentMemoryMCP.slnx -c Release --no-build --logger "trx;LogFileName=standard-${{ runner.os }}.trx"
+      - name: Restore runtime pack
+        run: dotnet restore AgentSession.MCP/AgentSession.MCP.csproj -r ${{ matrix.rid }}
+      - name: Release publish
+        run: dotnet publish AgentSession.MCP/AgentSession.MCP.csproj -c Release -r ${{ matrix.rid }} --self-contained true --no-restore -o artifacts/${{ matrix.rid }}
+      - name: Launched-binary MCP smoke
+        shell: pwsh
+        run: ./scripts/Test-PublishedMcp.ps1 -Executable "artifacts/${{ matrix.rid }}/${{ matrix.executable }}" -SystemRoot "${{ runner.temp }}/agent-memory-published-smoke" -RepositoryId published-smoke
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: verification-${{ matrix.rid }}
+          path: |
+            AgentSession.MCP.Tests/TestResults/**/*.trx
+            artifacts/${{ matrix.rid }}/
+          if-no-files-found: error
+
+  semantic-integration:
+    name: Real Ollama and Qdrant integration
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run-semantic-integration }}
+    runs-on: ubuntu-latest
+    services:
+      qdrant:
+        image: qdrant/qdrant:v1.19.1
+        ports:
+          - 6333:6333
+          - 6334:6334
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Fresh restore and Release build
+        run: |
+          dotnet restore AgentMemoryMCP.slnx --force-evaluate
+          dotnet build AgentMemoryMCP.slnx -c Release --no-restore
+      - name: Start pinned Ollama and pull embedding model
+        run: |
+          docker run --detach --name ollama-ci --publish 11434:11434 ollama/ollama:0.34.4
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:11434/api/tags >/dev/null; then break; fi
+            if [ "$attempt" = 60 ]; then echo "Ollama did not become ready" >&2; exit 1; fi
+            sleep 2
+          done
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:6333/ >/dev/null; then break; fi
+            if [ "$attempt" = 30 ]; then echo "Qdrant did not become ready" >&2; exit 1; fi
+            sleep 2
+          done
+          docker exec ollama-ci ollama pull embeddinggemma
+          curl --fail --silent http://127.0.0.1:6333/ >/dev/null
+          curl --fail --silent http://127.0.0.1:11434/api/tags | grep --quiet embeddinggemma
+      - name: Real semantic integration tests
+        env:
+          AGENT_MEMORY_RUN_QDRANT_TESTS: 1
+        run: dotnet test AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj -c Release --no-build --filter "Category=QdrantIntegration|Category=SemanticIntegration" --logger "trx;LogFileName=semantic-integration.trx"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: semantic-integration
+          path: AgentSession.MCP.Tests/TestResults/**/*.trx
+          if-no-files-found: error

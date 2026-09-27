@@ -1,0 +1,124 @@
+{
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "operationId": {
+      "type": "string"
+    },
+    "taskId": {
+      "type": "string"
+    },
+    "action": {
+      "enum": [
+        "create",
+        "claim",
+        "renew",
+        "release",
+        "block",
+        "complete",
+        "reopen"
+      ]
+    },
+    "expectedRevision": {
+      "type": "integer"
+    },
+    "claimToken": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "workKey": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parentStepId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "acceptanceExpectations": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "nextAction": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "verificationStatus": {
+      "type": "string"
+    },
+    "handoff": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "sessionId",
+    "actorId",
+    "operationId",
+    "taskId",
+    "action"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

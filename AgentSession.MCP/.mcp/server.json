@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "name": "AgentSession.MCP",
-  "description": "Local agent session management server with durable memory, logs, and artifacts.",
+  "description": "Primary persisted memory for repository-scoped agent work: restart-safe shared sessions, multi-agent task coordination, tiered reusable learning, semantic recall and recoverable vector indexing. Configure Repository__Id before starting.",
   "transport": {
     "type": "stdio"
   },
@@ -9,6 +9,7 @@
     "command": "dotnet",
     "args": [
       "run",
+      "--no-build",
       "--project",
       "AgentSession.MCP/AgentSession.MCP.csproj"
     ]

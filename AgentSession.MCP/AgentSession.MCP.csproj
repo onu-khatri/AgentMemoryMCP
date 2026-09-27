@@ -18,7 +18,7 @@
     <PackageId>AgentSession.MCP</PackageId>
     <PackageVersion>0.1.0-beta</PackageVersion>
     <PackageTags>AI; MCP; server; stdio; session</PackageTags>
-    <Description>.NET 10 MCP server for local agent session management.</Description>
+    <Description>.NET 10 MCP server for restart-safe shared sessions, multi-agent coordination and repository-scoped reusable memory with semantic recall.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,8 +30,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
-    <PackageReference Include="ModelContextProtocol" Version="0.7.0-preview.1" />
-    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    <PackageReference Include="ModelContextProtocol" Version="2.2.0" />
+    <PackageReference Include="Qdrant.Client" Version="1.19.0" />
   </ItemGroup>
 
 </Project>
