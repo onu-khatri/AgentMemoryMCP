@@ -4,6 +4,7 @@ using System.Text;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Interfaces;
 using AgentSession.MCP.Models.Memory;
+using AgentSession.MCP.Observability;
 using Qdrant.Client;
 using Qdrant.Client.Grpc;
 using static Qdrant.Client.Grpc.Conditions;
@@ -44,7 +45,8 @@ public sealed record IndexedVectorPoint(Guid PointId, string MemoryId, VectorPoi
 /// </summary>
 public sealed class QdrantVectorIndex(
     QdrantClient client,
-    IMemoryContentPolicy contentPolicy
+    IMemoryContentPolicy contentPolicy,
+    McpDependencyTelemetry telemetry
 )
 {
     private static readonly (string Name, PayloadSchemaType Type)[] PayloadIndexes =
@@ -81,14 +83,54 @@ public sealed class QdrantVectorIndex(
         return new Guid(uuid, bigEndian: true);
     }
 
-    public async Task<bool> IsReadyAsync(
+    internal Task<T> TrackOperationAsync<T>(
+        string dependencyType,
+        string operation,
+        int? itemCount,
+        Func<CancellationToken, Task<T>> action,
+        CancellationToken cancellationToken
+    ) => telemetry.TrackAsync(
+        dependencyType,
+        operation,
+        itemCount,
+        action,
+        cancellationToken
+    );
+
+    internal Task TrackOperationAsync(
+        string dependencyType,
+        string operation,
+        int? itemCount,
+        Func<CancellationToken, Task> action,
+        CancellationToken cancellationToken
+    ) => telemetry.TrackAsync(
+        dependencyType,
+        operation,
+        itemCount,
+        action,
+        cancellationToken
+    );
+
+    public Task<bool> IsReadyAsync(
+        VectorCollectionIdentity identity,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "health",
+            null,
+            token => IsReadyCoreAsync(identity, token),
+            cancellationToken
+        );
+
+    private async Task<bool> IsReadyCoreAsync(
         VectorCollectionIdentity identity,
         CancellationToken cancellationToken = default
     )
     {
         if (!await client.CollectionExistsAsync(identity.PhysicalCollection, cancellationToken))
             return false;
-        var alias = await GetAliasTargetAsync(identity.Alias, cancellationToken);
+        var alias = await GetAliasTargetCoreAsync(identity.Alias, cancellationToken);
         if (alias != identity.PhysicalCollection)
             return false;
         var info = await client.GetCollectionInfoAsync(
@@ -108,7 +150,19 @@ public sealed class QdrantVectorIndex(
             && fingerprint == identity.Fingerprint.Hash;
     }
 
-    public async Task EnsureCollectionAsync(
+    public Task EnsureCollectionAsync(
+        VectorCollectionIdentity identity,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "collection",
+            null,
+            token => EnsureCollectionCoreAsync(identity, token),
+            cancellationToken
+        );
+
+    private async Task EnsureCollectionCoreAsync(
         VectorCollectionIdentity identity,
         CancellationToken cancellationToken = default
     )
@@ -187,7 +241,22 @@ public sealed class QdrantVectorIndex(
         }
     }
 
-    public async Task UpsertAsync(
+    public Task UpsertAsync(
+        VectorCollectionIdentity identity,
+        MemoryRecord record,
+        ReadOnlyMemory<float> vector,
+        long? expectedIndexedRevision = null,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "upsert",
+            1,
+            token => UpsertCoreAsync(identity, record, vector, expectedIndexedRevision, token),
+            cancellationToken
+        );
+
+    private async Task UpsertCoreAsync(
         VectorCollectionIdentity identity,
         MemoryRecord record,
         ReadOnlyMemory<float> vector,
@@ -196,7 +265,7 @@ public sealed class QdrantVectorIndex(
     )
     {
         ValidateRecord(identity, record, vector.Span);
-        await EnsureCollectionAsync(identity, cancellationToken);
+        await EnsureCollectionCoreAsync(identity, cancellationToken);
         var pointId = PointId(record.RepositoryId, record.Id);
         var existing = await client.RetrieveAsync(
             identity.PhysicalCollection,
@@ -277,7 +346,21 @@ public sealed class QdrantVectorIndex(
             throw RevisionConflict();
     }
 
-    public async Task<VectorPointState?> GetPointStateAsync(
+    public Task<VectorPointState?> GetPointStateAsync(
+        VectorCollectionIdentity identity,
+        string repositoryId,
+        string memoryId,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "query",
+            1,
+            token => GetPointStateCoreAsync(identity, repositoryId, memoryId, token),
+            cancellationToken
+        );
+
+    private async Task<VectorPointState?> GetPointStateCoreAsync(
         VectorCollectionIdentity identity,
         string repositoryId,
         string memoryId,
@@ -308,7 +391,20 @@ public sealed class QdrantVectorIndex(
         );
     }
 
-    public async Task<IReadOnlyList<IndexedVectorPoint>> ListPointStatesAsync(
+    public Task<IReadOnlyList<IndexedVectorPoint>> ListPointStatesAsync(
+        VectorCollectionIdentity identity,
+        int limit,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "query",
+            limit,
+            token => ListPointStatesCoreAsync(identity, limit, token),
+            cancellationToken
+        );
+
+    private async Task<IReadOnlyList<IndexedVectorPoint>> ListPointStatesCoreAsync(
         VectorCollectionIdentity identity,
         int limit,
         CancellationToken cancellationToken = default
@@ -360,6 +456,19 @@ public sealed class QdrantVectorIndex(
         IReadOnlyList<Guid> pointIds,
         CancellationToken cancellationToken = default
     ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "delete",
+            pointIds.Count,
+            token => DeletePointsCoreAsync(identity, pointIds, token),
+            cancellationToken
+        );
+
+    private Task DeletePointsCoreAsync(
+        VectorCollectionIdentity identity,
+        IReadOnlyList<Guid> pointIds,
+        CancellationToken cancellationToken
+    ) =>
         pointIds.Count == 0
             ? Task.CompletedTask
             : client.DeleteAsync(
@@ -369,7 +478,19 @@ public sealed class QdrantVectorIndex(
                 cancellationToken: cancellationToken
             );
 
-    public async Task<string?> GetAliasTargetAsync(
+    public Task<string?> GetAliasTargetAsync(
+        string alias,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "collection",
+            null,
+            token => GetAliasTargetCoreAsync(alias, token),
+            cancellationToken
+        );
+
+    private async Task<string?> GetAliasTargetCoreAsync(
         string alias,
         CancellationToken cancellationToken = default
     )
@@ -378,13 +499,26 @@ public sealed class QdrantVectorIndex(
         return response.SingleOrDefault(item => item.AliasName == alias)?.CollectionName;
     }
 
-    public async Task SwitchAliasAsync(
+    public Task SwitchAliasAsync(
+        string alias,
+        string collection,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "migration",
+            null,
+            token => SwitchAliasCoreAsync(alias, collection, token),
+            cancellationToken
+        );
+
+    private async Task SwitchAliasCoreAsync(
         string alias,
         string collection,
         CancellationToken cancellationToken = default
     )
     {
-        var current = await GetAliasTargetAsync(alias, cancellationToken);
+        var current = await GetAliasTargetCoreAsync(alias, cancellationToken);
         if (current == collection)
             return;
         var operations = new List<AliasOperations>();
@@ -405,7 +539,33 @@ public sealed class QdrantVectorIndex(
         await client.UpdateAliasesAsync(operations, cancellationToken: cancellationToken);
     }
 
-    public async Task<IReadOnlyList<VectorSearchHit>> SearchAsync(
+    public Task<IReadOnlyList<VectorSearchHit>> SearchAsync(
+        VectorCollectionIdentity identity,
+        string repositoryId,
+        ReadOnlyMemory<float> vector,
+        VectorSearchFilter filter,
+        int limit,
+        float? minimumSimilarity = null,
+        CancellationToken cancellationToken = default
+    ) =>
+        TrackOperationAsync(
+            "qdrant",
+            "query",
+            limit,
+            token =>
+                SearchCoreAsync(
+                    identity,
+                    repositoryId,
+                    vector,
+                    filter,
+                    limit,
+                    minimumSimilarity,
+                    token
+                ),
+            cancellationToken
+        );
+
+    private async Task<IReadOnlyList<VectorSearchHit>> SearchCoreAsync(
         VectorCollectionIdentity identity,
         string repositoryId,
         ReadOnlyMemory<float> vector,

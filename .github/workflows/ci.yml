@@ -39,17 +39,24 @@ jobs:
           dotnet-version: 10.0.x
       - name: Fresh restore
         run: dotnet restore AgentMemoryMCP.slnx --force-evaluate
+      - name: Validate observability asset ownership
+        shell: pwsh
+        run: ./scripts/Test-AgentMemoryObservabilityAssetOwnership.ps1
       - name: Release build
         run: dotnet build AgentMemoryMCP.slnx -c Release --no-restore
       - name: Unit, filesystem, recovery and protocol tests
         run: dotnet test AgentMemoryMCP.slnx -c Release --no-build --logger "trx;LogFileName=standard-${{ runner.os }}.trx"
+      - name: Focused observability tests
+        run: dotnet test AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj -c Release --no-build --filter "FullyQualifiedName~Observability" --logger "trx;LogFileName=observability-${{ runner.os }}.trx"
       - name: Restore runtime pack
         run: dotnet restore AgentSession.MCP/AgentSession.MCP.csproj -r ${{ matrix.rid }}
       - name: Release publish
         run: dotnet publish AgentSession.MCP/AgentSession.MCP.csproj -c Release -r ${{ matrix.rid }} --self-contained true --no-restore -o artifacts/${{ matrix.rid }}
       - name: Launched-binary MCP smoke
         shell: pwsh
-        run: ./scripts/Test-PublishedMcp.ps1 -Executable "artifacts/${{ matrix.rid }}/${{ matrix.executable }}" -SystemRoot "${{ runner.temp }}/agent-memory-published-smoke" -RepositoryId published-smoke
+        run: |
+          ./scripts/Test-PublishedMcp.ps1 -Executable "artifacts/${{ matrix.rid }}/${{ matrix.executable }}" -SystemRoot "${{ runner.temp }}/agent-memory-published-smoke" -RepositoryId published-smoke -ProtocolVersion 2025-11-25
+          ./scripts/Test-PublishedMcp.ps1 -Executable "artifacts/${{ matrix.rid }}/${{ matrix.executable }}" -SystemRoot "${{ runner.temp }}/agent-memory-published-smoke" -RepositoryId published-smoke -ProtocolVersion 2026-07-28
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -57,6 +64,88 @@ jobs:
           path: |
             AgentSession.MCP.Tests/TestResults/**/*.trx
             artifacts/${{ matrix.rid }}/
+          if-no-files-found: error
+
+  observability-collector:
+    name: Collector validation and failure isolation (ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Docker capability
+        id: docker
+        shell: bash
+        run: |
+          if docker info >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Docker collector checks enabled." > collector-evidence.txt
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "UNVERIFIED: Docker daemon or Compose unavailable; no collector check is reported as passed." > collector-evidence.txt
+          fi
+      - name: Restore and Release build
+        if: steps.docker.outputs.available == 'true'
+        run: |
+          dotnet restore AgentMemoryMCP.slnx --force-evaluate
+          dotnet build AgentMemoryMCP.slnx -c Release --no-restore
+      - name: Validate pinned collector profiles and Compose
+        if: steps.docker.outputs.available == 'true'
+        shell: bash
+        env:
+          OTEL_BACKEND_ENDPOINT: https://collector.example
+          OTEL_BACKEND_AUTHORIZATION: Bearer-validation-placeholder
+          OTEL_TEST_BACKEND_ENDPOINT: http://host.docker.internal:18080
+        run: |
+          image='otel/opentelemetry-collector-contrib:0.161.0@sha256:fd328de2552466ad78385e1b1289c3f2402b1c45f265b252aab1955b42845ac1'
+          for config in collector.local.yaml collector.production.yaml collector.persistent.yaml collector.failure-test.yaml; do
+            docker run --rm \
+              -e OTEL_BACKEND_ENDPOINT -e OTEL_BACKEND_AUTHORIZATION -e OTEL_TEST_BACKEND_ENDPOINT \
+              -v "$PWD/observability/$config:/etc/otelcol-contrib/config.yaml:ro" \
+              "$image" validate --config=/etc/otelcol-contrib/config.yaml
+          done
+          export OTEL_TEST_CAPTURE_PATH="$RUNNER_TEMP/agent-memory-otel-capture"
+          mkdir -p "$OTEL_TEST_CAPTURE_PATH"
+          sudo chown 10001:10001 "$OTEL_TEST_CAPTURE_PATH"
+          docker compose --project-directory observability -f observability/docker-compose.yml config --quiet
+          docker compose --project-directory observability -f observability/docker-compose.yml -f observability/docker-compose.persistent.yml config --quiet
+          docker compose --project-directory observability -f observability/docker-compose.yml -f observability/docker-compose.test.yml config --quiet
+      - name: Live local collector and backend failure tests
+        if: steps.docker.outputs.available == 'true'
+        shell: bash
+        env:
+          OTEL_COLLECTOR_CONFIG: collector.local.yaml
+          OTEL_TEST_CAPTURE_PATH: ${{ runner.temp }}/agent-memory-otel-capture
+          AGENT_MEMORY_RUN_COLLECTOR_TESTS: 1
+          AGENT_MEMORY_COLLECTOR_CAPTURE_FILE: ${{ runner.temp }}/agent-memory-otel-capture/telemetry.jsonl
+          AGENT_MEMORY_RUN_COLLECTOR_FAILURE_TESTS: 1
+        run: |
+          docker compose --project-name agent-memory-observability --project-directory observability -f observability/docker-compose.yml -f observability/docker-compose.test.yml up --detach
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:13133/ >/dev/null; then break; fi
+            if [ "$attempt" = 60 ]; then echo "Collector did not become healthy" >&2; exit 1; fi
+            sleep 1
+          done
+          dotnet test AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj -c Release --no-build \
+            --filter "FullyQualifiedName~CollectorIntegrationTests" \
+            --logger "trx;LogFileName=collector-integration.trx"
+          echo "PASS: pinned config, local all-signal capture, bounded slow/full failure, recovery, and shutdown checks." >> collector-evidence.txt
+      - name: Collector cleanup
+        if: always() && steps.docker.outputs.available == 'true'
+        shell: bash
+        env:
+          OTEL_TEST_CAPTURE_PATH: ${{ runner.temp }}/agent-memory-otel-capture
+        run: |
+          docker compose --project-name agent-memory-observability --project-directory observability -f observability/docker-compose.yml -f observability/docker-compose.test.yml down || true
+          docker compose --project-name agent-memory-observability-failure --project-directory observability -f observability/docker-compose.yml down || true
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: observability-collector-evidence
+          path: |
+            collector-evidence.txt
+            AgentSession.MCP.Tests/TestResults/**/*.trx
           if-no-files-found: error
 
   semantic-integration:

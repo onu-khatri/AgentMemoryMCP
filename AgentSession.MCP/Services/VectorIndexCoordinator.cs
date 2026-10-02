@@ -2,6 +2,7 @@ using System.Text.Json;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Models.Memory;
 using AgentSession.MCP.Options;
+using AgentSession.MCP.Observability;
 using Microsoft.Extensions.Options;
 
 namespace AgentSession.MCP.Services;
@@ -18,30 +19,66 @@ public sealed class VectorIndexCoordinator(
     QdrantVectorIndex vectors,
     IOptions<QdrantOptions> qdrant,
     IOptions<MemoryPolicyOptions> policy,
-    TimeProvider time
+    TimeProvider time,
+    McpDependencyTelemetry telemetry
 )
 {
-    public async Task<VectorReconciliationResult> ReconcileAsync(
+    public Task<VectorReconciliationResult> ReconcileAsync(
         VectorCollectionIdentity identity,
         int maxItems,
         CancellationToken cancellationToken = default
-    ) => await ReconcileCoreAsync(identity, maxItems, null, cancellationToken);
+    ) => TrackReconciliationAsync(identity, maxItems, null, cancellationToken);
 
-    public async Task<VectorReconciliationResult> ReconcileSelectedAsync(
+    public Task<VectorReconciliationResult> ReconcileSelectedAsync(
         VectorCollectionIdentity identity,
         IReadOnlyCollection<string> memoryIds,
         int maxItems,
         CancellationToken cancellationToken = default
+    ) => TrackReconciliationAsync(identity, maxItems, memoryIds, cancellationToken);
+
+    private Task<VectorReconciliationResult> TrackReconciliationAsync(
+        VectorCollectionIdentity identity,
+        int maxItems,
+        IReadOnlyCollection<string>? memoryIds,
+        CancellationToken cancellationToken
+    ) => telemetry.TrackInternalAsync(
+        "maintenance",
+        "reconciliation",
+        maxItems,
+        token => ReconcileSelectedCoreAsync(identity, memoryIds, maxItems, token),
+        cancellationToken,
+        static (activity, result) =>
+        {
+            activity.SetTag(
+                "mcp.work.queued",
+                Math.Clamp(result.MissingOrStaleQueued, 0, 1_024)
+            );
+            activity.SetTag(
+                "mcp.work.deleted",
+                Math.Clamp(result.OrphansDeleted, 0, 1_024)
+            );
+            activity.SetTag("mcp.work.errors", Math.Clamp(result.Errors, 0, 1_024));
+        }
+    );
+
+    private async Task<VectorReconciliationResult> ReconcileSelectedCoreAsync(
+        VectorCollectionIdentity identity,
+        IReadOnlyCollection<string>? memoryIds,
+        int maxItems,
+        CancellationToken cancellationToken
     )
     {
-        if (memoryIds.Count == 0 || memoryIds.Count > policy.Value.Limits.MaxMutationBatch)
-            throw new ValidationException("Specific reindex IDs exceed the configured bound.");
-        foreach (var id in memoryIds)
-            ManagedStoragePathResolver.RequireIdentifier(id);
+        if (memoryIds is not null)
+        {
+            if (memoryIds.Count == 0 || memoryIds.Count > policy.Value.Limits.MaxMutationBatch)
+                throw new ValidationException("Specific reindex IDs exceed the configured bound.");
+            foreach (var id in memoryIds)
+                ManagedStoragePathResolver.RequireIdentifier(id);
+        }
         return await ReconcileCoreAsync(
             identity,
             maxItems,
-            memoryIds.ToHashSet(StringComparer.Ordinal),
+            memoryIds?.ToHashSet(StringComparer.Ordinal),
             cancellationToken
         );
     }
@@ -165,9 +202,27 @@ public sealed class VectorIndexCoordinator(
         return new(queued, orphanIds.Length, errors);
     }
 
-    public async Task<VectorWorkResult> ProcessPendingAsync(
+    public Task<VectorWorkResult> ProcessPendingAsync(
         int maxItems,
         CancellationToken cancellationToken = default
+    ) => telemetry.TrackInternalAsync(
+        "maintenance",
+        "maintenance",
+        maxItems,
+        token => ProcessPendingCoreAsync(maxItems, token),
+        cancellationToken,
+        static (activity, result) =>
+        {
+            activity.SetTag("mcp.work.processed", Math.Clamp(result.Processed, 0, 1_024));
+            activity.SetTag("mcp.work.indexed", Math.Clamp(result.Indexed, 0, 1_024));
+            activity.SetTag("mcp.work.deferred", Math.Clamp(result.Deferred, 0, 1_024));
+            activity.SetTag("mcp.work.errors", Math.Clamp(result.Errors, 0, 1_024));
+        }
+    );
+
+    private async Task<VectorWorkResult> ProcessPendingCoreAsync(
+        int maxItems,
+        CancellationToken cancellationToken
     )
     {
         if (maxItems < 1 || maxItems > policy.Value.Limits.MaxMutationBatch)

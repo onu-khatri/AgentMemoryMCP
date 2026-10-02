@@ -1,8 +1,12 @@
+using System.Diagnostics;
 using AgentSession.MCP.Extensions;
 using AgentSession.MCP.Helpers;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
 
 namespace AgentSession.MCP.Tests;
 
@@ -13,6 +17,75 @@ public sealed class ManagedTransactionTests : IDisposable
         new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
         { ["SystemStorage:Root"] = _root, ["Repository:Id"] = "repo" }).Build()).BuildServiceProvider();
     private static ManagedFile FileFor(string id) => new(ManagedArea.Session, "session", ["coordination", id + ".json"]);
+
+    [Fact]
+    public async Task LockCommitAndRecoverySpansAreCoarseBoundedAndContentFree()
+    {
+        var activities = new ThreadSafeCollection<Activity>();
+        using var tracing = Sdk.CreateTracerProviderBuilder()
+            .AddSource(TelemetrySchema.ActivitySourceName)
+            .AddInMemoryExporter(activities)
+            .Build();
+        using var testActivity = TelemetrySchema.Activities.StartActivity(
+            "managed transaction telemetry test",
+            ActivityKind.Internal
+        );
+        Assert.NotNull(testActivity);
+        var testTraceId = testActivity.TraceId;
+        const string operationCanary = "private-operation-canary";
+        const string contentCanary = "private-content-canary";
+        using (var provider = Build())
+        {
+            var store = provider.GetRequiredService<ManagedTransactionStore>();
+            store.AfterDurableBoundary = boundary =>
+            {
+                if (boundary == "intent")
+                    throw new IOException("private-exception-canary");
+            };
+            await Assert.ThrowsAsync<IOException>(() => store.CommitAsync(
+                operationCanary,
+                [
+                    new(FileFor("first-private-file"), contentCanary, null),
+                    new(FileFor("second-private-file"), "safe", null),
+                ]
+            ));
+        }
+        using (var restarted = Build())
+        {
+            var store = restarted.GetRequiredService<ManagedTransactionStore>();
+            Assert.Equal(contentCanary, await store.ReadAsync(FileFor("first-private-file")));
+        }
+        Assert.True(tracing.ForceFlush(5_000));
+
+        var filesystem = activities.Where(activity =>
+            activity.TraceId == testTraceId
+            && Equals(activity.GetTagItem("dependency.type"), "filesystem")).ToArray();
+        Assert.Contains(filesystem, activity =>
+            activity.OperationName == "mcp operation filesystem lock"
+            && activity.Kind == ActivityKind.Internal);
+        var transaction = Assert.Single(filesystem, activity =>
+            activity.OperationName == "mcp operation filesystem transaction");
+        Assert.Equal(2, transaction.GetTagItem("mcp.batch.items"));
+        Assert.Equal("tool_error", transaction.GetTagItem("mcp.status"));
+        Assert.Equal("storage_error", transaction.GetTagItem("error.type"));
+        Assert.Contains(filesystem, activity =>
+            activity.OperationName == "mcp operation filesystem recovery"
+            && Equals(activity.GetTagItem("mcp.recovery.performed"), true)
+            && Equals(activity.GetTagItem("mcp.batch.items"), 1));
+        var exported = string.Join(
+            "|",
+            filesystem.SelectMany(activity => activity.TagObjects).Select(tag => tag.Value)
+        );
+        foreach (var canary in new[]
+        {
+            operationCanary,
+            contentCanary,
+            "private-exception-canary",
+            "first-private-file",
+            _root,
+        })
+            Assert.DoesNotContain(canary, exported, StringComparison.OrdinalIgnoreCase);
+    }
 
     [Fact]
     public async Task RestartRollsForwardPartialCommitBeforeReading()

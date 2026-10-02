@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Interfaces;
 using AgentSession.MCP.Options;
+using AgentSession.MCP.Observability;
 using Microsoft.Extensions.Options;
 
 namespace AgentSession.MCP.Services;
@@ -15,7 +16,8 @@ public sealed record EmbeddingModelIdentity(string Model, string Digest);
 public sealed class OllamaEmbeddingClient(
     HttpClient http,
     IOptions<EmbeddingOptions> options,
-    IMemoryContentPolicy policy
+    IMemoryContentPolicy policy,
+    McpDependencyTelemetry telemetry
 )
 {
     private static readonly JsonSerializerOptions ExternalJson = new(MemoryJson.Options)
@@ -24,8 +26,18 @@ public sealed class OllamaEmbeddingClient(
         WriteIndented = false,
     };
 
-    public async Task<EmbeddingModelIdentity> GetModelIdentityAsync(
+    public Task<EmbeddingModelIdentity> GetModelIdentityAsync(
         CancellationToken cancellationToken = default
+    ) => telemetry.TrackAsync(
+        "ollama",
+        "model_discovery",
+        itemCount: null,
+        GetModelIdentityCoreAsync,
+        cancellationToken
+    );
+
+    private async Task<EmbeddingModelIdentity> GetModelIdentityCoreAsync(
+        CancellationToken cancellationToken
     )
     {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -67,10 +79,22 @@ public sealed class OllamaEmbeddingClient(
         }
     }
 
-    public async Task<EmbeddingBatch> EmbedAsync(
+    public Task<EmbeddingBatch> EmbedAsync(
         IReadOnlyList<string> inputs,
         int? expectedDimensions = null,
         CancellationToken cancellationToken = default
+    ) => telemetry.TrackAsync(
+        "ollama",
+        "embedding",
+        Math.Min(inputs.Count, 1_024),
+        token => EmbedCoreAsync(inputs, expectedDimensions, token),
+        cancellationToken
+    );
+
+    private async Task<EmbeddingBatch> EmbedCoreAsync(
+        IReadOnlyList<string> inputs,
+        int? expectedDimensions,
+        CancellationToken cancellationToken
     )
     {
         if (

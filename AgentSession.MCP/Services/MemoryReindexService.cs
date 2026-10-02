@@ -1,6 +1,7 @@
 using AgentSession.MCP.Contracts;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Options;
+using AgentSession.MCP.Observability;
 using Microsoft.Extensions.Options;
 
 namespace AgentSession.MCP.Services;
@@ -9,12 +10,40 @@ public sealed class MemoryReindexService(
     LearningCatalog catalog,
     VectorIndexCoordinator coordinator,
     VectorMigrationService migration,
-    IOptions<MemoryPolicyOptions> options
+    IOptions<MemoryPolicyOptions> options,
+    McpDependencyTelemetry telemetry
 )
 {
-    public async Task<ReindexMemoryResult> ReindexAsync(
+    public Task<ReindexMemoryResult> ReindexAsync(
         ReindexMemoryRequest request,
         CancellationToken cancellationToken = default
+    ) => telemetry.TrackInternalAsync(
+        "maintenance",
+        "reindex",
+        request.MaxItems,
+        token => ReindexCoreAsync(request, token),
+        cancellationToken,
+        static (activity, result) =>
+        {
+            activity.SetTag(
+                "mcp.work.processed",
+                Math.Clamp(result.ProcessedVectors, 0, 1_024)
+            );
+            activity.SetTag(
+                "mcp.work.indexed",
+                Math.Clamp(result.IndexedVectors, 0, 1_024)
+            );
+            activity.SetTag(
+                "mcp.work.deferred",
+                Math.Clamp(result.DeferredVectors, 0, 1_024)
+            );
+            activity.SetTag("mcp.work.errors", Math.Clamp(result.Errors, 0, 1_024));
+        }
+    );
+
+    private async Task<ReindexMemoryResult> ReindexCoreAsync(
+        ReindexMemoryRequest request,
+        CancellationToken cancellationToken
     )
     {
         ManagedStoragePathResolver.RequireIdentifier(request.OperationId);

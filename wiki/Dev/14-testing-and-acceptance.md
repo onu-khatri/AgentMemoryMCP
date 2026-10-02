@@ -39,9 +39,9 @@ The standard suite skips three tests unless `AGENT_MEMORY_RUN_QDRANT_TESTS=1`. S
 
 ## Acceptance sources
 
-- [tasks.md](../../openspec/changes/productionize-agent-memory/tasks.md) lists implementation obligations.
-- [session-verification.md](../../openspec/changes/productionize-agent-memory/session-verification.md) records SC1-SC6.
-- [verification.md](../../openspec/changes/productionize-agent-memory/verification.md) records exact local and live results.
+- [tasks.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/tasks.md) lists implementation obligations.
+- [session-verification.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/session-verification.md) records SC1-SC6.
+- [verification.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/verification.md) records exact local and live results.
 - [.github/workflows/ci.yml](../../.github/workflows/ci.yml) defines hosted Windows, Linux and semantic lanes.
 
 ## Adding tests for a change
@@ -49,4 +49,3 @@ The standard suite skips three tests unless `AGENT_MEMORY_RUN_QDRANT_TESTS=1`. S
 Test the behavior at the lowest meaningful layer, then add protocol coverage if the tool contract changes. For durability changes, inject failures before and after the durable decision. For time behavior, use controlled time. For semantic changes, separate provider-adapter tests from real dependency evidence.
 
 Avoid tests that only mirror implementation structure or repeat a passing scenario without a new failure boundary.
-

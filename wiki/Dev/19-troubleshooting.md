@@ -72,3 +72,6 @@ An operator must create the external grant for the exact repository, memory revi
 
 `memory_status` reports last error counts/codes. The worker has a ten-second budget and retries later. Logs exclude content. Run bounded manual cleanup/reindex only after identifying the category.
 
+## Telemetry exporter or collector failure
+
+MCP behavior must remain available. Run `Check-AgentMemoryObservability.ps1` and use the canonical [export/startup](../../docs/observability/runbooks.md#export-or-startup-failure) or [backlog/drop](../../docs/observability/runbooks.md#collector-backlog-or-drops) runbook. Never dump environment variables, exporter headers, queue files, or telemetry payloads. If isolation is needed, disable remote export and restart; safe stderr and local instrumentation remain.

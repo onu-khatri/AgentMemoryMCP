@@ -25,6 +25,12 @@ Agents should treat the server as their primary persisted memory source: activat
 
 See the [developer onboarding wiki](wiki/Dev/README.md), [agent and skill wiki](wiki/agent-ai-guidence/README.md), [MCP contract](AiLearning/MCP-CONTRACT.md), [parent/sub-agent example](AiLearning/PARENT-SUBAGENT-EXAMPLE.md), and [operations guide](AiLearning/OPERATIONS.md).
 
+## Logging and OpenTelemetry
+
+The server writes bounded structured JSON logs to stderr and keeps stdout protocol-only. Remote OTLP export is off by default. Start the disposable loopback collector with `./scripts/Start-AgentMemoryObservability.ps1 -Mode Local`, inspect health/queue/drop evidence with `./scripts/Check-AgentMemoryObservability.ps1 -Mode Local`, and stop it with `./scripts/Stop-AgentMemoryObservability.ps1 -Mode Local`. The local sink is tmpfs and is removed with the container.
+
+The server consumes `OnuObservability.Hosting` and `OnuObservability.Mcp` `0.1.0-alpha.9`; reusable observability implementation and reference documentation are owned by the sibling [OnuObservability repository](../OnuObservability/README.md). AgentMemory-specific compatibility settings, application descriptors, dashboards/SLOs, runbooks, rollback, and verification commands are in the [service observability guide](docs/observability/README.md). Disabling remote export with `Observability__ExporterEnabled=false` preserves MCP behavior, local instrumentation, and safe stderr diagnostics.
+
 ## Local semantic services
 
 The provided scripts do not install dependencies:

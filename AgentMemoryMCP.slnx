@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="AgentSession.MCP.TestWorker/AgentSession.MCP.TestWorker.csproj" />
+  <Project Path="AgentSession.MCP.Benchmarks/AgentSession.MCP.Benchmarks.csproj" />
   <Project Path="AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj" />
   <Project Path="AgentSession.MCP/AgentSession.MCP.csproj" />
 </Solution>

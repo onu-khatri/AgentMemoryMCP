@@ -11,8 +11,16 @@ internal sealed class McpProcess : IDisposable
     private readonly Task<string> _stderr;
     private int _id;
     private readonly string _version;
+    public bool ForcedTermination { get; private set; }
     private static readonly JsonSerializerOptions Wire = new(MemoryJson.Options) { WriteIndented = false };
-    public McpProcess(string root, string repository = "repo", string version = "2025-11-25", double leaseMinutes = 15)
+    public McpProcess(
+        string root,
+        string repository = "repo",
+        string version = "2025-11-25",
+        double leaseMinutes = 15,
+        double cleanupIntervalMinutes = 60,
+        IReadOnlyDictionary<string, string?>? environment = null
+    )
     {
         _version = version;
         var folder = Path.Combine(AppContext.BaseDirectory, "worker");
@@ -24,7 +32,12 @@ internal sealed class McpProcess : IDisposable
         start.Environment["SystemStorage__Root"] = root;
         start.Environment["Repository__Id"] = repository;
         start.Environment["Embedding__TimeoutSeconds"] = "1";
+        start.Environment["Observability__ShutdownFlushTimeoutMilliseconds"] = "1000";
         start.Environment["SessionCoordination__ClaimLeaseMinutes"] = leaseMinutes.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        start.Environment["Memory__Temp__CleanupIntervalMinutes"] = cleanupIntervalMinutes.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        if (environment is not null)
+            foreach (var item in environment)
+                start.Environment[item.Key] = item.Value;
         _process = Process.Start(start)!;
         _stderr = _process.StandardError.ReadToEndAsync();
     }
@@ -82,6 +95,21 @@ internal sealed class McpProcess : IDisposable
         var result = response.GetProperty("result");
         Assert.False(result.TryGetProperty("isError", out var error) && error.GetBoolean(), result.ToString());
         return result.GetProperty("structuredContent").Clone();
+    }
+    public async Task<string> StopAndReadStderrAsync()
+    {
+        _process.StandardInput.Close();
+        try
+        {
+            await _process.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(10));
+        }
+        catch (TimeoutException)
+        {
+            ForcedTermination = true;
+            _process.Kill(entireProcessTree: true);
+            await _process.WaitForExitAsync();
+        }
+        return await _stderr;
     }
     public void Dispose()
     {

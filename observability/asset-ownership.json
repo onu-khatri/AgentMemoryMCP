@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "sourcePackageVersion": "0.1.0-alpha.9",
+  "policy": "consumer-owned-versioned-deployment-copies",
+  "assets": [
+    { "path": "observability/collector.local.yaml", "ownership": "agentmemory-service-owned" },
+    { "path": "observability/collector.production.yaml", "ownership": "agentmemory-service-owned" },
+    { "path": "observability/collector.persistent.yaml", "ownership": "agentmemory-service-owned" },
+    { "path": "observability/collector.failure-test.yaml", "ownership": "agentmemory-service-owned" },
+    {
+      "path": "observability/collector.test-capture.yaml",
+      "ownership": "versioned-package-copy",
+      "source": "../OnuObservability/observability/collector.test-capture.yaml",
+      "sha256": "a4dcb3497725db72093a7c296c063ad3ecf9e50be7e6ba4fc88e1dfc47c4dc7a"
+    },
+    { "path": "observability/docker-compose.yml", "ownership": "agentmemory-service-owned" },
+    { "path": "observability/docker-compose.persistent.yml", "ownership": "agentmemory-service-owned" },
+    { "path": "observability/docker-compose.test.yml", "ownership": "agentmemory-service-owned" },
+    { "path": "scripts/Start-AgentMemoryObservability.ps1", "ownership": "agentmemory-service-owned" },
+    { "path": "scripts/Stop-AgentMemoryObservability.ps1", "ownership": "agentmemory-service-owned" },
+    { "path": "scripts/Check-AgentMemoryObservability.ps1", "ownership": "agentmemory-service-owned" },
+    { "path": "scripts/Measure-AgentMemoryObservability.ps1", "ownership": "agentmemory-service-owned" }
+  ]
+}

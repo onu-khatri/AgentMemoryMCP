@@ -45,14 +45,13 @@
 
 ## Planning and contract sources
 
-- [dotnet-mcp-agent-memory-implementation-prompt.md](../../dotnet-mcp-agent-memory-implementation-prompt.md) is the original production requirement source.
-- [proposal.md](../../openspec/changes/productionize-agent-memory/proposal.md) records change purpose and scope.
-- [design.md](../../openspec/changes/productionize-agent-memory/design.md) records architecture decisions and scenarios.
-- [specs](../../openspec/changes/productionize-agent-memory/specs/) contain normative delta requirements.
-- [tasks.md](../../openspec/changes/productionize-agent-memory/tasks.md) maps implementation and verification work.
-- [verification.md](../../openspec/changes/productionize-agent-memory/verification.md) records achieved evidence and remaining release boundary.
+- [dotnet-mcp-agent-memory-implementation-prompt.md](../../Requirements/dotnet-mcp-agent-memory-implementation-prompt.md) is the original production requirement source.
+- [proposal.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/proposal.md) records change purpose and scope.
+- [design.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/design.md) records architecture decisions and scenarios.
+- [specs](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/specs/) contain normative delta requirements.
+- [tasks.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/tasks.md) maps implementation and verification work.
+- [verification.md](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/verification.md) records achieved evidence and remaining release boundary.
 
 ## Documentation sources
 
 `AiLearning` documents the runtime contract and operations. `wiki/agent-ai-guidence` teaches consumers how to design agents and skills. This `wiki/Dev` set teaches maintainers how the implementation works.
-

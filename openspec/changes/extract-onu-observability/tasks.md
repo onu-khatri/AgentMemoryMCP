@@ -1,0 +1,96 @@
+## 1. Repository Decisions and Extraction Baseline
+
+- [x] 1.1 Record the approved Git host/organization, checkout location, NuGet feed and promotion channels, package owners/license/support metadata, signing/provenance mechanism, and initial prerelease version; verify the decision record contains no credentials and that no external repository or package publication occurs before approval.
+- [x] 1.2 Inventory every current observability source, extension, option, package reference, test, document, script, collector asset, configuration key, signal, and public behavior as core, hosting, MCP adapter, AgentMemory-owned, or retire-after-parity; verify all 22 current observability source files and every observability test/document path appear exactly once in the migration map.
+- [x] 1.3 Export machine-readable baselines for the existing MCP activity, metric, log/event, resource, option, outcome/reason, histogram, and bounded-value catalogs; verify the generated fixtures agree with `openspec/specs/mcp-observability/spec.md` and the current conformance tests.
+- [x] 1.4 Run and record a clean AgentMemoryMCP restore, Release build, complete tests, published RID smoke tests, collector checks, and benchmark profile before extraction; verify exact pass/fail/skip totals and environment limitations are captured as the migration baseline rather than inferred from prior artifacts.
+
+## 2. OnuObservability Repository and Project Graph
+
+- [x] 2.1 Create the approved `OnuObservability` repository and solution with `src/OnuObservability`, `src/OnuObservability.Hosting`, `src/OnuObservability.AspNetCore`, and `src/OnuObservability.Mcp`; verify `dotnet sln list` and project-reference output match the one-way dependency graph in `design.md`.
+
+  On 2026-10-01 the portable directory was moved out of AgentMemoryMCP to the approved sibling checkout `D:\RND\ONU\OnuObservability` and initialized as an independent Git repository on `main`. AgentMemory consumes only the immutable package feed; neither repository has a project reference to the other.
+- [x] 2.2 Add matching unit, architecture, contract, and integration test projects plus Web, Worker, and MCP sample applications; verify each production project has an owning test project and each sample restores without unrelated adapter packages.
+- [ ] 2.3 Add `global.json`, central package management, common build properties, nullable analysis, deterministic build settings, analyzers, formatting rules, warnings-as-errors for production projects, and locked restore inputs; verify clean restore/build succeeds with the supported .NET 10 SDK on Windows and Linux.
+- [x] 2.4 Implement compiled-assembly architecture tests that reject core-to-hosting/framework dependencies, cross-adapter dependencies, public OpenTelemetry SDK leakage, service location, and mutable global state; verify deliberately invalid fixture assemblies fail for the expected rule.
+- [x] 2.5 Add repository-level contribution, security, support, versioning, compatibility, release, and ownership documentation; verify package IDs, namespaces, project names, and documented dependency direction are consistent across the solution.
+
+## 3. Core Policy and Public Contracts
+
+- [x] 3.1 Implement immutable typed outcomes, registered error/reason values, operation/event/field descriptors, finite value registries, and schema-version types in the core package; verify unit tests reject invalid names, duplicates, unsupported value kinds, missing fallbacks, and unbounded definitions.
+- [x] 3.2 Implement the startup schema registry and builder composition with idempotent identical registration and fail-fast conflicting registration; verify deterministic tests cover duplicate adapters, conflicting descriptors, stable ordering, and immutable post-build snapshots.
+- [x] 3.3 Implement the small public operation factory/scope contracts with exactly-once completion, duration, bounded aggregate counts, nested/concurrent scope isolation, and typed outcome recording; verify success, exception, cancellation, double-completion, nested, and concurrent tests without exposing OpenTelemetry SDK types.
+- [x] 3.4 Implement safe value normalization, truncation/clamping evidence, unknown/other fallback, and rejection of arbitrary objects, dictionaries, exception text, paths, URLs, headers, and identifiers; verify a synthetic-sensitive-data corpus reaches none of the core capture points.
+- [x] 3.5 Implement source-generated registered log events and the bounded event/operation/outcome rate limiter using `TimeProvider`; verify deterministic tests cover burst/window behavior, bounded key count, suppression summaries, and absence of caller-derived keys.
+- [x] 3.6 Establish the initial checked-in public API and schema baselines for the core package; verify package/API validation detects a removed member, changed signature, renamed signal, changed unit, and changed bounded-value meaning.
+
+## 4. Generic Host and OpenTelemetry Infrastructure
+
+- [x] 4.1 Implement common strongly typed options, `OnuObservability` configuration binding, supported `OTEL_*` precedence, immutable effective settings, and startup validation; verify defaults, every finite bound, protocol/URI rules, loopback/sidecar clear text, remote TLS, and secret-free failures.
+- [x] 4.2 Implement resource identity for service, namespace, version, environment, runtime, schema, policy, and process instance; verify in-memory trace/log/metric exporters receive consistent resources and metrics omit the instance identifier.
+- [x] 4.3 Implement the hosting registration and provider composition for local activities, parent-based sampling, unsampled metrics, explicit histogram views, bounded processors/readers, and opt-in OTLP gRPC/HTTP export; verify disabled, per-signal, sampled, and no-collector configurations without synchronous exporter work on application paths.
+- [x] 4.4 Implement safe structured logging integration that adds only package-owned providers/categories, does not clear consumer providers or change global minimum levels, disables formatted-message/automatic-exception export, and filters before queueing; verify a host's pre-existing logger remains functional and unapproved records reach neither local nor OTLP sinks.
+- [x] 4.5 Implement generic guarded exporters, pipeline-health metrics, bounded non-recursive diagnostics, and sanitized HTTP transport behavior; verify unavailable, failing, slow, and full-queue exporters keep memory and diagnostics bounded while application operations succeed.
+- [x] 4.6 Implement package-owned healthy flush and non-cooperative exporter shutdown under one wall-clock budget without changing global `HostOptions`; verify healthy queues flush and a hanging exporter cannot extend package shutdown past the configured bound.
+- [x] 4.7 Add hosting integration tests for configuration, resources, trace/log correlation, metrics under zero trace sampling, exporter isolation, queue pressure, recovery, and shutdown; verify the tests exercise public registration APIs rather than internal constructors.
+
+## 5. Background-Service Integration
+
+- [x] 5.1 Implement explicit coarse operation runner/scope helpers for `IHostedService`, `BackgroundService`, scheduled passes, and batches using registered descriptors; verify one configured pass produces one operation boundary and no per-item spans or logs.
+- [x] 5.2 Implement distinct host-stop, caller-cancellation, deadline, dependency, validation, and internal outcomes using typed token/context inputs rather than exception-message parsing; verify deterministic tests cover every classification and exactly-once completion.
+- [x] 5.3 Implement bounded processed, succeeded, failed, deferred, retried, and remaining aggregate fields plus dependency child operations; verify unique item identifiers and payloads do not affect span names, metric series, limiter keys, or logs.
+- [x] 5.4 Build the Worker sample with successful, partial/deferred, dependency-outage, deadline, and graceful-stop paths; verify its packaged-consumer integration tests receive correlated signals and remain within documented shutdown and cardinality limits.
+
+## 6. ASP.NET Core Integration
+
+- [x] 6.1 Implement the ASP.NET Core adapter using supported framework/OpenTelemetry request instrumentation, automatic endpoint route-template discovery capped at 1,024, count-only overflow warning, configuration exclusions, and route-template enrichment; verify one logical request creates one server span when instrumentation is package-owned or already registered by the host.
+- [x] 6.2 Implement bounded HTTP method, route-template, status-class, duration, cancellation, deadline, and error outcome mapping; verify success, validation, not-found, server-error, client-cancelled, and timeout paths use stable dimensions.
+- [x] 6.3 Enforce exclusion of raw paths, route values, queries, bodies, cookies, authorization data, client addresses, headers, and exception content before processing/export; verify the shared synthetic-sensitive-data corpus is absent from all Web signals and snapshots.
+- [x] 6.4 Build the Web sample and in-memory/live-collector integration tests; verify startup, request correlation, W3C propagation, duplicate-span protection, collector outage, graceful shutdown, and restoration from the exact packed adapter package.
+
+## 7. MCP Integration
+
+- [x] 7.1 Move and generalize the versioned `mcp.*` schema, instruments, units, histogram views, outcomes, protocol/method registries, and safe log events into the MCP adapter; verify an automated manifest diff matches the AgentMemoryMCP baseline exactly unless an explicit approved additive schema change is recorded.
+- [x] 7.2 Implement the SDK incoming-request and tool-call filters with correct parentage, balanced in-flight metrics, bounded counts, no payload inspection/reserialization, and one completion/failure log; verify both supported protocol models and malformed/absent propagation metadata.
+- [x] 7.3 Implement the registered-tool bridge from the same SDK descriptors used by `tools/list`, including deterministic toolset version and destructive hints; verify registry equality, stable versioning, unknown fallback, and no separate caller-controlled allowlist.
+- [x] 7.4 Implement the nested/concurrency-safe typed outcome channel and public application classification hook; verify domain classification survives SDK error-result conversion, first classification wins, scopes restore/clear, and no rendered message parsing occurs.
+- [x] 7.5 Implement the stdio-safe JSON stderr profile without clearing unrelated providers or writing application diagnostics to stdout; verify successful calls, failures, exporter diagnostics, startup, and shutdown leave every stdout frame valid MCP protocol traffic.
+- [x] 7.6 Build the MCP sample and contract/process tests from the packed adapter; verify tool schemas/results are unchanged, trace hierarchy is correct, arguments/results remain private, and exporter failure does not change MCP responses.
+
+## 8. Privacy, Cardinality, and Operational Assets
+
+- [x] 8.1 Run one shared synthetic-sensitive-data suite across core, Hosting, Web, Worker, MCP, local logs, spans, metrics, queues, pipeline diagnostics, and collector capture; verify no canary appears except explicitly generated trace/span identifiers.
+- [x] 8.2 Run high-volume unique-value tests across all adapters; verify metric series, span/log names, schema registries, and rate-limiter keys stay within documented bounds and unknown values collapse to fallbacks.
+- [x] 8.3 Generalize the collector local, production, persistent, and failure-test profiles plus safe start/stop/check scripts without AgentMemory-specific naming; verify Compose rendering, loopback host publication, collector configuration validation, memory limiter ordering, redaction, bounded queues/retries, and explicit persistent-storage warnings.
+- [x] 8.4 Write the package configuration/API reference, signal catalogs, schema/version policy, Web/Worker/MCP guides, collector deployment, privacy classification, dashboards, provisional SLOs, and runbooks; verify every public option and custom field has one canonical owner and all local links/examples compile or resolve.
+- [x] 8.5 Document application-schema ownership and provide an AgentMemory example that registers Ollama, Qdrant, transaction, maintenance, and tool descriptors outside the package; verify the example contains no AgentMemory domain dependency in production package assemblies.
+
+## 9. NuGet Packing and Release Pipeline
+
+- [ ] 9.1 Configure aligned semantic versions, package metadata, license/readme assets, dependency policies, deterministic builds, symbols, Source Link, repository information, content allowlists, and immutable output paths for all four packages; verify `dotnet pack` produces the expected `.nupkg`/`.snupkg` contents and hashes from a clean checkout.
+- [x] 9.2 Add public API compatibility, package compatibility, dependency graph, vulnerability, license-policy, secret, and generated-schema checks; verify seeded incompatible API, forbidden dependency, vulnerable/test dependency, and unexpected package-file fixtures fail the correct gate.
+- [x] 9.3 Generate and retain checksums plus machine-readable SBOM and build provenance for the exact package artifacts; verify evidence references the same hashes later installed by consumer tests.
+- [x] 9.4 Restore the Web, Worker, and MCP samples from an isolated local feed containing only the packed artifacts rather than project references; verify their lock/assets files resolve the intended versions and no unrelated adapter dependency is present.
+- [x] 9.5 Add repeatable adapter benchmarks for disabled instrumentation, local-only signals, and batched OTLP export; verify p50/p95/p99 latency, throughput, CPU, allocations, and bounded queue memory against documented provisional budgets.
+- [ ] 9.6 Configure Windows and Linux CI to build once, test supported .NET 10 consumers, validate collector profiles, pack once, validate exact packages, and retain exact totals/evidence; verify skipped Docker/live checks are reported as unverified rather than passed.
+- [x] 9.7 After feed/signing details and publication are explicitly approved, sign or repository-sign as required and publish an immutable prerelease package family; verify feed read-back, hashes, metadata, provenance, symbols, and isolated restore before changing AgentMemoryMCP.
+
+## 10. AgentMemoryMCP Package Migration
+
+- [x] 10.1 Add the approved prerelease package source/version and replace direct reusable OpenTelemetry/MCP-observability infrastructure references with `OnuObservability.Hosting` and `OnuObservability.Mcp`; move the reusable outbound HTTP instrumentation registration and sanitization policy behind a package-owned opt-in API while retaining AgentMemory's reviewed endpoint predicate, remove the consumer's direct `OpenTelemetry.Instrumentation.Http` dependency, and verify restore assets resolve the published packages without source-project references.
+- [x] 10.2 Recompose `Program.cs` and configuration around the package builder while preserving existing configuration compatibility, stdio transport, 26 tool schemas, exporter defaults, and bounded shutdown; verify before/after configuration and `tools/list` contract fixtures match.
+- [x] 10.3 Re-express AgentMemory-owned Ollama, Qdrant, filesystem transaction, lock, maintenance, reconciliation, reindex, and migration telemetry through registered application descriptors; verify span/metric/log manifests, parentage, outcomes, aggregate counts, and privacy fixtures match the baseline.
+- [x] 10.4 Replace local MCP request/tool filters, registry, safe events, outcome context, exporter wrappers, and hosting infrastructure with package services without dual registration; verify provider/source inspection shows one pipeline, one request span, one tool span, and one boundary log.
+- [x] 10.5 Run a parity harness comparing the baseline executable with the package-consuming executable for MCP responses, signal schemas, resources, redaction, cardinality, cancellation, exporter failure, recovery, shutdown, and performance; verify every mismatch blocks deletion and is recorded with an approved resolution.
+- [x] 10.6 Remove only files classified `retire-after-parity` after task 10.5 passes, retain AgentMemory-owned schema/descriptor code, remove obsolete direct package references, and resolve ownership of retained observability scripts and collector assets as thin service wrappers or explicitly versioned consumer-owned deployment copies with drift validation; verify architecture tests and repository search find no duplicate pipeline, unowned reusable implementation, or stale namespace.
+
+  Exact-candidate schema, process, privacy, cancellation, exporter-failure, live Collector recovery, shutdown, storage, and performance parity passed for `0.1.0-alpha.8`. The `0.1.0-alpha.9` cleanup moved reviewed outbound HTTP wiring into Hosting, removed the consumer's direct SDK dependency, and classified 12 retained deployment assets in a versioned ownership manifest with CI drift validation; focused consumer tests, package-consumer validation, architecture tests, and repository searches passed.
+- [x] 10.7 Update AgentMemoryMCP configuration, deployment, troubleshooting, verification, dashboard, and runbook documentation to link to package-owned references and contain only service-specific overrides; replace the stale pre-extraction totals and archived-change command in `docs/observability/verification.md` with current package-consumer evidence, and verify repository-local links, scripts, and configuration examples remain valid.
+
+## 11. Final Verification and Stable Promotion
+
+- [ ] 11.1 Run clean locked restore, Release build, formatting/analyzers, unit, architecture, contract, integration, package, isolated-feed consumer, collector, failure-injection, and benchmark checks in the `OnuObservability` repository; verify exact pass/fail/skip totals and artifact hashes are recorded.
+- [ ] 11.2 Run clean restore, Release build, the complete AgentMemoryMCP solution, focused live collector tests, Windows/Linux published-binary protocol smoke tests, configuration validation, docs/link checks, and `git diff --check`; verify exact totals, skips, environment limitations, and unresolved approvals are recorded.
+- [ ] 11.3 Publish and smoke every declared supported runtime/package combination where a matching runner or approved emulation exists; verify unsupported runtime, live backend, signing, load, or cross-platform checks remain explicitly unverified rather than passed.
+- [x] 11.4 Produce a final release report linking package hashes, API/schema diffs, SBOM/provenance, security/license results, consumer parity, performance, rollback versions, and operator approvals; verify every normative scenario in the `onu-observability` spec maps to evidence or an explicit blocker.
+- [ ] 11.5 Only after stable promotion is explicitly approved, promote the already validated immutable package artifacts and update AgentMemoryMCP to the approved stable version; verify feed read-back and a fresh isolated restore/build use the exact promoted hashes before declaring delivery complete.

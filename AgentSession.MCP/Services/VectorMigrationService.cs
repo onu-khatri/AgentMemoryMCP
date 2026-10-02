@@ -2,6 +2,7 @@ using System.Text.Json;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Models.Memory;
 using AgentSession.MCP.Options;
+using AgentSession.MCP.Observability;
 using Microsoft.Extensions.Options;
 
 namespace AgentSession.MCP.Services;
@@ -14,7 +15,8 @@ public sealed class VectorMigrationService(
     OllamaEmbeddingClient embeddings,
     QdrantVectorIndex vectors,
     IOptions<QdrantOptions> qdrant,
-    TimeProvider time
+    TimeProvider time,
+    McpDependencyTelemetry telemetry
 )
 {
     internal static readonly ManagedFile ActiveFile = new(
@@ -38,13 +40,25 @@ public sealed class VectorMigrationService(
         return Identity(active.Active);
     }
 
-    public async Task<VectorMigrationResult> MigrateAsync(
+    public Task<VectorMigrationResult> MigrateAsync(
         string operationId,
         CancellationToken cancellationToken = default
+    ) => telemetry.TrackInternalAsync(
+        "maintenance",
+        "migration",
+        null,
+        token => MigrateCoreAsync(operationId, token),
+        cancellationToken,
+        EnrichMigration
+    );
+
+    private async Task<VectorMigrationResult> MigrateCoreAsync(
+        string operationId,
+        CancellationToken cancellationToken
     )
     {
         ManagedStoragePathResolver.RequireIdentifier(operationId);
-        if (await RecoverAsync(operationId, cancellationToken) is { } recovered)
+        if (await RecoverCoreAsync(operationId, cancellationToken) is { } recovered)
             return recovered;
         var model = await embeddings.GetModelIdentityAsync(cancellationToken);
         var probe = await embeddings.EmbedAsync(
@@ -102,9 +116,29 @@ public sealed class VectorMigrationService(
         return await FinalizeAsync(intentFile, intent, active, recovered: false, cancellationToken);
     }
 
-    public async Task<VectorMigrationResult?> RecoverAsync(
+    public Task<VectorMigrationResult?> RecoverAsync(
         string operationId,
         CancellationToken cancellationToken = default
+    ) => telemetry.TrackInternalAsync(
+        "maintenance",
+        "migration",
+        null,
+        token => RecoverCoreAsync(operationId, token),
+        cancellationToken,
+        static (activity, result) =>
+        {
+            activity.SetTag("mcp.recovery.performed", result?.Recovered == true);
+            if (result is not null)
+                activity.SetTag(
+                    "mcp.work.indexed",
+                    Math.Clamp(result.IndexedPoints, 0, 1_024)
+                );
+        }
+    );
+
+    private async Task<VectorMigrationResult?> RecoverCoreAsync(
+        string operationId,
+        CancellationToken cancellationToken
     )
     {
         ManagedStoragePathResolver.RequireIdentifier(operationId);
@@ -320,6 +354,15 @@ public sealed class VectorMigrationService(
             null,
             ["indexes", "vector-migrations", operationId + ".json"]
         );
+
+    private static void EnrichMigration(
+        System.Diagnostics.Activity activity,
+        VectorMigrationResult result
+    )
+    {
+        activity.SetTag("mcp.recovery.performed", result.Recovered);
+        activity.SetTag("mcp.work.indexed", Math.Clamp(result.IndexedPoints, 0, 1_024));
+    }
 
     private static VectorCollectionDescriptor Descriptor(VectorCollectionIdentity identity) =>
         new(

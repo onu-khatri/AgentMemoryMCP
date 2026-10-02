@@ -113,7 +113,10 @@ dotnet publish AgentSession.MCP/AgentSession.MCP.csproj -c Release -r win-x64 --
 
 The smoke should discover 26 unique tools and show clean protocol stdout.
 
+## Optional observability demonstration
+
+Start and check the disposable local collector, enable loopback `http/protobuf` export, run a successful and a validation-failure call, then stop the collector. Show receiver accepted counts, bounded JSON stderr, trace/log correlation, and that the tmpfs sink disappears on stop. Follow the canonical [observability operations guide](../../docs/observability/README.md); do not use production credentials or persistent storage for the demo.
+
 ## Demo explanation checklist
 
 Be ready to explain why activation is separate from resume, why checkpoint does not save work, why operation ID and revision are both needed, why Qdrant is derived, and what survives each simulated failure.
-

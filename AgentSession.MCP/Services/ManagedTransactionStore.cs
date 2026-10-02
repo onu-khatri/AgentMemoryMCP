@@ -4,6 +4,7 @@ using System.Text.Json;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Interfaces;
 using AgentSession.MCP.Options;
+using AgentSession.MCP.Observability;
 using Microsoft.Extensions.Options;
 
 namespace AgentSession.MCP.Services;
@@ -44,7 +45,8 @@ public sealed class ManagedTransactionStore(
     RepositoryMutationLock gate,
     IMemoryContentPolicy policy,
     IOptions<MemoryPolicyOptions> options,
-    TimeProvider time
+    TimeProvider time,
+    McpDependencyTelemetry telemetry
 )
 {
     private readonly SystemFileSystem _files = new();
@@ -266,11 +268,24 @@ public sealed class ManagedTransactionStore(
         return result;
     }
 
-    public async Task<ManagedReceipt> CommitAsync(
+    public Task<ManagedReceipt> CommitAsync(
         string operationId,
         IReadOnlyList<ManagedMutation> mutations,
         CancellationToken cancellationToken = default,
         Action? validateCommit = null
+    ) => telemetry.TrackInternalAsync(
+        "filesystem",
+        "transaction",
+        mutations.Count,
+        token => CommitCoreAsync(operationId, mutations, token, validateCommit),
+        cancellationToken
+    );
+
+    private async Task<ManagedReceipt> CommitCoreAsync(
+        string operationId,
+        IReadOnlyList<ManagedMutation> mutations,
+        CancellationToken cancellationToken,
+        Action? validateCommit
     )
     {
         ManagedStoragePathResolver.RequireIdentifier(operationId);
@@ -363,11 +378,25 @@ public sealed class ManagedTransactionStore(
         return await ApplyAsync(intent);
     }
 
-    private async Task RecoverAsync()
+    private Task RecoverAsync() => telemetry.TrackInternalAsync(
+        "filesystem",
+        "recovery",
+        null,
+        _ => RecoverCoreAsync(),
+        CancellationToken.None,
+        static (activity, recovered) =>
+        {
+            activity.SetTag("mcp.recovery.performed", recovered > 0);
+            activity.SetTag("mcp.batch.items", Math.Clamp(recovered, 0, 1_024));
+        }
+    );
+
+    private async Task<int> RecoverCoreAsync()
     {
         var folder = Path.GetDirectoryName(OperationFile("probe", "intent"))!;
         if (!Directory.Exists(folder))
-            return;
+            return 0;
+        var recovered = 0;
         foreach (
             var file in Directory
                 .EnumerateFiles(folder, "*.intent.json")
@@ -389,7 +418,9 @@ public sealed class ManagedTransactionStore(
             )
                 throw new InvalidDataException("Pending operation integrity check failed.");
             await ApplyAsync(intent);
+            recovered++;
         }
+        return recovered;
     }
 
     private async Task<ManagedReceipt> ApplyAsync(ManagedCommit intent)

@@ -5,11 +5,15 @@ using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnuObservability.Mcp;
 
 if (args.Length != 2) return 2;
-using var services = new ServiceCollection().AddMemoryStorageConfiguration(
-    new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
-    { ["SystemStorage:Root"] = args[1], ["Repository:Id"] = "repo" }).Build()).BuildServiceProvider();
+using var services = new ServiceCollection()
+    .AddSingleton<IMcpDependencyFailureRecorder, NoOpDependencyFailureRecorder>()
+    .AddMemoryStorageConfiguration(
+        new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+        { ["SystemStorage:Root"] = args[1], ["Repository:Id"] = "repo" }).Build())
+    .BuildServiceProvider();
 if (args[0] == "lock")
 {
     await using var lease = await services.GetRequiredService<RepositoryMutationLock>().AcquireAsync(TimeSpan.FromSeconds(10), default);
@@ -35,3 +39,10 @@ if (args[0] == "coordinate")
     }
 }
 return 2;
+
+internal sealed class NoOpDependencyFailureRecorder : IMcpDependencyFailureRecorder
+{
+    public void Record(string dependencyType, string dependencyOperation)
+    {
+    }
+}

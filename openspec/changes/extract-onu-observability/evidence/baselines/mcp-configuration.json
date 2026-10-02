@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "section": "Observability",
+  "sources": [
+    "AgentSession.MCP/Options/ObservabilityOptions.cs",
+    "AgentSession.MCP/Observability/ObservabilityOptionsValidator.cs",
+    "AgentSession.MCP/Extensions/ObservabilityConfigurationExtensions.cs"
+  ],
+  "options": [
+    { "name": "Enabled", "type": "boolean", "default": true },
+    { "name": "ExporterEnabled", "type": "boolean", "default": false },
+    { "name": "ExportTraces", "type": "boolean", "default": true },
+    { "name": "ExportMetrics", "type": "boolean", "default": true },
+    { "name": "ExportLogs", "type": "boolean", "default": false },
+    { "name": "ServiceName", "type": "string", "default": "agent-session-mcp", "maxLength": 128, "pattern": "^[A-Za-z0-9._-]+$" },
+    { "name": "ServiceNamespace", "type": "string", "default": "agent-memory", "maxLength": 128, "pattern": "^[A-Za-z0-9._-]+$" },
+    { "name": "DeploymentEnvironment", "type": "string", "default": "development", "maxLength": 128, "pattern": "^[A-Za-z0-9._-]+$" },
+    { "name": "ExporterProtocol", "type": "enum", "default": "grpc", "values": ["grpc", "http/protobuf"] },
+    { "name": "Endpoint", "type": "absolute-http-uri-or-null", "default": null, "constraints": ["no-userinfo", "no-query", "no-fragment", "http-loopback-or-approved-sidecar-only", "https-remote"] },
+    { "name": "InsecureSidecarHosts", "type": "bounded-host-array", "default": [] },
+    { "name": "TraceSamplingRatio", "type": "finite-double", "default": 1.0, "minimum": 0.0, "maximum": 1.0 },
+    { "name": "ExportTimeoutMilliseconds", "type": "integer", "default": 10000, "minimum": 1, "maximum": 120000 },
+    { "name": "BatchDelayMilliseconds", "type": "integer", "default": 5000, "minimum": 1, "maximum": 60000 },
+    { "name": "QueueCapacity", "type": "integer", "default": 2048, "minimum": 1, "maximum": 65536 },
+    { "name": "MaxExportBatchSize", "type": "integer", "default": 512, "minimum": 1, "maximumFrom": "QueueCapacity" },
+    { "name": "ShutdownFlushTimeoutMilliseconds", "type": "integer", "default": 5000, "minimum": 1, "maximum": 120000 },
+    { "name": "MaxLogBodyLength", "type": "integer", "default": 1024, "minimum": 64, "maximum": 16384 },
+    { "name": "MaxAttributeLength", "type": "integer", "default": 256, "minimum": 16, "maximum": 4096 },
+    { "name": "LogRateLimitWindowSeconds", "type": "integer", "default": 60, "minimum": 1, "maximum": 3600 },
+    { "name": "LogRateLimitBurst", "type": "integer", "default": 20, "minimum": 1, "maximum": 10000 },
+    { "name": "MaxLogRateLimitKeys", "type": "integer", "default": 256, "minimum": 1, "maximum": 10000 },
+    { "name": "MaxToolArgumentFields", "type": "integer", "default": 256, "minimum": 1, "maximum": 4096, "futureOwner": "mcp-adapter" },
+    { "name": "MaxResultContentItems", "type": "integer", "default": 256, "minimum": 1, "maximum": 4096, "futureOwner": "mcp-adapter" },
+    { "name": "MinimumLogLevel", "type": "Microsoft.Extensions.Logging.LogLevel", "default": "Information", "bindingKey": "Observability:MinimumLogLevel" }
+  ],
+  "standardEnvironmentPrecedence": [
+    { "name": "OTEL_SDK_DISABLED", "targets": ["Enabled"] },
+    { "name": "OTEL_SERVICE_NAME", "targets": ["ServiceName"] },
+    { "name": "OTEL_EXPORTER_OTLP_ENDPOINT", "targets": ["Endpoint", "ExporterEnabled"] },
+    { "name": "OTEL_EXPORTER_OTLP_PROTOCOL", "targets": ["ExporterProtocol"] },
+    { "name": "OTEL_TRACES_SAMPLER_ARG", "targets": ["TraceSamplingRatio"] },
+    { "name": "OTEL_TRACES_EXPORTER", "targets": ["ExportTraces"] },
+    { "name": "OTEL_METRICS_EXPORTER", "targets": ["ExportMetrics"] },
+    { "name": "OTEL_LOGS_EXPORTER", "targets": ["ExportLogs"] },
+    { "name": "OTEL_RESOURCE_ATTRIBUTES", "supportedKeys": ["service.namespace", "deployment.environment", "deployment.environment.name"] }
+  ],
+  "signalHttpPaths": {
+    "trace": "/v1/traces",
+    "metric": "/v1/metrics",
+    "log": "/v1/logs"
+  }
+}

@@ -2,9 +2,11 @@ using System.ComponentModel;
 using AgentSession.MCP.Contracts;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Models.Memory;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
+using OnuObservability.Mcp;
 
 namespace AgentSession.MCP.Tools;
 
@@ -12,7 +14,8 @@ public sealed class MemoryTools(
     CanonicalMemoryService memory,
     LearningCatalog catalog,
     MemoryStatusService status,
-    MemoryReindexService reindex
+    MemoryReindexService reindex,
+    IMcpTelemetryOutcomeContext telemetryOutcomes
 )
 {
     [McpServerTool(UseStructuredContent = true, ReadOnly = true, OpenWorld = false)]
@@ -259,7 +262,7 @@ public sealed class MemoryTools(
     public Task<int> memory_rebuild_indexes(CancellationToken cancellationToken) =>
         Invoke(() => catalog.RebuildAsync(cancellationToken));
 
-    private static async Task<T> Invoke<T>(Func<Task<T>> action)
+    private async Task<T> Invoke<T>(Func<Task<T>> action)
     {
         try
         {
@@ -267,17 +270,25 @@ public sealed class MemoryTools(
         }
         catch (ValidationException error)
         {
-            throw new McpException(error.Code + ": " + error.Message);
+            throw McpClassifiedException.Create(
+                AgentMemoryMcpTelemetryOutcomeClassifier.Classify(error).Error?.Value
+                    + ": " + error.Message,
+                AgentMemoryMcpTelemetryOutcomeClassifier.Classify(error),
+                telemetryOutcomes);
         }
         catch (TimeoutException)
         {
-            throw new McpException(
-                "lock_timeout: Repository is busy; retry the same operation ID."
-            );
+            throw McpClassifiedException.Create(
+                "lock_timeout: Repository is busy; retry the same operation ID.",
+                new(OnuObservability.Model.CommonOutcomes.DeadlineExceeded, new("lock_timeout")),
+                telemetryOutcomes);
         }
         catch (InvalidDataException)
         {
-            throw new McpException("storage_invalid: Canonical data requires operator inspection.");
+            throw McpClassifiedException.Create(
+                "storage_invalid: Canonical data requires operator inspection.",
+                new(McpTelemetrySchema.ToolErrorOutcome, new("storage_invalid")),
+                telemetryOutcomes);
         }
     }
 }

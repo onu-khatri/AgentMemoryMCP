@@ -2,6 +2,7 @@ using System.Net;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Interfaces;
 using AgentSession.MCP.Options;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,9 @@ public static class MemoryConfigurationExtensions
             )
             .ValidateOnStart();
         services.TryAddSingleton<MemoryStoragePaths>();
+        services.TryAddSingleton<OnuObservability.Mcp.IMcpDependencyFailureRecorder,
+            NoOpMcpDependencyFailureRecorder>();
+        services.TryAddSingleton<McpDependencyTelemetry>();
         services.TryAddSingleton<ManagedStoragePathResolver>();
         services.TryAddSingleton<RepositoryMutationLock>();
         services.TryAddSingleton<IMemoryContentPolicy, MemoryContentPolicy>();
@@ -43,6 +47,7 @@ public static class MemoryConfigurationExtensions
         services.TryAddSingleton<CanonicalMemoryService>();
         services.TryAddSingleton<OperatorGrantVerifier>();
         services.TryAddSingleton<MemoryMaintenanceState>();
+        services.TryAddSingleton<IMemoryMaintenancePass, MemoryMaintenancePass>();
         services.TryAddSingleton<SessionCoordinationService>();
         services.TryAddSingleton<SessionResumeService>();
         services.TryAddSingleton<SharedSessionLifecycleService>();

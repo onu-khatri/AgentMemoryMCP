@@ -1,0 +1,63 @@
+{
+  "generatedAtUtc": "2026-09-28T12:38:30.641533+00:00",
+  "iterations": 50,
+  "runtime": "10.0.12",
+  "provisionalBudget": {
+    "p95OverheadMilliseconds": 5,
+    "cpuMillisecondsPerRequest": 5,
+    "allocatedBytesPerRequest": 131072,
+    "queueMemoryBytes": 67108864,
+    "totalBytesPerRequest": 32768,
+    "productionApprovalRequired": true
+  },
+  "scenarios": [
+    {
+      "name": "instrumentation_disabled",
+      "p50Milliseconds": 0.0002,
+      "p95Milliseconds": 0.0014,
+      "p99Milliseconds": 0.0069,
+      "throughputPerSecond": 773993.8080495356,
+      "cpuMillisecondsPerRequest": 0,
+      "allocatedBytesPerRequest": 131.04,
+      "queueMemoryBytes": 0,
+      "workingSetDeltaBytes": 172032,
+      "stderrBytesPerRequest": 0,
+      "otlpBodyBytesPerRequest": 0,
+      "totalBytesPerRequest": 0,
+      "p95OverheadMilliseconds": 0,
+      "budgetPassed": true
+    },
+    {
+      "name": "local_json",
+      "p50Milliseconds": 0.0536,
+      "p95Milliseconds": 0.2032,
+      "p99Milliseconds": 0.4479,
+      "throughputPerSecond": 13471.279232675935,
+      "cpuMillisecondsPerRequest": 0.3125,
+      "allocatedBytesPerRequest": 6252.64,
+      "queueMemoryBytes": 314488,
+      "workingSetDeltaBytes": 81920,
+      "stderrBytesPerRequest": 1288.78,
+      "otlpBodyBytesPerRequest": 0,
+      "totalBytesPerRequest": 1288.78,
+      "p95OverheadMilliseconds": 0.20179999999999998,
+      "budgetPassed": true
+    },
+    {
+      "name": "otlp_batch",
+      "p50Milliseconds": 0.0515,
+      "p95Milliseconds": 0.2446,
+      "p99Milliseconds": 0.8232,
+      "throughputPerSecond": 11950.572432419513,
+      "cpuMillisecondsPerRequest": 3.125,
+      "allocatedBytesPerRequest": 74263.04,
+      "queueMemoryBytes": 354672,
+      "workingSetDeltaBytes": 4206592,
+      "stderrBytesPerRequest": 1288.34,
+      "otlpBodyBytesPerRequest": 1107.08,
+      "totalBytesPerRequest": 2395.42,
+      "p95OverheadMilliseconds": 0.2432,
+      "budgetPassed": true
+    }
+  ]
+}

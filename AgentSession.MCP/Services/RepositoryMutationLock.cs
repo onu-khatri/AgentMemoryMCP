@@ -1,11 +1,30 @@
+using AgentSession.MCP.Observability;
+
 namespace AgentSession.MCP.Services;
 
 /// <summary>One bounded in-process gate and one OS file lease per bound repository.</summary>
-public sealed class RepositoryMutationLock(ManagedStoragePathResolver paths) : IDisposable
+public sealed class RepositoryMutationLock(
+    ManagedStoragePathResolver paths,
+    McpDependencyTelemetry telemetry
+) : IDisposable
 {
     private readonly SemaphoreSlim _gate = new(1, 1);
 
-    public async Task<IAsyncDisposable> AcquireAsync(TimeSpan timeout, CancellationToken cancellationToken)
+    public Task<IAsyncDisposable> AcquireAsync(
+        TimeSpan timeout,
+        CancellationToken cancellationToken
+    ) => telemetry.TrackInternalAsync(
+        "filesystem",
+        "lock",
+        null,
+        token => AcquireCoreAsync(timeout, token),
+        cancellationToken
+    );
+
+    private async Task<IAsyncDisposable> AcquireCoreAsync(
+        TimeSpan timeout,
+        CancellationToken cancellationToken
+    )
     {
         if (timeout <= TimeSpan.Zero || timeout.TotalMilliseconds > uint.MaxValue - 1)
             throw new ArgumentOutOfRangeException(nameof(timeout));

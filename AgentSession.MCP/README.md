@@ -17,4 +17,8 @@ Use the server as the agent's primary persisted memory source. At startup, disco
 
 Read the [developer onboarding wiki](../wiki/Dev/README.md), [agent and skill wiki](../wiki/agent-ai-guidence/README.md), [MCP contract](../AiLearning/MCP-CONTRACT.md), [parent/sub-agent workflow](../AiLearning/PARENT-SUBAGENT-EXAMPLE.md), [operations guide](../AiLearning/OPERATIONS.md), and [runtime layout](../AiLearning/README.md).
 
+## Observability
+
+Safe JSON diagnostics go to stderr; stdout remains JSON-RPC-only. The server consumes `OnuObservability.Hosting` and `OnuObservability.Mcp` `0.1.0-alpha.9` from the approved local feed; reusable providers, MCP filters, logging, export health, shutdown, and reviewed outbound HTTP instrumentation code are not duplicated here. Remote OTLP traces, metrics, and logs are explicitly enabled and bounded. Use the repository start/check/stop scripts for the loopback collector, and consult the [AgentMemory observability operations guide](../docs/observability/README.md) for service overrides and links to the package-owned configuration, signal, privacy, and adapter references.
+
 Memory is advisory and never replaces current repository evidence, tests, instructions, approvals or user decisions. Persist conclusions and evidence rather than secrets or private chain-of-thought. Startup leaves historical storage untouched.

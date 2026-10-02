@@ -256,8 +256,45 @@ public sealed class McpSessionTests : IDisposable
     [Fact]
     public async Task HostedMaintenancePublishesBoundedRunFieldsWithoutSemanticDecisions()
     {
-        using var server = new McpProcess(_root);
+        using var server = new McpProcess(_root, cleanupIntervalMinutes: 0.01);
         await server.InitializeAsync();
+        JsonElement status = default;
+        // A maintenance pass has its own ten-second budget. Allow enough time for
+        // a transient first-pass dependency timeout and the next scheduled pass.
+        var deadline = DateTime.UtcNow.AddSeconds(25);
+        do
+        {
+            var response = await server.RequestAsync(
+                "tools/call",
+                new { name = "memory_status", arguments = new { } }
+            );
+            var result = response.GetProperty("result");
+            if (result.TryGetProperty("isError", out var isError) && isError.GetBoolean())
+            {
+                await Task.Delay(50);
+                continue;
+            }
+            status = result.GetProperty("structuredContent").Clone();
+            if (
+                status.GetProperty("lastCleanupAtUtc").ValueKind != JsonValueKind.Null
+                && status.GetProperty("lastIndexRepairAtUtc").ValueKind != JsonValueKind.Null
+                && status.GetProperty("lastEmbeddingRunAtUtc").ValueKind != JsonValueKind.Null
+                && status.GetProperty("lastReconciliationAtUtc").ValueKind != JsonValueKind.Null
+            )
+                break;
+            await Task.Delay(50);
+        } while (DateTime.UtcNow < deadline);
+
+        Assert.Equal(JsonValueKind.Object, status.ValueKind);
+        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastCleanupAtUtc").ValueKind);
+        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastIndexRepairAtUtc").ValueKind);
+        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastEmbeddingRunAtUtc").ValueKind);
+        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastReconciliationAtUtc").ValueKind);
+        Assert.Equal("degraded", status.GetProperty("qdrant").GetProperty("state").GetString());
+        Assert.Equal(
+            "semantic_active_collection_missing",
+            status.GetProperty("qdrant").GetProperty("errorCode").GetString()
+        );
         var created = await server.CallAsync(
             "memory_remember",
             new
@@ -267,25 +304,6 @@ public sealed class McpSessionTests : IDisposable
                 content = "Unreviewed short knowledge must remain active.",
                 agentId = "agent-a",
             }
-        );
-        JsonElement status = default;
-        var deadline = DateTime.UtcNow.AddSeconds(12);
-        do
-        {
-            status = await server.CallWithoutRequestAsync("memory_status");
-            if (status.GetProperty("lastCleanupAtUtc").ValueKind != JsonValueKind.Null)
-                break;
-            await Task.Delay(50);
-        } while (DateTime.UtcNow < deadline);
-
-        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastCleanupAtUtc").ValueKind);
-        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastIndexRepairAtUtc").ValueKind);
-        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastEmbeddingRunAtUtc").ValueKind);
-        Assert.NotEqual(JsonValueKind.Null, status.GetProperty("lastReconciliationAtUtc").ValueKind);
-        Assert.Equal("degraded", status.GetProperty("qdrant").GetProperty("state").GetString());
-        Assert.Equal(
-            "semantic_active_collection_missing",
-            status.GetProperty("qdrant").GetProperty("errorCode").GetString()
         );
         var record = await server.CallAsync(
             "memory_get",

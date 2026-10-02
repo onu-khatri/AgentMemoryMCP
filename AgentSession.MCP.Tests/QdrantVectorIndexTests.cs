@@ -1,10 +1,14 @@
+using System.Diagnostics;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Contracts;
 using AgentSession.MCP.Extensions;
 using AgentSession.MCP.Models.Memory;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
 using Qdrant.Client;
 using Qdrant.Client.Grpc;
 
@@ -24,6 +28,114 @@ public sealed class QdrantVectorIndexTests
         Assert.Equal(8, first.Variant);
     }
 
+    [Fact]
+    public async Task LogicalOperationsEmitBoundedSpansAndFailureMetricsWithFakeBackendCalls()
+    {
+        var activities = new ThreadSafeCollection<Activity>();
+        var failures = new TestDependencyFailureRecorder();
+        using var provider = Sdk.CreateTracerProviderBuilder()
+            .AddSource(TelemetrySchema.ActivitySourceName)
+            .AddInMemoryExporter(activities)
+            .Build();
+        var index = new QdrantVectorIndex(
+            new QdrantClient("localhost", 6334),
+            new MemoryContentPolicy(),
+            new McpDependencyTelemetry(failures)
+        );
+
+        foreach (var operation in new[] { "health", "migration", "query", "delete" })
+            await index.TrackOperationAsync(
+                "qdrant",
+                operation,
+                operation is "query" or "delete" ? 7 : null,
+                _ => Task.CompletedTask,
+                CancellationToken.None
+            );
+        foreach (var operation in new[] { "collection", "upsert" })
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                index.TrackOperationAsync(
+                    "qdrant",
+                    operation,
+                    operation == "upsert" ? 1 : null,
+                    _ => throw new InvalidOperationException(
+                        "private-qdrant.example/collection/repository/memory/point/vector/filter/payload"
+                    ),
+                    CancellationToken.None
+                )
+            );
+        Assert.True(provider.ForceFlush(5_000));
+
+        var qdrantActivities = activities.Where(activity =>
+            Equals(activity.GetTagItem("dependency.type"), "qdrant")).ToArray();
+        Assert.Equal(6, qdrantActivities.Length);
+        Assert.Equal(
+            new[] { "collection", "delete", "health", "migration", "query", "upsert" },
+            qdrantActivities
+                .Select(activity => activity.GetTagItem("dependency.operation")?.ToString())
+                .Order(StringComparer.Ordinal)
+        );
+        Assert.All(qdrantActivities, activity =>
+        {
+            Assert.Equal(ActivityKind.Client, activity.Kind);
+            Assert.Equal("qdrant", activity.GetTagItem("dependency.type"));
+            Assert.Empty(activity.Events);
+        });
+        Assert.All(
+            qdrantActivities.Where(activity =>
+                activity.GetTagItem("dependency.operation")?.ToString()
+                    is "collection" or "upsert"),
+            activity =>
+            {
+                Assert.Equal("dependency_error", activity.GetTagItem("mcp.status"));
+                Assert.Equal("dependency_grpc_error", activity.GetTagItem("error.type"));
+                Assert.Equal(ActivityStatusCode.Error, activity.Status);
+            }
+        );
+        Assert.All(
+            qdrantActivities.Where(activity =>
+                activity.GetTagItem("dependency.operation")?.ToString()
+                    is not ("collection" or "upsert")),
+            activity => Assert.Equal("success", activity.GetTagItem("mcp.status"))
+        );
+        Assert.Equal(
+            7,
+            qdrantActivities.Single(activity =>
+                Equals(activity.GetTagItem("dependency.operation"), "query"))
+                .GetTagItem("mcp.batch.items")
+        );
+        Assert.Equal(
+            1,
+            qdrantActivities.Single(activity =>
+                Equals(activity.GetTagItem("dependency.operation"), "upsert"))
+                .GetTagItem("mcp.batch.items")
+        );
+        var expectedFailures = failures.Failures.Where(failure =>
+            failure.Type == "qdrant"
+            && failure.Operation is "collection" or "upsert"
+        ).ToArray();
+        Assert.Equal(2, expectedFailures.Length);
+        Assert.All(expectedFailures, failure =>
+        {
+            Assert.Equal("qdrant", failure.Type);
+            Assert.Contains(failure.Operation, new[] { "collection", "upsert" });
+        });
+        var exported = string.Join(
+            "|",
+            qdrantActivities.SelectMany(activity => activity.TagObjects).Select(tag => tag.Value)
+        );
+        foreach (var forbidden in new[]
+        {
+            "private-qdrant",
+            "collection/repository",
+            "memory",
+            "point",
+            "vector",
+            "filter",
+            "payload",
+        })
+            Assert.DoesNotContain(forbidden, exported, StringComparison.OrdinalIgnoreCase);
+    }
+
     [QdrantFact]
     [Trait("Category", "QdrantIntegration")]
     public async Task RealQdrantEnforcesRevisionAndMetadataFilters()
@@ -38,7 +150,11 @@ public sealed class QdrantVectorIndexTests
         );
         var prefix = "agent_memory_test_" + Guid.NewGuid().ToString("N");
         var identity = EmbeddingProjection.Collection(prefix, repositoryId, fingerprint);
-        var index = new QdrantVectorIndex(client, new MemoryContentPolicy());
+        var index = new QdrantVectorIndex(
+            client,
+            new MemoryContentPolicy(),
+            new McpDependencyTelemetry(new TestDependencyFailureRecorder())
+        );
         var vector = new[] { 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
 
         try

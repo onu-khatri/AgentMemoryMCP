@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -41,15 +42,12 @@ public sealed record MaintenanceSnapshot(
     string? ErrorCode
 );
 
-public sealed class MemoryMaintenanceService(
-    CanonicalMemoryService memory,
+internal sealed class MemoryMaintenanceService(
+    IMemoryMaintenancePass maintenance,
     MemoryMaintenanceState state,
     IOptions<MemoryPolicyOptions> options,
     TimeProvider time,
-    ILogger<MemoryMaintenanceService> logger,
-    LearningCatalog catalog,
-    VectorIndexCoordinator coordinator,
-    VectorMigrationService migration
+    ILogger<MemoryMaintenanceService> logger
 ) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -60,11 +58,19 @@ public sealed class MemoryMaintenanceService(
         );
         do
         {
+            using var activity = TelemetrySchema.Activities.StartActivity(
+                "mcp operation maintenance maintenance",
+                ActivityKind.Internal
+            );
+            activity?.SetTag("dependency.type", "maintenance");
+            activity?.SetTag("dependency.operation", "maintenance");
+            var classification = TelemetryOutcomeClassifier.Success;
             var deleted = 0;
             var errors = 0;
             var archived = 0;
             var processed = 0;
             var indexed = 0;
+            var deferred = 0;
             var queued = 0;
             var orphans = 0;
             DateTimeOffset? indexAt = null;
@@ -73,64 +79,22 @@ public sealed class MemoryMaintenanceService(
             string? errorCode = null;
             try
             {
-                using var budget = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
-                budget.CancelAfter(TimeSpan.FromSeconds(10));
-                var jobToken = budget.Token;
-                var watch = Stopwatch.StartNew();
-                while (watch.Elapsed < TimeSpan.FromSeconds(10))
-                {
-                    var result = await memory.RunMaintenanceAsync(jobToken);
-                    deleted += result.Deleted;
-                    archived += result.Archived;
-                    errors = result.Errors;
-                    if (
-                        result.Deleted < options.Value.Limits.MaxMutationBatch
-                        && result.Archived < options.Value.Limits.MaxMutationBatch
-                    )
-                        break;
-                }
-                await catalog.RebuildAsync(jobToken);
-                indexAt = time.GetUtcNow();
-                try
-                {
-                    var work = await coordinator.ProcessPendingAsync(
-                        options.Value.Limits.MaxMutationBatch,
-                        jobToken
-                    );
-                    processed = work.Processed;
-                    indexed = work.Indexed;
-                    errors += work.Errors;
-                    embeddingAt = time.GetUtcNow();
-                }
-                catch (Exception error) when (error is not OperationCanceledException)
-                {
-                    errors++;
-                    errorCode = "embedding_job_degraded";
-                }
-                try
-                {
-                    var active = await migration.GetActiveIdentityAsync(jobToken);
-                    if (active is not null)
-                    {
-                        var reconciliation = await coordinator.ReconcileAsync(
-                            active,
-                            options.Value.Limits.MaxMutationBatch,
-                            jobToken
-                        );
-                        queued = reconciliation.MissingOrStaleQueued;
-                        orphans = reconciliation.OrphansDeleted;
-                        errors += reconciliation.Errors;
-                    }
-                    reconciliationAt = time.GetUtcNow();
-                }
-                catch (Exception error) when (error is not OperationCanceledException)
-                {
-                    errors++;
-                    errorCode ??= "reconciliation_job_degraded";
-                }
+                var result = await maintenance.RunAsync(stoppingToken);
+                deleted = result.Deleted;
+                archived = result.Archived;
+                processed = result.VectorsProcessed;
+                indexed = result.VectorsIndexed;
+                deferred = result.VectorsDeferred;
+                queued = result.VectorsQueued;
+                orphans = result.OrphansDeleted;
+                errors = result.Errors;
+                errorCode = result.ErrorCode;
+                indexAt = result.IndexRepairAtUtc;
+                embeddingAt = result.EmbeddingRunAtUtc;
+                reconciliationAt = result.ReconciliationAtUtc;
                 state.Record(
                     new(
-                        time.GetUtcNow(),
+                        result.CompletedAtUtc,
                         indexAt,
                         embeddingAt,
                         reconciliationAt,
@@ -145,17 +109,31 @@ public sealed class MemoryMaintenanceService(
                     )
                 );
                 if (errors > 0)
+                {
+                    classification = new(
+                        TelemetryOutcome.DependencyError,
+                        "dependency_error"
+                    );
                     logger.LogWarning(
                         "Memory cleanup retained {Count} records requiring operator review.",
                         errors
                     );
+                }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
+                classification = new(
+                    TelemetryOutcome.ClientCancelled,
+                    "client_cancelled"
+                );
                 return;
             }
             catch (OperationCanceledException)
             {
+                classification = new(
+                    TelemetryOutcome.DeadlineExceeded,
+                    "deadline_exceeded"
+                );
                 errorCode = "maintenance_budget_exceeded";
                 errors++;
                 state.Record(
@@ -165,8 +143,9 @@ public sealed class MemoryMaintenanceService(
                     )
                 );
             }
-            catch (Exception)
+            catch (Exception error)
             {
+                classification = TelemetryOutcomeClassifier.Classify(error, stoppingToken);
                 state.Record(
                     new(
                         time.GetUtcNow(), indexAt, embeddingAt, reconciliationAt,
@@ -177,6 +156,29 @@ public sealed class MemoryMaintenanceService(
                 logger.LogWarning(
                     "Memory cleanup failed; canonical data requires review. No content is included in this diagnostic."
                 );
+            }
+            finally
+            {
+                activity?.SetTag("mcp.work.deleted", Math.Clamp(deleted, 0, 1_024));
+                activity?.SetTag("mcp.work.archived", Math.Clamp(archived, 0, 1_024));
+                activity?.SetTag("mcp.work.processed", Math.Clamp(processed, 0, 1_024));
+                activity?.SetTag("mcp.work.indexed", Math.Clamp(indexed, 0, 1_024));
+                activity?.SetTag("mcp.work.deferred", Math.Clamp(deferred, 0, 1_024));
+                activity?.SetTag("mcp.work.queued", Math.Clamp(queued, 0, 1_024));
+                activity?.SetTag("mcp.work.orphans", Math.Clamp(orphans, 0, 1_024));
+                activity?.SetTag("mcp.work.errors", Math.Clamp(errors, 0, 1_024));
+                activity?.SetTag(
+                    "mcp.status",
+                    TelemetrySchema.OutcomeName(classification.Outcome)
+                );
+                if (classification.Outcome != TelemetryOutcome.Success)
+                {
+                    activity?.SetTag(
+                        "error.type",
+                        TelemetrySchema.NormalizeErrorCode(classification.ErrorCode)
+                    );
+                    activity?.SetStatus(ActivityStatusCode.Error);
+                }
             }
         } while (await timer.WaitForNextTickAsync(stoppingToken));
     }

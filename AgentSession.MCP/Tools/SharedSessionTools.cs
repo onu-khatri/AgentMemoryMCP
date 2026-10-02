@@ -2,16 +2,19 @@ using System.ComponentModel;
 using AgentSession.MCP.Contracts;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Models;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
+using OnuObservability.Mcp;
 
 namespace AgentSession.MCP.Tools;
 
 public sealed class SharedSessionTools(
     SessionCoordinationService coordination,
     SessionResumeService resume,
-    SharedSessionLifecycleService lifecycle
+    SharedSessionLifecycleService lifecycle,
+    IMcpTelemetryOutcomeContext telemetryOutcomes
 )
 {
     [McpServerTool(
@@ -106,7 +109,7 @@ public sealed class SharedSessionTools(
             )
         );
 
-    private static async Task<T> Invoke<T>(Func<Task<T>> action)
+    private async Task<T> Invoke<T>(Func<Task<T>> action)
     {
         try
         {
@@ -114,17 +117,25 @@ public sealed class SharedSessionTools(
         }
         catch (ValidationException error)
         {
-            throw new McpException(error.Code + ": " + error.Message);
+            throw McpClassifiedException.Create(
+                AgentMemoryMcpTelemetryOutcomeClassifier.Classify(error).Error?.Value
+                    + ": " + error.Message,
+                AgentMemoryMcpTelemetryOutcomeClassifier.Classify(error),
+                telemetryOutcomes);
         }
         catch (TimeoutException)
         {
-            throw new McpException(
-                "lock_timeout: Repository is busy; retry the same operation ID."
-            );
+            throw McpClassifiedException.Create(
+                "lock_timeout: Repository is busy; retry the same operation ID.",
+                new(OnuObservability.Model.CommonOutcomes.DeadlineExceeded, new("lock_timeout")),
+                telemetryOutcomes);
         }
         catch (InvalidDataException)
         {
-            throw new McpException("storage_invalid: Managed data requires operator inspection.");
+            throw McpClassifiedException.Create(
+                "storage_invalid: Managed data requires operator inspection.",
+                new(McpTelemetrySchema.ToolErrorOutcome, new("storage_invalid")),
+                telemetryOutcomes);
         }
     }
 }

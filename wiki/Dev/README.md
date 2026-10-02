@@ -29,6 +29,7 @@ All source links point to files without line numbers so the wiki remains stable 
 21. [Project mind map](21-project-mind-map.md)
 22. [Glossary](22-glossary.md)
 23. [Developer readiness checklist](23-developer-readiness-checklist.md)
+24. [Observability operations ownership](24-observability-operations.md)
 
 ## The one-sentence architecture
 
@@ -51,10 +52,9 @@ AgentSession.MCP is a .NET 10 stdio MCP server that persists repository-isolated
 - [Agent and skill integration guidance](../agent-ai-guidence/README.md)
 - [MCP contract](../../AiLearning/MCP-CONTRACT.md)
 - [Operations guide](../../AiLearning/OPERATIONS.md)
-- [OpenSpec design](../../openspec/changes/productionize-agent-memory/design.md)
-- [Acceptance verification](../../openspec/changes/productionize-agent-memory/verification.md)
+- [Archived OpenSpec design](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/design.md)
+- [Archived acceptance verification](../../openspec/changes/archive/2026-09-27-productionize-agent-memory/verification.md)
 
 ## First demonstration
 
 Build the solution, start the server with a stable `Repository__Id`, discover 26 tools, activate a session, save context, resume it after restarting the process, create and recall a short memory, then show `memory_status`. The complete script and expected observations are in [Build, run and demonstration](20-build-run-and-demo.md).
-

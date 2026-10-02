@@ -1,11 +1,15 @@
+using System.Diagnostics;
 using System.Text.Json;
 using AgentSession.MCP.Contracts;
 using AgentSession.MCP.Extensions;
 using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Models.Memory;
+using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
 
 namespace AgentSession.MCP.Tests;
 
@@ -1218,6 +1222,11 @@ public sealed class CanonicalMemoryTests : IDisposable
     [Fact]
     public async Task StatusReportsCanonicalCountsAndFilesystemReindexIsBounded()
     {
+        var activities = new ThreadSafeCollection<Activity>();
+        using var tracing = Sdk.CreateTracerProviderBuilder()
+            .AddSource(TelemetrySchema.ActivitySourceName)
+            .AddInMemoryExporter(activities)
+            .Build();
         using var provider = Build();
         var memory = provider.GetRequiredService<CanonicalMemoryService>();
         await memory.RememberAsync(Remember("status-temp"));
@@ -1244,6 +1253,17 @@ public sealed class CanonicalMemoryTests : IDisposable
         Assert.Equal(MemoryReindexScope.FileSystem, reindexed.Scope);
         Assert.Equal(0, reindexed.InvalidCanonicalRecords);
         Assert.False(reindexed.ModelMigrated);
+        Assert.True(tracing.ForceFlush(5_000));
+        var reindex = Assert.Single(activities, activity =>
+            activity.OperationName == "mcp operation maintenance reindex");
+        Assert.Equal(ActivityKind.Internal, reindex.Kind);
+        Assert.Equal("maintenance", reindex.GetTagItem("dependency.type"));
+        Assert.Equal("reindex", reindex.GetTagItem("dependency.operation"));
+        Assert.Equal(10, reindex.GetTagItem("mcp.batch.items"));
+        Assert.Equal("success", reindex.GetTagItem("mcp.status"));
+        var tags = string.Join("|", reindex.TagObjects.Select(tag => tag.Value));
+        Assert.DoesNotContain("filesystem-reindex", tags, StringComparison.Ordinal);
+        Assert.DoesNotContain(_root, tags, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
