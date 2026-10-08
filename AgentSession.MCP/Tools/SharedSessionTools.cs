@@ -6,7 +6,8 @@ using AgentSession.MCP.Observability;
 using AgentSession.MCP.Services;
 using ModelContextProtocol;
 using ModelContextProtocol.Server;
-using OnuObservability.Mcp;
+using OnuObservability.Mcp.Classification;
+using OnuObservability.Mcp.Schema;
 
 namespace AgentSession.MCP.Tools;
 

@@ -1,4 +1,4 @@
-using OnuObservability.Mcp;
+using OnuObservability.Mcp.Health;
 
 namespace AgentSession.MCP.Observability;
 

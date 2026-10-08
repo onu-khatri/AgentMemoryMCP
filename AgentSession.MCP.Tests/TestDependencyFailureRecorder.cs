@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using OnuObservability.Mcp;
+using OnuObservability.Mcp.Health;
 
 namespace AgentSession.MCP.Tests;
 

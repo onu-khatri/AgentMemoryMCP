@@ -16,7 +16,7 @@ Status: **approved for local prerelease and migration**. This record intentional
 | Signing mechanism | Unsigned for the local-only feed | Approved on 2026-09-29; external signing remains a future promotion decision |
 | SBOM/provenance mechanism | Repository SHA-256 manifest, SPDX 2.3 SBOM, and SLSA-shaped provenance evidence | Approved on 2026-09-29 |
 | Initial prerelease version | `0.1.0-alpha.1` | Approved on 2026-09-29 for the local feed |
-| Current immutable migration candidate | `0.1.0-alpha.9` | Local-only successor that moves reviewed outbound HTTP wiring into Hosting and formalizes consumer deployment-asset ownership; external publication remains unapproved |
+| Current immutable migration candidate | `0.1.0-alpha.10` | Local-only successor that moves reviewed outbound HTTP wiring into Hosting and formalizes consumer deployment-asset ownership; external publication remains unapproved |
 | Supported target frameworks | Approved 2026-09-30 | All projects and packages target `net10.0` only; no .NET 8 support matrix |
 
 The standalone local repository is initialized on branch `main` at the approved sibling checkout path. It has not been committed or pushed to GitHub. Packages may be published only to the approved ignored filesystem feed and consumed from there for migration validation. External publication, external signing, stable promotion, and pushing the repository remain unapproved actions.

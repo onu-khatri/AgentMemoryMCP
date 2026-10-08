@@ -1,17 +1,17 @@
 # AgentMemory observability verification evidence
 
-Evidence date: 2026-10-01. Local environment: Windows, .NET SDK 10.0.401/runtime 10.0.12. Docker Desktop/Engine was unavailable for the current `0.1.0-alpha.9` confirmation, so current live Collector checks are reported as unverified rather than passed.
+Evidence date: 2026-10-01. Local environment: Windows, .NET SDK 10.0.401/runtime 10.0.12. Docker Desktop/Engine was unavailable for the current `0.1.0-alpha.10` confirmation, so current live Collector checks are reported as unverified rather than passed.
 
-AgentMemoryMCP consumes immutable local packages `OnuObservability.Hosting` and `OnuObservability.Mcp` `0.1.0-alpha.9` from the standalone sibling repository at `D:\RND\ONU\OnuObservability`. The reusable outbound HTTP registration and sanitizer are package-owned; AgentMemory retains only its reviewed loopback `/api/tags` and `/api/embed` request predicate. Restore assets resolve both references as packages and contain no OnuObservability project reference.
+AgentMemoryMCP consumes immutable local packages `OnuObservability.Hosting` and `OnuObservability.Mcp` `0.1.0-alpha.10` from the standalone sibling repository at `D:\RND\ONU\OnuObservability`. The reusable outbound HTTP registration and sanitizer are package-owned; AgentMemory retains only its reviewed loopback `/api/tags` and `/api/embed` request predicate. Restore assets resolve both references as packages and contain no OnuObservability project reference.
 
 ## Current commands
 
 ```powershell
 dotnet restore ../OnuObservability/OnuObservability.sln --force-evaluate
-dotnet build ../OnuObservability/OnuObservability.sln -c Release --no-restore -p:PackageVersion=0.1.0-alpha.9
-../OnuObservability/eng/Pack-Local.ps1 -PackageVersion 0.1.0-alpha.9 -NoBuild
-../OnuObservability/eng/Test-PackageArtifacts.ps1 -PackageVersion 0.1.0-alpha.9 -AllowUnapprovedMetadata
-../OnuObservability/eng/Test-LocalPackages.ps1 -PackageVersion 0.1.0-alpha.9
+dotnet build ../OnuObservability/OnuObservability.sln -c Release --no-restore -p:PackageVersion=0.1.0-alpha.10
+../OnuObservability/eng/Pack-Local.ps1 -PackageVersion 0.1.0-alpha.10 -NoBuild
+../OnuObservability/eng/Test-PackageArtifacts.ps1 -PackageVersion 0.1.0-alpha.10 -AllowUnapprovedMetadata
+../OnuObservability/eng/Test-LocalPackages.ps1 -PackageVersion 0.1.0-alpha.10
 ./scripts/Test-AgentMemoryObservabilityAssetOwnership.ps1
 dotnet restore AgentMemoryMCP.slnx --force-evaluate
 dotnet test ../OnuObservability/OnuObservability.sln -c Release --no-build --no-restore
@@ -30,9 +30,9 @@ git diff --cached --check
 | Package suite | 134 passed, 0 failed, 0 skipped: Core 38, Hosting 48, ASP.NET Core 13, MCP 25, architecture 2, contract 4, integration 4. |
 | AgentMemory suite | 168 total: 163 passed, 5 skipped, 0 failed. The skips are three opt-in live Qdrant tests and two opt-in live Collector tests. Authoritative result: `AgentSession.MCP.Tests/TestResults/agent-alpha9-full-authoritative.trx`. |
 | HTTP ownership focus | 14/14 AgentMemory schema, Ollama HTTP-parentage/privacy, and consumer-parity tests passed. Hosting's complete 48/48 suite includes the package-owned reviewed-request and sanitizer test. |
-| Package artifacts | Four `.nupkg` and four `.snupkg` files were created once and normalized; `checksums.0.1.0-alpha.9.json` records their hashes. Package content/dependency/vulnerability seeded gates passed with the explicit local-metadata override. |
-| Exact-package consumers | Web, Worker, and MCP samples restored from the isolated filesystem feed, built without project references or unrelated adapters, and passed their package-consumer integration gate. Receipt: `../OnuObservability/artifacts/consumer-locks/validated-packages.0.1.0-alpha.9.json`. |
-| Consumer package graph | `OnuObservability.Hosting/0.1.0-alpha.9` and `OnuObservability.Mcp/0.1.0-alpha.9` resolve as packages; AgentSession has zero project references and no direct `OpenTelemetry.Instrumentation.Http` reference. |
+| Package artifacts | Four `.nupkg` and four `.snupkg` files were created once and normalized; `checksums.0.1.0-alpha.10.json` records their hashes. Package content/dependency/vulnerability seeded gates passed with the explicit local-metadata override. |
+| Exact-package consumers | Web, Worker, and MCP samples restored from the isolated filesystem feed, built without project references or unrelated adapters, and passed their package-consumer integration gate. Receipt: `../OnuObservability/artifacts/consumer-locks/validated-packages.0.1.0-alpha.10.json`. |
+| Consumer package graph | `OnuObservability.Hosting/0.1.0-alpha.10` and `OnuObservability.Mcp/0.1.0-alpha.10` resolve as packages; AgentSession has zero project references and no direct `OpenTelemetry.Instrumentation.Http` reference. |
 | Deployment-asset ownership | Twelve retained AgentMemory files are declared against alpha.9: eleven service-owned deployment copies and one hash-pinned package copy. The ownership/drift gate passed and is configured in CI. |
 | Architecture and cleanup | Compiled architecture tests passed 2/2. Repository searches found no duplicate local provider/filter/pipeline implementation or stale direct HTTP instrumentation registration. |
 | OpenSpec and diff hygiene | `openspec validate extract-onu-observability --strict`, scoped `git diff --check`, and staged `git diff --cached --check` passed. |

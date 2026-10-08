@@ -10,7 +10,7 @@ using AgentSession.MCP.Services;
 using AgentSession.MCP.Tools;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnuObservability.Hosting;
+using OnuObservability.Hosting.Composition;
 using OnuObservability.Mcp;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;

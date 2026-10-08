@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Build a production-grade **Model Context Protocol (MCP) Server** using **.NET 10**.
+Update for a production-grade **Model Context Protocol (MCP) Server** using **.NET 10**.
 
 The MCP Server must be an **independent, standalone, deployable service** that can be consumed by multiple applications, AI agents, IDEs, and other MCP-compatible clients.
 

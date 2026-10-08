@@ -31,8 +31,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
     <PackageReference Include="ModelContextProtocol" Version="2.2.0" />
-    <PackageReference Include="OnuObservability.Hosting" Version="0.1.0-alpha.9" />
-    <PackageReference Include="OnuObservability.Mcp" Version="0.1.0-alpha.9" />
+    <PackageReference Include="OnuObservability.Hosting" Version="0.1.0-alpha.10" />
+    <PackageReference Include="OnuObservability.Mcp" Version="0.1.0-alpha.10" />
     <PackageReference Include="Qdrant.Client" Version="1.19.0" />
   </ItemGroup>
 

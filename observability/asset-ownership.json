@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourcePackageVersion": "0.1.0-alpha.9",
+  "sourcePackageVersion": "0.1.0-alpha.10",
   "policy": "consumer-owned-versioned-deployment-copies",
   "assets": [
     { "path": "observability/collector.local.yaml", "ownership": "agentmemory-service-owned" },

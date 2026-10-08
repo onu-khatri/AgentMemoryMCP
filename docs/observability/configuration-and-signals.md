@@ -7,7 +7,7 @@ Reusable options, resource fields, MCP request/tool signals, safe log events, hi
 - [MCP adapter guide](../../../OnuObservability/docs/adapters.md)
 - [Application-schema guidance](../../../OnuObservability/docs/application-schema.md)
 
-AgentMemoryMCP currently pins `OnuObservability.Hosting` and `OnuObservability.Mcp` `0.1.0-alpha.9` from the repository-local feed. The package-native configuration root is `OnuObservability`.
+AgentMemoryMCP currently pins `OnuObservability.Hosting` and `OnuObservability.Mcp` `0.1.0-alpha.10` from the repository-local feed. The package-native configuration root is `OnuObservability`.
 
 ## Legacy configuration compatibility
 

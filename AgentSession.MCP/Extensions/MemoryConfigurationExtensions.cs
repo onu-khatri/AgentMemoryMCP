@@ -7,6 +7,7 @@ using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OnuObservability.Mcp.Health;
 using Qdrant.Client;
 
 namespace AgentSession.MCP.Extensions;
@@ -35,7 +36,7 @@ public static class MemoryConfigurationExtensions
             )
             .ValidateOnStart();
         services.TryAddSingleton<MemoryStoragePaths>();
-        services.TryAddSingleton<OnuObservability.Mcp.IMcpDependencyFailureRecorder,
+        services.TryAddSingleton<IMcpDependencyFailureRecorder,
             NoOpMcpDependencyFailureRecorder>();
         services.TryAddSingleton<McpDependencyTelemetry>();
         services.TryAddSingleton<ManagedStoragePathResolver>();

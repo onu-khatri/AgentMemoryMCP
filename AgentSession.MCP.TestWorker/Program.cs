@@ -5,7 +5,7 @@ using AgentSession.MCP.Helpers;
 using AgentSession.MCP.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnuObservability.Mcp;
+using OnuObservability.Mcp.Health;
 
 if (args.Length != 2) return 2;
 using var services = new ServiceCollection()

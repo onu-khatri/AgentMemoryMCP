@@ -3,7 +3,7 @@ using AgentSession.MCP.Extensions;
 using AgentSession.MCP.Observability;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnuObservability.Hosting;
+using OnuObservability.Hosting.Composition;
 using OnuObservability.Mcp;
 using OnuObservability.Schema;
 

@@ -1,5 +1,5 @@
 using AgentSession.MCP.Observability;
-using OnuObservability.Hosting;
+using OnuObservability.Hosting.Composition;
 using OnuObservability.Model;
 
 namespace AgentSession.MCP.Extensions;

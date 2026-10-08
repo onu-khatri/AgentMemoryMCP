@@ -4,7 +4,7 @@ using AgentSession.MCP.Tools;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using OnuObservability.Hosting;
+using OnuObservability.Hosting.Composition;
 using OnuObservability.Hosting.Configuration;
 using OnuObservability.Mcp;
 

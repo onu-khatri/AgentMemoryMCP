@@ -1,6 +1,7 @@
 using AgentSession.MCP.Helpers;
+using OnuObservability.Mcp.Classification;
 using OnuObservability.Model;
-using OnuObservability.Mcp;
+using OnuObservability.Mcp.Schema;
 
 namespace AgentSession.MCP.Observability;
 

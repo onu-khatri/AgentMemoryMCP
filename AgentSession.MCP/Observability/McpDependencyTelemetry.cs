@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using OnuObservability.Mcp;
+using OnuObservability.Mcp.Health;
 
 namespace AgentSession.MCP.Observability;
 
@@ -31,14 +31,15 @@ public sealed class McpDependencyTelemetry(IMcpDependencyFailureRecorder failure
         int? itemCount,
         Func<CancellationToken, Task<T>> action,
         CancellationToken cancellationToken
-    ) => await TrackCoreAsync(
-        ActivityKind.Client,
-        dependencyType,
-        operation,
-        itemCount,
-        action,
-        cancellationToken
-    );
+    ) =>
+        await TrackCoreAsync(
+            ActivityKind.Client,
+            dependencyType,
+            operation,
+            itemCount,
+            action,
+            cancellationToken
+        );
 
     internal Task TrackInternalAsync(
         string dependencyType,
@@ -46,18 +47,19 @@ public sealed class McpDependencyTelemetry(IMcpDependencyFailureRecorder failure
         int? itemCount,
         Func<CancellationToken, Task> action,
         CancellationToken cancellationToken
-    ) => TrackCoreAsync<object?>(
-        ActivityKind.Internal,
-        dependencyType,
-        operation,
-        itemCount,
-        async token =>
-        {
-            await action(token);
-            return null;
-        },
-        cancellationToken
-    );
+    ) =>
+        TrackCoreAsync<object?>(
+            ActivityKind.Internal,
+            dependencyType,
+            operation,
+            itemCount,
+            async token =>
+            {
+                await action(token);
+                return null;
+            },
+            cancellationToken
+        );
 
     internal Task<T> TrackInternalAsync<T>(
         string dependencyType,
@@ -66,15 +68,16 @@ public sealed class McpDependencyTelemetry(IMcpDependencyFailureRecorder failure
         Func<CancellationToken, Task<T>> action,
         CancellationToken cancellationToken,
         Action<Activity, T>? enrichOnSuccess = null
-    ) => TrackCoreAsync(
-        ActivityKind.Internal,
-        dependencyType,
-        operation,
-        itemCount,
-        action,
-        cancellationToken,
-        enrichOnSuccess
-    );
+    ) =>
+        TrackCoreAsync(
+            ActivityKind.Internal,
+            dependencyType,
+            operation,
+            itemCount,
+            action,
+            cancellationToken,
+            enrichOnSuccess
+        );
 
     private async Task<T> TrackCoreAsync<T>(
         ActivityKind activityKind,
@@ -89,7 +92,8 @@ public sealed class McpDependencyTelemetry(IMcpDependencyFailureRecorder failure
         var registered = AgentMemoryTelemetrySchema.Resolve(
             activityKind,
             dependencyType,
-            operation);
+            operation
+        );
         dependencyType = registered.Type;
         operation = registered.Operation;
         var classification = TelemetryOutcomeClassifier.Success;
@@ -162,5 +166,4 @@ public sealed class McpDependencyTelemetry(IMcpDependencyFailureRecorder failure
             }
         );
     }
-
 }
