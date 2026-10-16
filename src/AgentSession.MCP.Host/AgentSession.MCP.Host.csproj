@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol.AspNetCore" />
+    <ProjectReference Include="../AgentSession.MCP.Core/AgentSession.MCP.Core.csproj" />
+    <ProjectReference Include="../AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj" />
+    <ProjectReference Include="../Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj" />
+    <ProjectReference Include="../Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj" />
+    <ProjectReference Include="../AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj" />
+    <ProjectReference Include="../AgentSession.MCP.ServiceDefaults/AgentSession.MCP.ServiceDefaults.csproj" />
+  </ItemGroup>
+</Project>

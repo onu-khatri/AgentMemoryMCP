@@ -1,0 +1,2029 @@
+{
+  "capturedAtUtc": "2026-10-16T17:51:31.9058780+00:00",
+  "expectedCount": 142,
+  "assignedCount": 142,
+  "unassigned": [],
+  "duplicates": [
+    null
+  ],
+  "entries": [
+    {
+      "path": "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Context/IPlatformRequestContextAccessor.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Context/PlatformRequestContext.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Context/PlatformRequestContextAccessor.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Errors"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Errors/ErrorCategory.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Errors/PlatformError.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Errors/PlatformException.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Errors/Result.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Errors/ValidationException.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Execution/CapabilityExecutionContext.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Execution/ModuleRegistrationDescriptor.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Core.Security"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Observability/DependencyOperation.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Observability/IDependencyOperationTracker.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Policies/ExecutionBounds.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Policies/RetryAndIdempotencyPolicy.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Security/AuthorizationRequirement.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Storage/ContentHash.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Storage/IManagedMutationPolicy.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Storage/ManagedStorageContracts.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/Storage/ManagedStorageIdentifier.cs",
+      "targetOwner": "Core",
+      "reason": "Platform-neutral request, error, execution and storage contracts",
+      "ruleIds": [
+        6,
+        10
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.x-4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/AgentSession.MCP.Host.csproj",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/Configuration/HostOptions.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/Context/RequestContextMapping.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Infrastructure.Configuration"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/HostReadinessCheck.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Infrastructure.Configuration"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/Program.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.DependencyInjection",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Host",
+        "AgentSession.MCP.Host.Configuration",
+        "AgentSession.MCP.Host.Context",
+        "AgentSession.MCP.Host.RateLimiting",
+        "AgentSession.MCP.Host.Security",
+        "AgentSession.MCP.Infrastructure.Configuration",
+        "AgentSession.MCP.Infrastructure.DependencyInjection",
+        "AgentSession.MCP.Protocol.Registration",
+        "AgentSession.MCP.ServiceDefaults",
+        "AgentSession.MCP.Session.DependencyInjection"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/RateLimiting/HostRateLimiter.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Protocol.Filters"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/Security/LocalBearerAuthentication.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Host.Configuration"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/Security/PreAuthenticationRateLimiter.cs",
+      "targetOwner": "Host",
+      "reason": "HTTP transport, authentication and operational composition",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.2-8.5"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Configuration/ManagedStorageOptions.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Configuration/RepositoryOptions.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Configuration/StorageOptionsValidator.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Configuration/SystemStorageOptions.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/DependencyInjection/InfrastructureServiceCollectionExtensions.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Infrastructure.Configuration",
+        "AgentSession.MCP.Infrastructure.Observability",
+        "AgentSession.MCP.Services"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Observability/DependencyFailureClassifier.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Observability/DependencyOperationTracker.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Observability/DependencyTelemetrySchema.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Observability/InfrastructureObservabilityExtensions.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Observability/NoOpDependencyFailureRecorder.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Properties/AssemblyInfo.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Storage/ManagedStoragePathResolver.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Storage/ManagedStoragePaths.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Infrastructure.Configuration"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Storage/ManagedTransactionStore.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Infrastructure.Configuration"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Storage/RepositoryMutationLock.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/Storage/SystemFileSystem.cs",
+      "targetOwner": "Infrastructure",
+      "reason": "Repository-scoped persistence and dependency adapters",
+      "ruleIds": [
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "4.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Errors/ProtocolErrorMapping.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Filters/CapabilityAuthorizationFilter.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Core.Execution",
+        "AgentSession.MCP.Core.Security",
+        "AgentSession.MCP.Protocol.Errors"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Filters/CapabilityCatalog.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.Contracts.Registration",
+        "AgentSession.MCP.Core.Execution",
+        "AgentSession.MCP.Session.Contracts.Registration"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Filters/CapabilityVisibilityFilter.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Core.Execution"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Mapping/ProtocolAdapterPipeline.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Security",
+        "AgentSession.MCP.Protocol.Errors",
+        "AgentSession.MCP.Protocol.Filters",
+        "AgentSession.MCP.Protocol.Validation"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Mapping/ProtocolResultMapping.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/README.md",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Registration/ProtocolRegistration.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Protocol.Errors",
+        "AgentSession.MCP.Protocol.Filters",
+        "AgentSession.MCP.Protocol.Mapping",
+        "AgentSession.MCP.Protocol.Surfaces.AgentMemory",
+        "AgentSession.MCP.Protocol.Surfaces.Session",
+        "AgentSession.MCP.Protocol.Validation"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Surfaces/AgentMemory/AgentMemoryTools.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.Contracts.Capabilities",
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Models.Memory",
+        "AgentSession.MCP.Protocol.Mapping"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Surfaces/Session/SessionTools.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Models",
+        "AgentSession.MCP.Protocol.Mapping",
+        "AgentSession.MCP.Session.Contracts.Capabilities"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Validation/ProtocolBoundsOptions.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/Validation/ProtocolInputValidation.cs",
+      "targetOwner": "Protocol",
+      "reason": "MCP protocol adapters, filters, mapping and public capability metadata",
+      "ruleIds": [
+        5,
+        12
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "7.x"
+    },
+    {
+      "path": "src/AgentSession.MCP.ServiceDefaults/AgentSession.MCP.ServiceDefaults.csproj",
+      "targetOwner": "ServiceDefaults",
+      "reason": "Independent observability, health and resilience defaults",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.1"
+    },
+    {
+      "path": "src/AgentSession.MCP.ServiceDefaults/ServiceDefaultsExtensions.cs",
+      "targetOwner": "ServiceDefaults",
+      "reason": "Independent observability, health and resilience defaults",
+      "ruleIds": [
+        4,
+        9
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.1"
+    },
+    {
+      "path": "src/AgentSession.MCP.StdioHost/.mcp/server.json",
+      "targetOwner": "StdioHost",
+      "reason": "Stdio composition, packaging and process lifecycle",
+      "ruleIds": [
+        4,
+        13
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.4"
+    },
+    {
+      "path": "src/AgentSession.MCP.StdioHost/AgentSession.MCP.StdioHost.csproj",
+      "targetOwner": "StdioHost",
+      "reason": "Stdio composition, packaging and process lifecycle",
+      "ruleIds": [
+        4,
+        13
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.4"
+    },
+    {
+      "path": "src/AgentSession.MCP.StdioHost/Program.cs",
+      "targetOwner": "StdioHost",
+      "reason": "Stdio composition, packaging and process lifecycle",
+      "ruleIds": [
+        4,
+        13
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.DependencyInjection",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Infrastructure.Configuration",
+        "AgentSession.MCP.Infrastructure.DependencyInjection",
+        "AgentSession.MCP.Protocol.Registration",
+        "AgentSession.MCP.ServiceDefaults",
+        "AgentSession.MCP.Session.DependencyInjection"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "8.4"
+    },
+    {
+      "path": "src/AgentSession.MCP.StdioHost/README.md",
+      "targetOwner": "StdioHost",
+      "reason": "Stdio composition, packaging and process lifecycle",
+      "ruleIds": [
+        4,
+        13
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "8.4"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Capabilities/IMemoryCommandCapabilities.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Capabilities/IMemoryIndexCapabilities.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Capabilities/IMemoryQueryCapabilities.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Requests/MemoryOperationsRequests.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Requests/MemoryRequests.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Requests/MemoryWriteResult.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Requests/RememberMemoryRequest.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Responses/ArchiveMemoryResult.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Responses/CleanupMemoryResult.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Responses/MemoryReadResult.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Responses/RecallMemoryRequest.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Contracts/Responses/RecallMemoryResult.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Models/Memory/CompactionDetails.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Models/Memory/EmbeddingMetadata.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Models/Memory/MemoryEvent.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Models/Memory/MemoryOutcome.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Models/Memory/MemoryProvenance.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Models/Memory/MemoryRecord.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/Registration/AgentMemoryModuleRegistrationDescriptor.cs",
+      "targetOwner": "AgentMemory.Contracts",
+      "reason": "AgentMemory public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.Contracts.Capabilities",
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Core.Execution",
+        "AgentSession.MCP.Core.Security"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.4,7.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Capabilities/AgentMemoryCapabilityAdapters.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.Contracts.Capabilities",
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Models.Memory",
+        "AgentSession.MCP.Services"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/DependencyInjection/AgentMemoryServiceCollectionExtensions.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.Capabilities",
+        "AgentSession.MCP.AgentMemory.Contracts.Capabilities",
+        "AgentSession.MCP.Interfaces",
+        "AgentSession.MCP.Options",
+        "AgentSession.MCP.Services"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/GlobalUsings.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Interfaces/IMemoryContentPolicy.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Models/Memory/VectorMigration.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Services"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Models/Memory/VectorPendingWork.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Observability/AgentMemoryTelemetry.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Options/MemoryPolicyOptions.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Properties/AssemblyInfo.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.Archive.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.Compaction.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.Curation.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.Events.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.Outcomes.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/CanonicalMemoryService.Status.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/EmbeddingProjection.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/LearningCatalog.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryClaimHash.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryContentPolicy.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Interfaces"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryJson.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryMaintenancePass.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryMaintenanceService.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.AgentMemory.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryRecordValidator.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryReindexService.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryRequestValidator.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Interfaces",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/MemoryStatusService.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Storage"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/OllamaEmbeddingClient.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Interfaces",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/OperatorGrantVerifier.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/QdrantVectorIndex.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Interfaces",
+        "AgentSession.MCP.Models.Memory"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/VectorIndexCoordinator.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/Services/VectorMigrationService.cs",
+      "targetOwner": "AgentMemory",
+      "reason": "AgentMemory behavior and provider integration",
+      "ruleIds": [
+        7,
+        9,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Observability",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models.Memory",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "6.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Capabilities/ISessionCoordinationCapabilities.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Capabilities/ISessionLifecycleCapabilities.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Capabilities/ISessionResumeCapabilities.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Models"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Contracts/Requests/CoordinateTaskRequest.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Contracts/Requests/SessionCoordinationRequests.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Contracts/Requests/SessionResumeRequests.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Contracts/Responses/SessionMutationResult.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Models"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Contracts/Responses/SessionResumePage.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Models/CoordinatedTask.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Models/SessionCoordination.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Models/SessionCoordinationMetadata.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Models/SessionWorkingContext.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Models/SharedSessionArtifact.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/Registration/SessionModuleRegistrationDescriptor.cs",
+      "targetOwner": "Session.Contracts",
+      "reason": "Session public contracts and registration metadata",
+      "ruleIds": [
+        7
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Errors",
+        "AgentSession.MCP.Core.Execution",
+        "AgentSession.MCP.Core.Security",
+        "AgentSession.MCP.Session.Contracts.Capabilities"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "3.3,7.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Authorization/SessionContextGuard.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Helpers"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Configuration/SessionCoordinationOptions.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Configuration/SessionLimitsOptions.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Coordination/SessionCoordinationService.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models",
+        "AgentSession.MCP.Options",
+        "AgentSession.MCP.Session.Contracts.Capabilities"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/DependencyInjection/SessionServiceCollectionExtensions.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Options",
+        "AgentSession.MCP.Services",
+        "AgentSession.MCP.Session.Contracts.Capabilities"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Lifecycle/SharedSessionLifecycleService.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models",
+        "AgentSession.MCP.Options",
+        "AgentSession.MCP.Session.Contracts.Capabilities"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Resume/SessionResumeService.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Contracts",
+        "AgentSession.MCP.Core.Context",
+        "AgentSession.MCP.Core.Storage",
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Models",
+        "AgentSession.MCP.Options",
+        "AgentSession.MCP.Session.Contracts.Capabilities"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Serialization/SessionJson.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/Validation/SessionRequestValidator.cs",
+      "targetOwner": "Session",
+      "reason": "Session module behavior and composition",
+      "ruleIds": [
+        7,
+        14
+      ],
+      "knownLocalDependencies": [
+        "AgentSession.MCP.Helpers",
+        "AgentSession.MCP.Options"
+      ],
+      "disposition": "remain",
+      "laterOwningTask": "5.x"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "repositoryId": "published-smoke-v6",
+  "sessionId": "published-smoke-session",
+  "sequence": 1,
+  "artifactRevisions": {},
+  "tasks": {},
+  "checkpoints": {},
+  "changes": [
+    {
+      "sequence": 1,
+      "actorId": "published-smoke-agent",
+      "kind": "session-created",
+      "recordId": "published-smoke-session",
+      "revision": 1,
+      "timestampUtc": "2026-10-16T18:00:19.609428+00:00",
+      "reason": null
+    }
+  ]
+}

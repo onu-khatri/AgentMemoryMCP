@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../AgentSession.MCP.Core/AgentSession.MCP.Core.csproj" />
+    <ProjectReference Include="../Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj" />
+    <ProjectReference Include="../Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj" />
+  </ItemGroup>
+</Project>

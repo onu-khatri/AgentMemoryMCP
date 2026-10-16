@@ -1,0 +1,19 @@
+[
+  {
+    "id": "d6a3e922a3db49d7a9de140fe550b310",
+    "tier": "short",
+    "status": "active",
+    "parts": [
+      "short-term",
+      "active",
+      "2026-10",
+      "d6a3e922a3db49d7a9de140fe550b310.json"
+    ],
+    "revision": 1,
+    "contentHash": "404345999cc0110218e621a3bf8eb52630d91c77cac34ce243c903e74074c4b0",
+    "scopeHash": "c4dc76523053b4ef49358418e0dc23d4dc0a12ec3c09032aa9bb85dd037dda6d",
+    "createdAtUtc": "2026-10-16T17:52:41.3535699+00:00",
+    "expiresAtUtc": null,
+    "sessionId": "foundation-session"
+  }
+]

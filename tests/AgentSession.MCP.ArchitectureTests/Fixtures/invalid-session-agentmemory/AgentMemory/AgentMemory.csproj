@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>AgentSession.MCP.AgentMemory</AssemblyName>
+  </PropertyGroup>
+</Project>

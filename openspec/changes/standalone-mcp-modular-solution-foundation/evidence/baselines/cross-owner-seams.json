@@ -1,0 +1,36 @@
+{
+  "capturedAtUtc": "2026-10-16T17:51:31.9462399+00:00",
+  "seams": [
+    {
+      "source": "Protocol tools",
+      "target": "Session and AgentMemory services",
+      "reason": "Tool adapters directly invoke concrete implementations",
+      "laterTask": "3.x,5.x,6.x,7.x"
+    },
+    {
+      "source": "MemoryConfigurationExtensions",
+      "target": "Session, AgentMemory, Infrastructure, providers, telemetry",
+      "reason": "Monolithic registration crosses all future owners",
+      "laterTask": "3.x-8.x"
+    },
+    {
+      "source": "Public contracts",
+      "target": "Mixed implementation models",
+      "reason": "Current project does not enforce contracts-to-implementation direction",
+      "laterTask": "3.3,3.4"
+    },
+    {
+      "source": "MCP telemetry classifier",
+      "target": "Domain validation and MCP outcomes",
+      "reason": "Classifier spans protocol and domain normalization",
+      "laterTask": "3.2,7.x"
+    },
+    {
+      "source": "TestWorker and Benchmarks",
+      "target": "Legacy monolith",
+      "reason": "Temporary compatibility references",
+      "laterTask": "9.6"
+    }
+  ],
+  "unassigned": 0
+}

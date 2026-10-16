@@ -1,0 +1,29 @@
+{
+  "requestHash": "2fe2b263079b84322003a85b80ea2cf664b7f6d891927930cf4af247d12deccd",
+  "result": {
+    "sequence": 3,
+    "artifactRevisions": {},
+    "task": {
+      "id": "foundation-task",
+      "workKey": "foundation",
+      "title": "Foundation task",
+      "parentStepId": null,
+      "definitionHash": "1b3ef8d43e0d23a0701e8f70e0e9c0b070dddf74aefc8c863da79ebe83702d0b",
+      "dependencies": [],
+      "acceptanceExpectations": [],
+      "nextAction": null,
+      "status": "available",
+      "ownerId": null,
+      "claimToken": null,
+      "fencingGeneration": 0,
+      "claimExpiresAtUtc": null,
+      "revision": 1,
+      "blocker": null,
+      "outputs": [],
+      "evidence": [],
+      "verificationStatus": "unverified",
+      "handoff": null,
+      "updatedAtUtc": "2026-10-16T17:52:41.2479427+00:00"
+    }
+  }
+}

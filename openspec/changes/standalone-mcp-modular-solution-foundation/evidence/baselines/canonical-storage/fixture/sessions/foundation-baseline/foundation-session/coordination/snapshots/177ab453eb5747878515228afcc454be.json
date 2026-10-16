@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "177ab453eb5747878515228afcc454be",
+  "repositoryId": "foundation-baseline",
+  "sessionId": "foundation-session",
+  "actorId": "reader",
+  "sequence": 3,
+  "acknowledgedSequence": 3,
+  "expiresAtUtc": "2026-10-16T18:52:43.4652097+00:00",
+  "chunks": [
+    {
+      "id": "177ab453eb5747878515228afcc454be-0",
+      "start": 0,
+      "count": 2,
+      "hash": "06ab68cf39afd94187b66a61373c504d7f0f755c2c85754d9acce230c3910aef"
+    }
+  ],
+  "entryCount": 2,
+  "unknown": [
+    "plan-references",
+    "constraints",
+    "plan",
+    "decision",
+    "handoff"
+  ],
+  "deliveredCount": 2
+}

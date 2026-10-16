@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsPackable>false</IsPackable><IsTestProject>true</IsTestProject></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" /><PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" /><PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="../../openspec/changes/standalone-mcp-modular-solution-foundation/evidence/baselines/mcp-discovery.json" Link="Baselines/mcp-discovery.json" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="../../src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
