@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsPackable>false</IsPackable><IsTestProject>true</IsTestProject></PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" />
+    <PackageReference Include="OnuObservability.Hosting" />
+    <PackageReference Include="OnuObservability.Mcp" />
+    <PackageReference Include="Qdrant.Client" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup><Using Include="Xunit" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../AgentSession.MCP.Tests/McpProcess.cs" Link="McpProcess.cs" />
+    <ProjectReference Include="../../src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj" />
+    <ProjectReference Include="../../src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj" />
+    <ProjectReference Include="../../src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj" />
+    <ProjectReference Include="../../src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj" />
+    <ProjectReference Include="../../src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj" />
+    <ProjectReference Include="../../src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj" />
+  </ItemGroup>
+  <Target Name="CopyTestWorker" AfterTargets="Build">
+    <MSBuild Projects="../AgentSession.MCP.TestWorker/AgentSession.MCP.TestWorker.csproj"
+             Targets="Build"
+             Properties="Configuration=$(Configuration)" />
+    <ItemGroup>
+      <WorkerFiles Include="../AgentSession.MCP.TestWorker/bin/$(Configuration)/net10.0/**/*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(WorkerFiles)" DestinationFiles="@(WorkerFiles->'$(OutDir)worker/%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="../AgentSession.MCP.TestWorker/bin/$(Configuration)/net10.0/AgentSession.MCP.TestWorker.runtimeconfig.json"
+          DestinationFiles="$(OutDir)worker/AgentSession.MCP.runtimeconfig.json" />
+  </Target>
+</Project>

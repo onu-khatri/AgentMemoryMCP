@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>AgentSession.MCP.Core</AssemblyName></PropertyGroup>
+  <ItemGroup><PackageReference Include="Qdrant.Client" /></ItemGroup>
+</Project>

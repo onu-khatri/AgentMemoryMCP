@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1",
+  "name": "AgentSession.MCP",
+  "description": "Primary persisted memory for repository-scoped agent work: restart-safe shared sessions, multi-agent task coordination, tiered reusable learning, semantic recall and recoverable vector indexing. Configure Repository__Id before starting.",
+  "transport": { "type": "stdio" },
+  "entry": {
+    "command": "dotnet",
+    "args": ["run", "--no-build", "--project", "src/AgentSession.MCP.StdioHost/AgentSession.MCP.StdioHost.csproj"]
+  }
+}

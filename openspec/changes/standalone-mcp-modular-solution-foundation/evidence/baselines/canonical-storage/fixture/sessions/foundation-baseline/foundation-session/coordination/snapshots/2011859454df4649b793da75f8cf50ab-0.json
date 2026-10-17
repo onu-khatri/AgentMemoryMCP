@@ -1,0 +1,86 @@
+[
+  {
+    "kind": "artifact",
+    "value": {
+      "schemaVersion": 1,
+      "id": "context",
+      "kind": "context",
+      "actorId": "agent-a",
+      "taskId": null,
+      "title": "Foundation context",
+      "data": null,
+      "context": {
+        "objective": "Preserve modular-foundation compatibility",
+        "planReferences": null,
+        "constraints": null,
+        "nextActions": [
+          "Verify restart"
+        ]
+      },
+      "evidence": [],
+      "revision": 1,
+      "updatedAtUtc": "2026-10-16T17:52:41.1605828\u002B00:00"
+    }
+  },
+  {
+    "kind": "task",
+    "value": {
+      "id": "foundation-task",
+      "workKey": "foundation",
+      "title": "Foundation task",
+      "parentStepId": null,
+      "definitionHash": "1b3ef8d43e0d23a0701e8f70e0e9c0b070dddf74aefc8c863da79ebe83702d0b",
+      "dependencies": [],
+      "acceptanceExpectations": [],
+      "nextAction": null,
+      "status": "available",
+      "ownerId": null,
+      "claimToken": null,
+      "fencingGeneration": 0,
+      "claimExpiresAtUtc": null,
+      "revision": 1,
+      "blocker": null,
+      "outputs": [],
+      "evidence": [],
+      "verificationStatus": "unverified",
+      "handoff": null,
+      "updatedAtUtc": "2026-10-16T17:52:41.2479427\u002B00:00"
+    }
+  },
+  {
+    "kind": "change",
+    "value": {
+      "sequence": 1,
+      "actorId": "agent-a",
+      "kind": "session-created",
+      "recordId": "foundation-session",
+      "revision": 1,
+      "timestampUtc": "2026-10-16T17:52:40.9393201\u002B00:00",
+      "reason": null
+    }
+  },
+  {
+    "kind": "change",
+    "value": {
+      "sequence": 2,
+      "actorId": "agent-a",
+      "kind": "artifact-updated",
+      "recordId": "context",
+      "revision": 1,
+      "timestampUtc": "2026-10-16T17:52:41.1605828\u002B00:00",
+      "reason": null
+    }
+  },
+  {
+    "kind": "change",
+    "value": {
+      "sequence": 3,
+      "actorId": "agent-a",
+      "kind": "task-create",
+      "recordId": "foundation-task",
+      "revision": 1,
+      "timestampUtc": "2026-10-16T17:52:41.2479427\u002B00:00",
+      "reason": null
+    }
+  }
+]

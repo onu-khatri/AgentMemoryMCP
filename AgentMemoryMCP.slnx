@@ -1,6 +1,29 @@
 <Solution>
-  <Project Path="AgentSession.MCP.TestWorker/AgentSession.MCP.TestWorker.csproj" />
-  <Project Path="AgentSession.MCP.Benchmarks/AgentSession.MCP.Benchmarks.csproj" />
-  <Project Path="AgentSession.MCP.Tests/AgentSession.MCP.Tests.csproj" />
-  <Project Path="AgentSession.MCP/AgentSession.MCP.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj" />
+    <Project Path="src/AgentSession.MCP.Host/AgentSession.MCP.Host.csproj" />
+    <Project Path="src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj" />
+    <Project Path="src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj" />
+    <Project Path="src/AgentSession.MCP.ServiceDefaults/AgentSession.MCP.ServiceDefaults.csproj" />
+    <Project Path="src/AgentSession.MCP.StdioHost/AgentSession.MCP.StdioHost.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Session/">
+    <Project Path="src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj" />
+    <Project Path="src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/AgentMemory/">
+    <Project Path="src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj" />
+    <Project Path="src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AgentSession.MCP.ArchitectureTests/AgentSession.MCP.ArchitectureTests.csproj" />
+    <Project Path="tests/AgentSession.MCP.ContractTests/AgentSession.MCP.ContractTests.csproj" />
+    <Project Path="tests/AgentSession.MCP.EndToEndTests/AgentSession.MCP.EndToEndTests.csproj" />
+    <Project Path="tests/AgentSession.MCP.IntegrationTests/AgentSession.MCP.IntegrationTests.csproj" />
+    <Project Path="tests/AgentSession.MCP.TestWorker/AgentSession.MCP.TestWorker.csproj" />
+    <Project Path="tests/AgentSession.MCP.UnitTests/AgentSession.MCP.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/AgentSession.MCP.Benchmarks/AgentSession.MCP.Benchmarks.csproj" />
+  </Folder>
 </Solution>

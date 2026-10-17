@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>AgentSession.MCP.Protocol</AssemblyName></PropertyGroup>
+</Project>

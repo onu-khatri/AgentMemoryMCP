@@ -1,18 +1,24 @@
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using AgentSession.MCP.Services;
 
 namespace AgentSession.MCP.Tests;
 
-internal sealed class McpProcess : IDisposable
+public sealed class McpProcess : IDisposable
 {
     private readonly Process _process;
     private readonly Task<string> _stderr;
     private int _id;
     private readonly string _version;
     public bool ForcedTermination { get; private set; }
-    private static readonly JsonSerializerOptions Wire = new(MemoryJson.Options) { WriteIndented = false };
+    private static readonly JsonSerializerOptions Wire = new(JsonSerializerDefaults.Web)
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = false,
+        ReadCommentHandling = JsonCommentHandling.Skip,
+        AllowTrailingCommas = true
+    };
     public McpProcess(
         string root,
         string repository = "repo",
@@ -26,8 +32,8 @@ internal sealed class McpProcess : IDisposable
         var folder = Path.Combine(AppContext.BaseDirectory, "worker");
         var start = new ProcessStartInfo("dotnet") { RedirectStandardInput = true, RedirectStandardOutput = true,
             RedirectStandardError = true, UseShellExecute = false, CreateNoWindow = true };
-        foreach (var argument in new[] { "exec", "--runtimeconfig", Path.Combine(folder, "AgentSession.MCP.TestWorker.runtimeconfig.json"),
-            "--depsfile", Path.Combine(folder, "AgentSession.MCP.TestWorker.deps.json"), Path.Combine(folder, "AgentSession.MCP.dll") })
+        foreach (var argument in new[] { "exec", "--runtimeconfig", Path.Combine(folder, "AgentSession.MCP.runtimeconfig.json"),
+            "--depsfile", Path.Combine(folder, "AgentSession.MCP.deps.json"), Path.Combine(folder, "AgentSession.MCP.dll") })
             start.ArgumentList.Add(argument);
         start.Environment["SystemStorage__Root"] = root;
         start.Environment["Repository__Id"] = repository;

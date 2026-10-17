@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../../AgentSession.MCP.Core/AgentSession.MCP.Core.csproj" />
+  </ItemGroup>
+</Project>

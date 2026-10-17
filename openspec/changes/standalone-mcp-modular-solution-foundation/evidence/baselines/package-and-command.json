@@ -1,0 +1,126 @@
+{
+  "packageId": "AgentSession.MCP",
+  "packageVersion": "0.1.0-beta",
+  "packageType": "McpServer",
+  "packAsTool": "true",
+  "runtimeIdentifiers": [
+    "win-x64",
+    "win-arm64",
+    "osx-arm64",
+    "linux-x64",
+    "linux-arm64",
+    "linux-musl-x64"
+  ],
+  "commandMetadata": {
+    "schemaVersion": "1",
+    "name": "AgentSession.MCP",
+    "description": "Primary persisted memory for repository-scoped agent work: restart-safe shared sessions, multi-agent task coordination, tiered reusable learning, semantic recall and recoverable vector indexing. Configure Repository__Id before starting.",
+    "transport": {
+      "type": "stdio"
+    },
+    "entry": {
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--no-build",
+        "--project",
+        "src/AgentSession.MCP.StdioHost/AgentSession.MCP.StdioHost.csproj"
+      ]
+    }
+  },
+  "directPackages": [
+    {
+      "id": "coverlet.collector",
+      "version": "6.0.4"
+    },
+    {
+      "id": "Microsoft.Extensions.Configuration",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.Configuration.Abstractions",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.Configuration.CommandLine",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.DependencyInjection",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.DependencyInjection.Abstractions",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.Hosting",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.Http",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.Extensions.Options.ConfigurationExtensions",
+      "version": "10.0.12"
+    },
+    {
+      "id": "Microsoft.NET.Test.Sdk",
+      "version": "17.14.1"
+    },
+    {
+      "id": "ModelContextProtocol",
+      "version": "2.2.0"
+    },
+    {
+      "id": "ModelContextProtocol.AspNetCore",
+      "version": "2.2.0"
+    },
+    {
+      "id": "OnuObservability.Hosting",
+      "version": "0.1.0-alpha.10"
+    },
+    {
+      "id": "OnuObservability.Mcp",
+      "version": "0.1.0-alpha.10"
+    },
+    {
+      "id": "OpenTelemetry.Exporter.InMemory",
+      "version": "1.19.0"
+    },
+    {
+      "id": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "version": "1.19.0"
+    },
+    {
+      "id": "OpenTelemetry.Extensions.Hosting",
+      "version": "1.19.0"
+    },
+    {
+      "id": "Qdrant.Client",
+      "version": "1.19.0"
+    },
+    {
+      "id": "xunit",
+      "version": "2.9.3"
+    },
+    {
+      "id": "xunit.runner.visualstudio",
+      "version": "3.1.4"
+    }
+  ],
+  "packageInspection": {
+    "status": "passed",
+    "files": [
+      "_rels/.rels",
+      ".mcp/server.json",
+      "[Content_Types].xml",
+      "AgentSession.MCP.nuspec",
+      "package/services/metadata/core-properties/nuget.psmdcp",
+      "README.md",
+      "tools/any/any/DotnetToolSettings.xml"
+    ],
+    "nuspec": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<package xmlns=\"http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd\">\r\n  <metadata>\r\n    <id>AgentSession.MCP</id>\r\n    <version>0.1.0-beta</version>\r\n    <authors>AgentSession.MCP.StdioHost</authors>\r\n    <readme>README.md</readme>\r\n    <description>.NET 10 MCP server for restart-safe shared sessions, multi-agent coordination and repository-scoped reusable memory with semantic recall.</description>\r\n    <tags>AI MCP server stdio session</tags>\r\n    <packageTypes>\r\n      <packageType name=\"DotnetTool\" />\r\n      <packageType name=\"McpServer\" />\r\n    </packageTypes>\r\n    <repository type=\"git\" commit=\"5cf277b6eaa6deb844e9cf0f6c061defd8c3eeae\" />\r\n  </metadata>\r\n</package>"
+  }
+}

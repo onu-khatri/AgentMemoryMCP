@@ -111,7 +111,7 @@ try {
         } }
     }
     $successful = Read-JsonRpc 3
-    if ($successful.error -or $successful.result.isError) { throw 'Published success-path tool call failed.' }
+    if ($successful.error -or $successful.result.isError) { throw "Published success-path tool call failed: $($successful | ConvertTo-Json -Depth 20 -Compress)" }
 
     Send-JsonRpc 4 'tools/call' @{
         name = 'memory_record_event'
@@ -134,6 +134,7 @@ try {
         try { $null = $line | ConvertFrom-Json -Depth 20 }
         catch { throw "Non-JSON content was written to MCP stderr: $line" }
     }
+    if ($stderrText -match 'System\.[A-Za-z]+Exception|StackTrace| at [A-Za-z0-9_].*\(') { throw 'Published stderr leaked exception or stack details.' }
     if (-not ($stderrLines -match 'mcp.tool.completed')) { throw 'Missing success diagnostic.' }
     if (-not ($stderrLines -match 'mcp.tool.failed')) { throw 'Missing failure diagnostic.' }
     Write-Output "Published MCP smoke passed: $($names.Count) unique tools; protocol $ProtocolVersion; success/failure calls; bounded JSON stderr; stdout JSON-RPC clean; graceful shutdown."

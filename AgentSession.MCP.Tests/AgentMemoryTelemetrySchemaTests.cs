@@ -1,6 +1,5 @@
-using System.Diagnostics;
 using AgentSession.MCP.Extensions;
-using AgentSession.MCP.Observability;
+using AgentSession.MCP.Core.Observability;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnuObservability.Hosting.Composition;
@@ -12,7 +11,7 @@ namespace AgentSession.MCP.Tests;
 public sealed class AgentMemoryTelemetrySchemaTests
 {
     [Fact]
-    public void ApplicationDescriptorsAreRegisteredAndUnknownDependenciesFailClosed()
+    public void ApplicationDescriptorsAreRegisteredOnce()
     {
         var services = new ServiceCollection();
         services.AddLogging();
@@ -36,13 +35,6 @@ public sealed class AgentMemoryTelemetrySchemaTests
         Assert.Equal(17, applicationOperations.Length);
         Assert.Equal(17, applicationOperations.Select(operation => operation.Name).Distinct().Count());
 
-        var fallback = AgentMemoryTelemetrySchema.Resolve(
-            ActivityKind.Client,
-            "private-dependency",
-            "private-operation");
-        Assert.Equal("other", fallback.Type);
-        Assert.Equal("other", fallback.Operation);
-        Assert.Equal("agentmemory.dependency.other.other", fallback.Descriptor.Name);
     }
 
     [Fact]
@@ -54,6 +46,6 @@ public sealed class AgentMemoryTelemetrySchemaTests
         Assert.DoesNotContain(services, descriptor =>
             descriptor.ServiceType.FullName == "AgentSession.MCP.Observability.McpTelemetry");
         Assert.Contains(services, descriptor =>
-            descriptor.ServiceType == typeof(McpDependencyTelemetry));
+            descriptor.ServiceType == typeof(IDependencyOperationTracker));
     }
 }

@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>AgentSession.MCP.Core</AssemblyName></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../Target/Target.csproj" /></ItemGroup>
+</Project>

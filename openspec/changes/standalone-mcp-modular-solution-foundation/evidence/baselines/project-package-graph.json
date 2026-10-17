@@ -1,0 +1,363 @@
+{
+  "capturedAtUtc": "2026-10-16T17:51:31.0650262+00:00",
+  "projects": [
+    {
+      "path": "benchmarks/AgentSession.MCP.Benchmarks/AgentSession.MCP.Benchmarks.csproj",
+      "projectReferences": [
+        "AgentSession.MCP/AgentSession.MCP.csproj",
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj"
+      ],
+      "packageReferences": []
+    },
+    {
+      "path": "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+      "projectReferences": [],
+      "packageReferences": []
+    },
+    {
+      "path": "src/AgentSession.MCP.Host/AgentSession.MCP.Host.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj",
+        "src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj",
+        "src/AgentSession.MCP.ServiceDefaults/AgentSession.MCP.ServiceDefaults.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "ModelContextProtocol.AspNetCore",
+          "version": "2.2.0"
+        }
+      ]
+    },
+    {
+      "path": "src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "OnuObservability.Hosting",
+          "version": "0.1.0-alpha.10"
+        },
+        {
+          "id": "OnuObservability.Mcp",
+          "version": "0.1.0-alpha.10"
+        }
+      ]
+    },
+    {
+      "path": "src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "ModelContextProtocol",
+          "version": "2.2.0"
+        }
+      ]
+    },
+    {
+      "path": "src/AgentSession.MCP.ServiceDefaults/AgentSession.MCP.ServiceDefaults.csproj",
+      "projectReferences": [],
+      "packageReferences": [
+        {
+          "id": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+          "version": "1.19.0"
+        },
+        {
+          "id": "OpenTelemetry.Extensions.Hosting",
+          "version": "1.19.0"
+        }
+      ]
+    },
+    {
+      "path": "src/AgentSession.MCP.StdioHost/AgentSession.MCP.StdioHost.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj",
+        "src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj",
+        "src/AgentSession.MCP.ServiceDefaults/AgentSession.MCP.ServiceDefaults.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "Microsoft.Extensions.Configuration.CommandLine",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Hosting",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Http",
+          "version": "10.0.12"
+        },
+        {
+          "id": "ModelContextProtocol",
+          "version": "2.2.0"
+        },
+        {
+          "id": "OnuObservability.Hosting",
+          "version": "0.1.0-alpha.10"
+        },
+        {
+          "id": "OnuObservability.Mcp",
+          "version": "0.1.0-alpha.10"
+        }
+      ]
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj"
+      ],
+      "packageReferences": []
+    },
+    {
+      "path": "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Hosting",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Http",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Qdrant.Client",
+          "version": "1.19.0"
+        }
+      ]
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj"
+      ],
+      "packageReferences": []
+    },
+    {
+      "path": "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "Microsoft.Extensions.Configuration.Abstractions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Options.ConfigurationExtensions",
+          "version": "10.0.12"
+        }
+      ]
+    },
+    {
+      "path": "tests/AgentSession.MCP.ArchitectureTests/AgentSession.MCP.ArchitectureTests.csproj",
+      "projectReferences": [],
+      "packageReferences": [
+        {
+          "id": "coverlet.collector",
+          "version": "6.0.4"
+        },
+        {
+          "id": "Microsoft.NET.Test.Sdk",
+          "version": "17.14.1"
+        },
+        {
+          "id": "xunit",
+          "version": "2.9.3"
+        },
+        {
+          "id": "xunit.runner.visualstudio",
+          "version": "3.1.4"
+        }
+      ]
+    },
+    {
+      "path": "tests/AgentSession.MCP.ContractTests/AgentSession.MCP.ContractTests.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Protocol/AgentSession.MCP.Protocol.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "coverlet.collector",
+          "version": "6.0.4"
+        },
+        {
+          "id": "Microsoft.NET.Test.Sdk",
+          "version": "17.14.1"
+        },
+        {
+          "id": "xunit",
+          "version": "2.9.3"
+        },
+        {
+          "id": "xunit.runner.visualstudio",
+          "version": "3.1.4"
+        }
+      ]
+    },
+    {
+      "path": "tests/AgentSession.MCP.EndToEndTests/AgentSession.MCP.EndToEndTests.csproj",
+      "projectReferences": [],
+      "packageReferences": [
+        {
+          "id": "coverlet.collector",
+          "version": "6.0.4"
+        },
+        {
+          "id": "Microsoft.NET.Test.Sdk",
+          "version": "17.14.1"
+        },
+        {
+          "id": "xunit",
+          "version": "2.9.3"
+        },
+        {
+          "id": "xunit.runner.visualstudio",
+          "version": "3.1.4"
+        }
+      ]
+    },
+    {
+      "path": "tests/AgentSession.MCP.IntegrationTests/AgentSession.MCP.IntegrationTests.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory/AgentSession.MCP.AgentMemory.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "coverlet.collector",
+          "version": "6.0.4"
+        },
+        {
+          "id": "Microsoft.Extensions.Configuration",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.DependencyInjection",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.Extensions.Hosting",
+          "version": "10.0.12"
+        },
+        {
+          "id": "Microsoft.NET.Test.Sdk",
+          "version": "17.14.1"
+        },
+        {
+          "id": "OpenTelemetry.Exporter.InMemory",
+          "version": "1.19.0"
+        },
+        {
+          "id": "OnuObservability.Hosting",
+          "version": "0.1.0-alpha.10"
+        },
+        {
+          "id": "OnuObservability.Mcp",
+          "version": "0.1.0-alpha.10"
+        },
+        {
+          "id": "Qdrant.Client",
+          "version": "1.19.0"
+        },
+        {
+          "id": "xunit",
+          "version": "2.9.3"
+        },
+        {
+          "id": "xunit.runner.visualstudio",
+          "version": "3.1.4"
+        }
+      ]
+    },
+    {
+      "path": "tests/AgentSession.MCP.TestWorker/AgentSession.MCP.TestWorker.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/AgentSession.MCP.Infrastructure/AgentSession.MCP.Infrastructure.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "Microsoft.Extensions.Hosting",
+          "version": "10.0.12"
+        }
+      ]
+    },
+    {
+      "path": "tests/AgentSession.MCP.UnitTests/AgentSession.MCP.UnitTests.csproj",
+      "projectReferences": [
+        "src/AgentSession.MCP.Core/AgentSession.MCP.Core.csproj",
+        "src/Modules/AgentMemory/AgentSession.MCP.AgentMemory.Contracts/AgentSession.MCP.AgentMemory.Contracts.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session.Contracts/AgentSession.MCP.Session.Contracts.csproj",
+        "src/Modules/Session/AgentSession.MCP.Session/AgentSession.MCP.Session.csproj"
+      ],
+      "packageReferences": [
+        {
+          "id": "coverlet.collector",
+          "version": "6.0.4"
+        },
+        {
+          "id": "Microsoft.NET.Test.Sdk",
+          "version": "17.14.1"
+        },
+        {
+          "id": "xunit",
+          "version": "2.9.3"
+        },
+        {
+          "id": "xunit.runner.visualstudio",
+          "version": "3.1.4"
+        }
+      ]
+    }
+  ]
+}

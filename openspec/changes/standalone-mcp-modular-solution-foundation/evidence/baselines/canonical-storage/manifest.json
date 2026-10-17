@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "storageRoot": "${FIXTURE_ROOT}",
+  "repositoryId": "foundation-baseline",
+  "sessionId": "foundation-session",
+  "memoryId": "d6a3e922a3db49d7a9de140fe550b310",
+  "providerRequirement": "none",
+  "restartRead": "passed",
+  "cursorCheckpoint": "passed-final-page-only",
+  "files": [
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.index.json",
+      "sha256": "f79cfbcda092dfa00ee8105d2529cbbf0c4fb668f3fffc1b847ddb8e77579b61",
+      "bytes": 216
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/snapshots/177ab453eb5747878515228afcc454be.json",
+      "sha256": "79abd355718d4aff89652b2ad6575400f71c9c9111a475cfcf5a7f70c35070bf",
+      "bytes": 640
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/snapshots/177ab453eb5747878515228afcc454be-0.json",
+      "sha256": "06ab68cf39afd94187b66a61373c504d7f0f755c2c85754d9acce230c3910aef",
+      "bytes": 1319
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/results/coordinate.json",
+      "sha256": "67bb727b7ef3a7b1c56c50c1e9837cd327e9c71f878148544b1d6300cbbefcba",
+      "bytes": 857
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/results/append.json",
+      "sha256": "40c3d164f5a4ada10ac5e2a25337b8b23b3b9a7dea0c9f9a3916885b4fea75fd",
+      "bytes": 204
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/artifacts/context.json",
+      "sha256": "12abf21b0d6bc186a615f70d89f518b312a11b38e2275692324ba151139bc37c",
+      "bytes": 449
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/metadata.json",
+      "sha256": "ad575144ba4a9a3af755b89c7db40e29312a6bc29ef63ca7d1859e0ee9452984",
+      "bytes": 1812
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/short-term/active/2026-10/d6a3e922a3db49d7a9de140fe550b310.json",
+      "sha256": "f2f05a0a8257547272a0432a393a4cd2a16449b5dbb9ed5ee83a52921d4121f6",
+      "bytes": 1605
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/operations/remember.json",
+      "sha256": "36fcd3f3b794a64d03da9aaf782d9cf8e158a48bf14d002fff18b66304a375bc",
+      "bytes": 254
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/indexes/10.json",
+      "sha256": "aff60687940ee64c3dc05839029609d48319e4a7ecfe14c5c7e51b6b9f824322",
+      "bytes": 553
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/events/2026-10/events.jsonl",
+      "sha256": "783f001e0ce552899c10563495d1608fbfaf195e6c615062885fc8144cf907a2",
+      "bytes": 312
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/snapshot-chunk-2011859454df4649b793da75f8cf50ab-0.receipt.json",
+      "sha256": "fb3ef78ab15dd197f4ed25910dd39a3d2d502821c00c3966da574bba90618af1",
+      "bytes": 160
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/snapshot-chunk-177ab453eb5747878515228afcc454be-0.receipt.json",
+      "sha256": "5ba63dd63fe5389bd92a0e2839dfe4f78cb39d2a7d900fb0050ceeda6a08be92",
+      "bytes": 160
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/snapshot-2011859454df4649b793da75f8cf50ab.receipt.json",
+      "sha256": "243ab5b3ca53d268e08791ce8b3f118e75110d86f333b601f080a39cea5b41da",
+      "bytes": 152
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/snapshots/2011859454df4649b793da75f8cf50ab-0.json",
+      "sha256": "919ddc268f5d0b6120e6553f977030c1d1441c8befe7044532c800ee1810a9be",
+      "bytes": 2178
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/snapshot-177ab453eb5747878515228afcc454be.receipt.json",
+      "sha256": "10bca5907137182d912ab991fc9c0b0caacf29e8a4e16971f4c0231ff857e9cd",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/session-607ca6270832461328a1697bb9e9acfbdc9d423b80d5e130cc399bbe687614f7.receipt.json",
+      "sha256": "d9b7bd132faf0e39d95cde84e44ef0f98d835d0e1198bf9a2168d5eb6f1b541e",
+      "bytes": 183
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/rebuild-e853b1c5b26a4ac7800ea1c860d40d57.receipt.json",
+      "sha256": "91f8c192efbe530cbdebbc14ce1443f7d0826822633176925fc42957ba45c6f7",
+      "bytes": 151
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/rebuild-9a637b52d9744ec7a77df71d953df328.receipt.json",
+      "sha256": "b0c0eb65e247c25d796f9989c9ba787d4885fccfa0d8caf9877adbea0590179a",
+      "bytes": 151
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/rebuild-8d0de471bd024f03b243cc8e53db0e6d.receipt.json",
+      "sha256": "02cd1e40ca551a90b96669b721cfda2f3ebbe1a7d97d9826a7542bfbefddbd2c",
+      "bytes": 151
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/memory-35379d9c009e290d702b72abf3f5f9bdbaa7e00a63fc37b5174fc3825c8095e3.receipt.json",
+      "sha256": "25e54c0db2c2bf0e2eb35a1e21a79c9ace060f6615eb375f307216b4814451a6",
+      "bytes": 182
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/delivery-d816b4f4b0544067a7ea47d4134c09c8.receipt.json",
+      "sha256": "0c38b2143ff6dd296e324a3c85c5544f16f27a79ca1cb1e278a9b370387a5b0f",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/delivery-d0a17ea42dca475f9274b0d64a69588c.receipt.json",
+      "sha256": "9183e57e6502ca5c576e7cdf4fee01a322543c87f3f814a41b1617d9f588a1e2",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/delivery-ce53b5905bea444e9020e072b2f1e9d6.receipt.json",
+      "sha256": "d87933d02583c6a6cbc4e6a8c3331f75aadb893381e581b757b330fe70452e8f",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/delivery-9a4806825f7640a8a9b7a7b22967fd32.receipt.json",
+      "sha256": "f0876b4aa70ff32fbc58896bc87c7a1195db8dd1361176f44e9da5c22e7d9c5b",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/delivery-2eb896ea2ffb45db9c28f708e0dc077b.receipt.json",
+      "sha256": "c470cfb5f7c8fb7a05f89e3576e8bec08ba038970f4c9438bec52b6d6e4cde0e",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/delivery-0e35c242486749d9be88255e6f50fbe5.receipt.json",
+      "sha256": "f80592a96176de87c3c615e5aed2d0d17da6aba4c9ba769540f50f7fe26b0e6a",
+      "bytes": 152
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/checkpoint-363d5ba708af4ecf844e7ab73626daec.receipt.json",
+      "sha256": "13ed23691130a35c3a46a92c225fc636f6fe4f17abaaca5f8a563ed71d010b44",
+      "bytes": 154
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/activate-f73c9fdedaa99affa0c653053a6c2b00d374fb2ce0c9decaf257ff32d014e60b.receipt.json",
+      "sha256": "e5a9e5d48ff76ee7bcc6fb785594e7648ccb2c4a6a62cf1c8467b08c8943a03a",
+      "bytes": 184
+    },
+    {
+      "path": "repositories/foundation-baseline/AiLearning/.operations/session-8b30aff3073fc738afc464228e63ab4995c6947c9df8a2623b64cf145827735d.receipt.json",
+      "sha256": "9746de2b8c4b0e64fcfb0e25152991abc51f4c0ec5be2c49b66f8dd27271459d",
+      "bytes": 183
+    },
+    {
+      "path": "sessions/foundation-baseline/foundation-session/coordination/snapshots/2011859454df4649b793da75f8cf50ab.json",
+      "sha256": "b2d71a1164c87d5139b9543faae4a62f02b6969dd70eeaa80fb67cc44938b780",
+      "bytes": 640
+    }
+  ]
+}
